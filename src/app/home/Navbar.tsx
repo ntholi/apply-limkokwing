@@ -77,9 +77,6 @@ export default function Navbar() {
       </NavbarContent>
 
       <NavbarContent justify='end'>
-        <NavbarItem className='hidden lg:flex'>
-          <Link href='#'>Login</Link>
-        </NavbarItem>
         <NavbarItem>
           <Button as={Link} color='default' href='#' variant='flat'>
             Sign Up
