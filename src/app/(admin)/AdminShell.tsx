@@ -80,13 +80,6 @@ export default function AdminShell({ children }: PropsWithChildren) {
             />
             <Logo />
           </Group>
-          <ActionIcon variant='default' size='lg'>
-            {colorScheme === 'dark' ? (
-              <IconSun onClick={() => setColorScheme('light')} />
-            ) : (
-              <IconMoon onClick={() => setColorScheme('dark')} />
-            )}
-          </ActionIcon>
         </Group>
       </AppShell.Header>
       {hasAccess && <Navigation />}
