@@ -15,7 +15,6 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/config/firebase';
 import { Repository, Resource, ResourceCreate } from './repository';
-import { Category } from '../../admin/faculties/faculty';
 
 export class FirebaseRepository<T extends Resource> implements Repository<T> {
   constructor(protected readonly collectionName: string) {}
@@ -86,16 +85,16 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
   }
 
-  async search(field: string, value: string): Promise<Category[]> {
+  async search(field: string, value: string): Promise<T[]> {
     const q = query(
       collection(db, this.collectionName),
       where(field, '>=', value),
       where(field, '<=', value + '\uf8ff')
     );
     const querySnapshot = await getDocs(q);
-    const categories: Category[] = [];
+    const categories: T[] = [];
     querySnapshot.forEach((doc) => {
-      categories.push({ ...doc.data(), id: doc.id } as Category);
+      categories.push({ ...doc.data(), id: doc.id } as T);
     });
     return categories;
   }

@@ -2,7 +2,6 @@
 import React from 'react';
 
 import {
-  ImagePicker,
   FieldView,
   ResourcePage,
   DetailsView,
@@ -12,64 +11,42 @@ import {
   EditViewProps,
   EditView,
 } from '@/app/(admin)/admin-core';
-import { Image } from '@mantine/core';
-import { categoryRepository } from './repository';
-import { Category } from './faculty';
-import NextImage from 'next/image';
+import { facultyRepository } from './repository';
+import { Faculty } from './faculty';
 
-export default function CategoryPage() {
+export default function FacultyPage() {
   return (
     <ResourcePage
-      resourceLabel='Category'
-      repository={categoryRepository}
-      create={CategoryCreate}
-      edit={CategoryEdit}
-      details={CategoryDetails}
+      resourceLabel='Faculty'
+      repository={facultyRepository}
+      create={FacultyCreate}
+      edit={FacultyEdit}
+      details={FacultyDetails}
       navLinkProps={(it) => ({ label: it.name })}
     ></ResourcePage>
   );
 }
 
-function CategoryDetails({ item }: { item: Category }) {
+function FacultyDetails({ item }: { item: Faculty }) {
   return (
     <DetailsView>
       <FieldView label='Name' value={item.name} />
-      <FieldView label={item.description} value='Description' />
-      <div>
-        {item.image && (
-          <Image
-            src={item.image}
-            alt={item.name}
-            component={NextImage}
-            height={400}
-            width={400}
-            radius='md'
-            h={200}
-            w='auto'
-            fit='contain'
-          />
-        )}
-      </div>
     </DetailsView>
   );
 }
 
-function CategoryCreate(props: CreateViewProps<Category>) {
+function FacultyCreate(props: CreateViewProps<Faculty>) {
   return (
     <CreateView {...props}>
       <TextField name='name' />
-      <TextField name='description' />
-      <ImagePicker name='image' folder='categories' />
     </CreateView>
   );
 }
 
-function CategoryEdit(props: EditViewProps<Category>) {
+function FacultyEdit(props: EditViewProps<Faculty>) {
   return (
     <EditView {...props}>
       <TextField name='name' />
-      <TextField name='description' />
-      <ImagePicker name='image' folder='categories' />
     </EditView>
   );
 }

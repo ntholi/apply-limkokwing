@@ -4,7 +4,7 @@ import { Faculty } from './faculty';
 
 class FacultyRepository extends FirebaseRepository<Faculty> {
   constructor() {
-    super('categories');
+    super('faculties');
   }
 
   async create(faculty: ResourceCreate<Faculty>): Promise<Faculty> {
