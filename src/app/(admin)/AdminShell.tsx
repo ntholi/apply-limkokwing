@@ -45,7 +45,6 @@ export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
   const { user, status } = useSession();
   const router = useRouter();
-  const { setColorScheme } = useMantineColorScheme();
   const colorScheme = useComputedColorScheme('light');
 
   if (status == 'loading') {
@@ -55,7 +54,7 @@ export default function AdminShell({ children }: PropsWithChildren) {
       </Flex>
     );
   } else if (status == 'unauthenticated') {
-    router.push('/admin/signin');
+    router.push('/auth/signin');
     return null;
   }
 
