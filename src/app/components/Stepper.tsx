@@ -2,6 +2,7 @@ import { Button } from '@nextui-org/react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
+import { useQueryState } from 'nuqs';
 
 type Props = {
   className?: string;
@@ -38,12 +39,24 @@ type StepProps = {
 };
 
 function Step({ label, name, description, showLine = false }: StepProps) {
+  const [activeStep, setActiveStep] = useQueryState('step');
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
       <article
-        className={clsx('flex gap-2 items-center', showLine && 'flex-1')}
+        className={clsx(
+          'cursor-pointer flex gap-2 items-center',
+          showLine && 'flex-1'
+        )}
+        onClick={() => buttonRef.current?.click()}
       >
-        <Button radius='full' isIconOnly size='lg'>
+        <Button
+          ref={buttonRef}
+          radius='full'
+          isIconOnly
+          size='lg'
+          onClick={() => setActiveStep(label)}
+        >
           {label}
         </Button>
         <div className='flex flex-col'>
