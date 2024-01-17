@@ -17,7 +17,7 @@ import { Faculty } from './faculty';
 export default function FacultyPage() {
   return (
     <ResourcePage
-      resourceLabel='Faculty'
+      resourceLabel='Faculties'
       repository={facultyRepository}
       create={FacultyCreate}
       edit={FacultyEdit}
