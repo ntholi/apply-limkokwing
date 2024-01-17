@@ -20,8 +20,10 @@ import {
   IconChevronRight,
   IconGauge,
   IconLogout2,
+  IconMailbox,
   IconMessage,
   IconMoon,
+  IconSchool,
   IconSettings,
   IconShoppingBag,
   IconSpeakerphone,
@@ -122,47 +124,15 @@ function Navigation() {
       <AppShell.Section grow>
         <NavLink
           component={Link}
-          href={'/admin/orders'}
-          label='Orders'
-          active={pathname.startsWith('/admin/orders')}
-          leftSection={<IconShoppingBag size='1.1rem' />}
+          href={'/admin/faculties'}
+          label='Faculties'
+          active={pathname.startsWith('/admin/faculties')}
+          leftSection={<IconSchool size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         />
         <NavLink
-          component={Link}
-          href={'/admin/deliveries'}
-          label='Deliveries'
-          active={pathname.startsWith('/admin/deliveries')}
-          leftSection={<IconTruckDelivery size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-        <NavLink
-          component={Link}
-          href={'/admin/categories'}
-          label='Categories'
-          active={pathname.startsWith('/admin/categories')}
-          leftSection={<IconGauge size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-        <NavLink
-          label='Users'
-          component={Link}
-          active={pathname.startsWith('/admin/users')}
-          href={'/admin/users'}
-          leftSection={<IconUsers size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-        <NavLink
-          label='Couriers'
-          component={Link}
-          active={pathname.startsWith('/admin/couriers')}
-          href={'/admin/couriers'}
-          leftSection={<IconBike size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-        <NavLink
-          label='Stores'
-          leftSection={<IconBuildingStore size='1.1rem' />}
+          label='Applications'
+          leftSection={<IconMailbox size='1.1rem' />}
           opened
         >
           <NavLink
@@ -182,22 +152,6 @@ function Navigation() {
             rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
           />
         </NavLink>
-        <NavLink
-          label='Adverts'
-          component={Link}
-          active={pathname.startsWith('/admin/adverts')}
-          href={'/admin/adverts'}
-          leftSection={<IconSpeakerphone size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
-        <NavLink
-          label='Preferences'
-          component={Link}
-          active={pathname.startsWith('/admin/preferences')}
-          href={'/admin/preferences'}
-          leftSection={<IconSettings size='1.1rem' />}
-          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
       </AppShell.Section>
       <AppShell.Section>
         <Divider mb='md' />
