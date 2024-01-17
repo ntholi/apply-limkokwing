@@ -2,8 +2,10 @@ import { Button, ButtonProps } from '@nextui-org/react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { useSelector, useDispatch } from 'react-redux';
 import { Check } from 'lucide-react';
+import { RootState } from '@/lib/redux/store';
+import { setStep } from '@/lib/redux/features/stepSlice';
 
 type Props = {
   className?: string;
@@ -40,10 +42,9 @@ type StepProps = {
 };
 
 function Step({ step, name, description, showLine = false }: StepProps) {
-  const [activeStep, setActiveStep] = useQueryState<number>(
-    'step',
-    parseAsInteger
-  );
+  const activeStep = useSelector((state: RootState) => state.stepper.value);
+  const dispatch = useDispatch();
+
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
@@ -61,7 +62,7 @@ function Step({ step, name, description, showLine = false }: StepProps) {
           variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
           color={activeStep && step <= activeStep ? 'primary' : 'default'}
           size='lg'
-          onClick={() => setActiveStep(step)}
+          onClick={() => dispatch(setStep(step))}
         >
           {activeStep && step < activeStep ? <Check /> : step}
         </Button>

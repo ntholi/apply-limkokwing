@@ -2,12 +2,16 @@
 
 import { NextUIProvider } from '@nextui-org/react';
 import SessionProvider from './auth/SessionProvider';
+import { Provider } from 'react-redux';
+import { store } from '@/lib/redux/store';
 
 function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <NextUIProvider>
-      <SessionProvider>{children}</SessionProvider>
-    </NextUIProvider>
+    <Provider store={store}>
+      <NextUIProvider>
+        <SessionProvider>{children}</SessionProvider>
+      </NextUIProvider>
+    </Provider>
   );
 }
 
