@@ -123,9 +123,9 @@ function Navigation() {
       <AppShell.Section grow>
         <NavLink
           component={Link}
-          href={'/admin/faculties'}
-          label='Faculties'
-          active={pathname.startsWith('/admin/faculties')}
+          href={'/admin/program'}
+          label='Programs'
+          active={pathname.startsWith('/admin/programs')}
           leftSection={<IconSchool size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         />

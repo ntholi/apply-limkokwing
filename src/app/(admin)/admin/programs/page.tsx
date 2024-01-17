@@ -11,23 +11,23 @@ import {
   EditViewProps,
   EditView,
 } from '@/app/(admin)/admin-core';
-import { facultyRepository } from './repository';
-import { Faculty } from './faculty';
+import { programRepository } from './repository';
+import { Program } from './program';
 
-export default function FacultyPage() {
+export default function ProgramPage() {
   return (
     <ResourcePage
       resourceLabel='Faculties'
-      repository={facultyRepository}
-      create={FacultyCreate}
-      edit={FacultyEdit}
-      details={FacultyDetails}
+      repository={programRepository}
+      create={ProgramCreate}
+      edit={ProgramEdit}
+      details={ProgramDetails}
       navLinkProps={(it) => ({ label: it.name })}
     ></ResourcePage>
   );
 }
 
-function FacultyDetails({ item }: { item: Faculty }) {
+function ProgramDetails({ item }: { item: Program }) {
   return (
     <DetailsView>
       <FieldView label='Name' value={item.name} />
@@ -35,7 +35,7 @@ function FacultyDetails({ item }: { item: Faculty }) {
   );
 }
 
-function FacultyCreate(props: CreateViewProps<Faculty>) {
+function ProgramCreate(props: CreateViewProps<Program>) {
   return (
     <CreateView {...props}>
       <TextField name='name' />
@@ -43,7 +43,7 @@ function FacultyCreate(props: CreateViewProps<Faculty>) {
   );
 }
 
-function FacultyEdit(props: EditViewProps<Faculty>) {
+function ProgramEdit(props: EditViewProps<Program>) {
   return (
     <EditView {...props}>
       <TextField name='name' />

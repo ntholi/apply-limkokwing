@@ -1,5 +1,5 @@
 import { Resource } from '../../admin-core/repository/repository';
 
-export interface Faculty extends Resource {
+export interface Program extends Resource {
   name: string;
 }
