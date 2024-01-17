@@ -9,7 +9,7 @@ function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <NextUIProvider>
-        <SessionProvider>{children}</SessionProvider>
+        {children}
       </NextUIProvider>
     </Provider>
   );

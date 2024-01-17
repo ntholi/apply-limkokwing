@@ -1,10 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Providers from './providers';
-import Navbar from './home/Navbar';
-
-const inter = Inter({ subsets: ['latin'] });
+import SessionProvider from './(main)/auth/SessionProvider';
 
 export const metadata: Metadata = {
   title: 'Apply Online',
@@ -19,10 +14,7 @@ export default function RootLayout({
   return (
     <html lang='en' className='dark'>
       <body>
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
