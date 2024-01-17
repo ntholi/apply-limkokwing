@@ -17,7 +17,7 @@ import { Program } from './program';
 export default function ProgramPage() {
   return (
     <ResourcePage
-      resourceLabel='Faculties'
+      resourceLabel='Programs'
       repository={programRepository}
       create={ProgramCreate}
       edit={ProgramEdit}

@@ -123,7 +123,7 @@ function Navigation() {
       <AppShell.Section grow>
         <NavLink
           component={Link}
-          href={'/admin/program'}
+          href={'/admin/programs'}
           label='Programs'
           active={pathname.startsWith('/admin/programs')}
           leftSection={<IconSchool size='1.1rem' />}
