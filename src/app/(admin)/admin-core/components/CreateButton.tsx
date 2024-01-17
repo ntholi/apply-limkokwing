@@ -1,6 +1,6 @@
 import { ActionIcon } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 
 type Props = {
   disabled?: boolean;

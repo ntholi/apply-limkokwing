@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from 'react';
 import { ZodObject, ZodTypeAny } from 'zod';
 import SubmitButton from './form/SubmitButton';
 import { Repository, Resource } from './repository/repository';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 
 export type EditViewProps<T extends Resource> = {
   schema?: ZodObject<{ [K in any]: ZodTypeAny }>;

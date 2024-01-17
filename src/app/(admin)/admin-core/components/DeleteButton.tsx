@@ -2,7 +2,7 @@ import { ActionIcon, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconTrashXFilled } from '@tabler/icons-react';
 import React, { useTransition } from 'react';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 import { Repository, Resource } from '../repository/repository';
 
 type Props<T extends Resource> = {

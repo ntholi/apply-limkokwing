@@ -14,7 +14,7 @@ import {
 } from '@/app/(admin)/admin-core';
 import { Image } from '@mantine/core';
 import { categoryRepository } from './repository';
-import { Category } from './category';
+import { Category } from './faculty';
 import NextImage from 'next/image';
 
 export default function CategoryPage() {

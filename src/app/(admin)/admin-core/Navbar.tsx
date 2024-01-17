@@ -4,12 +4,12 @@ import React, { useContext } from 'react';
 import { UrlObject } from 'url';
 import { Resource } from './repository/repository';
 import { FirestoreDataContext } from './RepositoryDataProvider';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 
 type Props<T extends Resource> = {
   navLinkProps: (
     item: T,
-    index: number,
+    index: number
   ) => NavLinkProps & { href?: string | UrlObject };
 };
 export default function Navbar<T extends Resource>(props: Props<T>) {

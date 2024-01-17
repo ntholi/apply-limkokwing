@@ -23,7 +23,7 @@ import SearchField from './components/SearchField';
 import CreateButton from './components/CreateButton';
 import DeleteButton from './components/DeleteButton';
 import { Repository, Resource } from './repository/repository';
-import { useQueryState } from 'next-usequerystate';
+import { useQueryState } from 'nuqs';
 import RepositoryDataProvider, {
   FirestoreDataContext,
 } from './RepositoryDataProvider';
@@ -42,12 +42,12 @@ type Props<T extends Resource> = {
   }>;
   navLinkProps: (
     item: T,
-    index: number,
+    index: number
   ) => NavLinkProps & { href?: string | UrlObject };
 };
 
 export default function ResourcePageContainer<T extends Resource>(
-  props: Props<T>,
+  props: Props<T>
 ) {
   return (
     <RepositoryDataProvider repository={props.repository}>

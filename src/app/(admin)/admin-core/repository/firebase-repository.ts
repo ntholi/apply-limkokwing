@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/config/firebase';
 import { Repository, Resource, ResourceCreate } from './repository';
-import { Category } from '../../admin/categories/category';
+import { Category } from '../../admin/faculties/faculty';
 
 export class FirebaseRepository<T extends Resource> implements Repository<T> {
   constructor(protected readonly collectionName: string) {}
@@ -23,11 +23,11 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
   listen(callback: (resources: T[]) => void): () => void {
     const q = query(
       collection(db, this.collectionName),
-      orderBy('createdAt', 'desc'),
+      orderBy('createdAt', 'desc')
     );
     return onSnapshot(q, (snapshot) => {
       callback(
-        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as T),
+        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T))
       );
     });
   }
@@ -36,11 +36,11 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     const q = query(
       collection(db, this.collectionName),
       orderBy('createdAt', 'desc'),
-      limitQuery(limit),
+      limitQuery(limit)
     );
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as T);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
   }
 
   async get(id: string): Promise<T | undefined> {
@@ -79,18 +79,18 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
       collection(db, this.collectionName),
       where(field, '==', value),
       orderBy('createdAt', 'desc'),
-      limitQuery(limit),
+      limitQuery(limit)
     );
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as T);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
   }
 
   async search(field: string, value: string): Promise<Category[]> {
     const q = query(
       collection(db, this.collectionName),
       where(field, '>=', value),
-      where(field, '<=', value + '\uf8ff'),
+      where(field, '<=', value + '\uf8ff')
     );
     const querySnapshot = await getDocs(q);
     const categories: Category[] = [];
@@ -102,7 +102,7 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
 
   async getResource<R extends Resource>(
     resourceName: string,
-    id: string,
+    id: string
   ): Promise<R> {
     const docRef = doc(db, resourceName, id);
     const docSnap = await getDoc(docRef);
@@ -110,11 +110,11 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
   }
 
   async getResourceList<R extends Resource>(
-    resourceName: string,
+    resourceName: string
   ): Promise<R[]> {
     const q = query(collection(db, resourceName), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as R);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as R));
   }
 }
