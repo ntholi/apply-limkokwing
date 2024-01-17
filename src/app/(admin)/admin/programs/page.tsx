@@ -12,7 +12,7 @@ import {
   EditView,
 } from '@/app/(admin)/admin-core';
 import { programRepository } from './repository';
-import { Program } from './program';
+import { Program } from './modal/program';
 
 export default function ProgramPage() {
   return (

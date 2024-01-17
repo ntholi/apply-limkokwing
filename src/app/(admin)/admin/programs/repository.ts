@@ -1,5 +1,5 @@
 import { FirebaseRepository } from '../../admin-core/repository';
-import { Program } from './program';
+import { Program } from './modal/program';
 
 class ProgramRepository extends FirebaseRepository<Program> {
   constructor() {
