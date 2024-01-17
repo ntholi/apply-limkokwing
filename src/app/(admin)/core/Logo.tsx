@@ -1,20 +1,10 @@
-import { Anchor, MantineSize } from '@mantine/core';
 import Link from 'next/link';
+import { Text } from '@mantine/core';
 
-type Props = {
-  size?: MantineSize;
-};
-export default function Logo({ size = 'xs' }: Props) {
+export default function Logo() {
   return (
-    <Anchor
-      component={Link}
-      href={'/'}
-      underline='never'
-      c='blue.7'
-      fw={600}
-      size={size}
-    >
-      Pindrop
-    </Anchor>
+    <Text component={Link} href={'/admin'}>
+      Limkokwing University
+    </Text>
   );
 }

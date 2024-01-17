@@ -16,7 +16,7 @@ export default function AdminPage() {
   );
 }
 
-async function UserDisplay() {
+function UserDisplay() {
   const { user } = useSession();
   return (
     <Text size='sm' mt='xs'>
