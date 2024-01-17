@@ -40,6 +40,7 @@ import Logo from './core/Logo';
 import { useSession } from '../(main)/auth/SessionProvider';
 import { auth } from '@/lib/config/firebase';
 import { signOut } from 'firebase/auth';
+import { Faculties } from './admin/programs/modal/faculty';
 
 export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
@@ -128,7 +129,20 @@ function Navigation() {
           active={pathname.startsWith('/admin/programs')}
           leftSection={<IconSchool size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-        />
+        >
+          {Faculties.map((faculty) => (
+            <NavLink
+              key={faculty.code}
+              label={faculty.name.replace('Faculty of ', '')}
+              component={Link}
+              active={pathname.startsWith(
+                `/admin/programs?faculty=${faculty.code}`
+              )}
+              href={`/admin/programs?faculty=${faculty.code}`}
+              rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
+            />
+          ))}
+        </NavLink>
         <NavLink
           label='Applications'
           leftSection={<IconMailbox size='1.1rem' />}
