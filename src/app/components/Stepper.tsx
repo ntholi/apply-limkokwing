@@ -1,8 +1,9 @@
-import { Button } from '@nextui-org/react';
+import { Button, ButtonProps } from '@nextui-org/react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
-import { useQueryState } from 'nuqs';
+import { parseAsInteger, useQueryState } from 'nuqs';
+import { Check } from 'lucide-react';
 
 type Props = {
   className?: string;
@@ -10,12 +11,12 @@ type Props = {
 export default function Stepper({ className }: Props) {
   const steps = [
     {
-      label: '1',
+      step: 1,
       name: 'Qualifications',
       description: 'Enter your qualifications',
     },
-    { label: '2', name: 'Documents', description: 'Upload your documents' },
-    { label: '3', name: 'Review', description: 'Review your application' },
+    { step: 2, name: 'Documents', description: 'Upload your documents' },
+    { step: 3, name: 'Review', description: 'Review your application' },
   ];
   return (
     <section
@@ -24,22 +25,25 @@ export default function Stepper({ className }: Props) {
         className,
       ])}
     >
-      {steps.map((step, i) => (
-        <Step key={step.label} {...step} showLine={i != steps.length - 1} />
+      {steps.map((item, i) => (
+        <Step key={item.step} {...item} showLine={i != steps.length - 1} />
       ))}
     </section>
   );
 }
 
 type StepProps = {
-  label: string;
+  step: number;
   name: string;
   description: string;
   showLine?: boolean;
 };
 
-function Step({ label, name, description, showLine = false }: StepProps) {
-  const [activeStep, setActiveStep] = useQueryState('step');
+function Step({ step, name, description, showLine = false }: StepProps) {
+  const [activeStep, setActiveStep] = useQueryState<number>(
+    'step',
+    parseAsInteger
+  );
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
     <>
@@ -54,10 +58,12 @@ function Step({ label, name, description, showLine = false }: StepProps) {
           ref={buttonRef}
           radius='full'
           isIconOnly
+          variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
+          color={activeStep && step <= activeStep ? 'primary' : 'default'}
           size='lg'
-          onClick={() => setActiveStep(label)}
+          onClick={() => setActiveStep(step)}
         >
-          {label}
+          {activeStep && step < activeStep ? <Check /> : step}
         </Button>
         <div className='flex flex-col'>
           <span className='font-bold text-sm'>{name}</span>
