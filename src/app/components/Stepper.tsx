@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Check } from 'lucide-react';
 import { RootState } from '@/lib/redux/store';
 import { setStep } from '@/lib/redux/features/stepSlice';
+import { useSession } from '../auth/SessionProvider';
 
 type Props = {
   className?: string;
@@ -44,6 +45,7 @@ type StepProps = {
 function Step({ step, name, description, showLine = false }: StepProps) {
   const activeStep = useSelector((state: RootState) => state.stepper.value);
   const dispatch = useDispatch();
+  const { user } = useSession();
 
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
@@ -62,7 +64,14 @@ function Step({ step, name, description, showLine = false }: StepProps) {
           variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
           color={activeStep && step <= activeStep ? 'primary' : 'default'}
           size='lg'
-          onClick={() => dispatch(setStep(step))}
+          onClick={() =>
+            dispatch(
+              setStep({
+                value: step,
+                userId: user?.uid!,
+              })
+            )
+          }
         >
           {activeStep && step < activeStep ? <Check /> : step}
         </Button>
