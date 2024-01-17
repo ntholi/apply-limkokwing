@@ -9,9 +9,9 @@ import {
   NavbarContent,
   NavbarItem,
   Link,
-  Button,
 } from '@nextui-org/react';
 import Image from 'next/image';
+import AccountButton from '../auth/AccountButton';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -78,9 +78,7 @@ export default function Navbar() {
 
       <NavbarContent justify='end'>
         <NavbarItem>
-          <Button as={Link} color='default' href='#' variant='flat'>
-            Sign Up
-          </Button>
+          <AccountButton />
         </NavbarItem>
       </NavbarContent>
 
