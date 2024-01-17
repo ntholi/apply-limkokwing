@@ -17,17 +17,21 @@ function Container({ children, as, width = 'lg', ...props }: Props) {
     full: 'max-w-full',
   };
 
-  return React.createElement(
-    as || 'div',
-    {
-      ...props,
-      className: twMerge(
-        'container mx-auto px-4 py-8 sm:py-12',
-        widthMap[width],
-        props.className,
-      ),
-    },
-    children,
+  return (
+    <div className='bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] via-50% to-60% from-violet-900 via-slate-950 to-black min-h-[91.5vh]'>
+      {React.createElement(
+        as || 'div',
+        {
+          ...props,
+          className: twMerge(
+            'container mx-auto px-4 py-8 sm:py-12',
+            widthMap[width],
+            props.className
+          ),
+        },
+        children
+      )}
+    </div>
   );
 }
 

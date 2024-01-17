@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Container
       as='main'
-      className='flex justify-center mt-10 flex-col items-center gap-3'
+      className='flex justify-center pt-10 flex-col items-center gap-3'
     >
       <div className='text-sm text-center p-2 rounded-lg border border-foreground-500 flex gap-2 items-center'>
         <GraduationCap />
