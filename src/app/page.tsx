@@ -1,6 +1,7 @@
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/button';
 import Container from './core/Container';
 import { GraduationCap } from 'lucide-react';
+import NextLink from 'next/link';
 
 export default function Home() {
   return (
@@ -17,8 +18,10 @@ export default function Home() {
       </h2>
       <Button
         color='primary'
-        className='w-full block sm:w-52 mt-20'
+        className='mt-20 w-full sm:w-52'
         radius='full'
+        as={NextLink}
+        href='/start'
       >
         Apply Now
       </Button>
