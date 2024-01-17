@@ -93,7 +93,7 @@ export default function LoginModal({ children }: Props) {
 
                         <div className='inline-flex w-full items-center justify-center'>
                           <Divider className='my-8 h-px ' />
-                          <span className='absolute left-1/2 -translate-x-1/2 bg-white px-3 font-medium '>
+                          <span className='absolute left-1/2 -translate-x-1/2 light:bg-white px-3 font-medium '>
                             OR
                           </span>
                         </div>
