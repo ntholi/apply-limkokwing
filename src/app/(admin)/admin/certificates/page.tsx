@@ -21,6 +21,7 @@ import {
   IconSchool,
   IconScoreboard,
 } from '@tabler/icons-react';
+import NumberField from '../../admin-core/form/NumberField';
 
 export default function CertificatePage() {
   return (
@@ -64,6 +65,7 @@ function CertificateDetails({ item }: { item: Certificate }) {
       <Tabs.Panel value='details'>
         <DetailsView>
           <FieldView label='Name' value={item.name} />
+          <FieldView label='Credits Level' value={item.creditsLevel} />
         </DetailsView>
       </Tabs.Panel>
 
@@ -86,6 +88,7 @@ function CertificateCreate(props: CreateViewProps<Certificate>) {
   return (
     <CreateView {...props}>
       <TextField name='name' />
+      <NumberField name='creditsLevel' />
     </CreateView>
   );
 }
@@ -94,6 +97,7 @@ function CertificateEdit(props: EditViewProps<Certificate>) {
   return (
     <EditView {...props}>
       <TextField name='name' />
+      <NumberField name='creditsLevel' />
     </EditView>
   );
 }
