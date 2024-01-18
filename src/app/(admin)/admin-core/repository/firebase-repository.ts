@@ -30,7 +30,7 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const resources: T[] = [];
       snapshot.forEach((doc) => {
-        resources.push({ id: doc.id, ...doc.data() } as T);
+        resources.push({ ...doc.data(), id: doc.id } as T);
       });
       callback(resources);
     });
@@ -44,7 +44,7 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     );
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
+    return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as T));
   }
 
   async get(id: string): Promise<T | undefined> {
