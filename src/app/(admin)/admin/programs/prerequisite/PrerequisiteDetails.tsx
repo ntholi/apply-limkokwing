@@ -59,7 +59,6 @@ function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
   const [prerequisiteId, setPrerequisiteId] = useQueryState('prerequisite');
   const [programId] = useQueryState('id');
   const [isPending, startTransition] = React.useTransition();
-  const [name, setName] = useState(prerequisite?.name || '');
 
   function onDelete() {
     startTransition(async () => {
@@ -90,11 +89,6 @@ function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
         </Button>
       </Group>
       <Divider />
-      <TextInput
-        value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
-        description='Certificate Name'
-      />
     </Stack>
   );
 }
