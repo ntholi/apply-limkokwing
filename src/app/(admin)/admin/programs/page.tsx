@@ -16,7 +16,7 @@ import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 import { Faculty } from './modal/faculty';
 import CertificateView from './prerequisite/CertificateView';
-import { Tabs } from '@mantine/core';
+import { Divider, Tabs } from '@mantine/core';
 import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
 import PrerequisiteDetails from './prerequisite/PrerequisiteDetails';
 
@@ -55,7 +55,8 @@ function ProgramDetails({ item }: { item: Program }) {
       <Tabs.Panel value='prerequisites'>
         <DetailsView>
           <CertificateView program={item} />
-          <PrerequisiteDetails mt={'xl'} />
+          <Divider />
+          <PrerequisiteDetails />
         </DetailsView>
       </Tabs.Panel>
     </Tabs>

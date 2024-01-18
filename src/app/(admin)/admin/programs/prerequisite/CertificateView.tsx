@@ -31,12 +31,12 @@ export default function CertificateView({ program }: Props) {
   }, [program.id]);
 
   return (
-    <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
+    <SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 5 }}>
       {certificates.map((it) => (
         <Button
           key={it.id}
           variant={it.name === certificateId ? 'filled' : 'default'}
-          h={100}
+          h={80}
           onClick={() => setCertificateId(it.name)}
         >
           {it.name}

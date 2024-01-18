@@ -1,16 +1,71 @@
-import { Divider, Paper, Stack, Title } from '@mantine/core';
-import { Certificate } from '../../certificates/Certificate';
+import {
+  Box,
+  Button,
+  ComboboxItem,
+  Flex,
+  Group,
+  Modal,
+  Select,
+  Stack,
+  Title,
+} from '@mantine/core';
+import { Certificate, GradingScheme } from '../../certificates/Certificate';
+import { useEffect, useState, useTransition } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { IconPlus } from '@tabler/icons-react';
 
 type Props = {
   certificate?: Certificate;
 };
 
 export default function PrerequisiteForm({ certificate }: Props) {
+  const [course, setCourse] = useState<string | null>(null);
+  const [grade, setGrade] = useState<ComboboxItem | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [isPending, startTransition] = useTransition();
+
+  function save() {
+    startTransition(() => {
+      if (course && grade) {
+        console.log(course, grade);
+      }
+    });
+  }
+
   if (!certificate) return null;
   return (
-    <Stack>
-      <Divider mt={'xs'} />
-      <Stack>{certificate.name}</Stack>
-    </Stack>
+    <>
+      <Modal opened={opened} onClose={close} title='New Prerequisite'>
+        <Stack>
+          <Select
+            data={certificate.courses}
+            value={course}
+            onChange={setCourse}
+          />
+          <Select
+            data={certificate.gradingSchemes?.map((it) => ({
+              value: String(it.level),
+              label: it.grade,
+            }))}
+            value={grade ? grade.value : null}
+            onChange={(_, option) => setGrade(option)}
+          />
+          <Button onClick={save}>Save</Button>
+        </Stack>
+      </Modal>
+
+      <Flex justify={'space-between'}>
+        <Title order={4} fw={'lighter'}>
+          Prerequisites
+        </Title>
+        <Button
+          color='gray'
+          onClick={open}
+          leftSection={<IconPlus size={16} />}
+        >
+          New
+        </Button>
+      </Flex>
+    </>
   );
 }
