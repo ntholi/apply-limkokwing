@@ -146,15 +146,15 @@ function GradingSchemeForm({ certificateId }: { certificateId: string }) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group align='center'>
-        <TextInput
-          size='xs'
-          placeholder='Grade'
-          {...form.getInputProps('grade')}
-        />
         <NumberInput
           size='xs'
           placeholder='Level'
           {...form.getInputProps('level')}
+        />
+        <TextInput
+          size='xs'
+          placeholder='Grade'
+          {...form.getInputProps('grade')}
         />
         <Button size='xs' type='submit' loading={isPending}>
           Add
