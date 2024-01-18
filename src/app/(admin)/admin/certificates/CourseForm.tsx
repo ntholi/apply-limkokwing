@@ -1,6 +1,6 @@
 import React from 'react';
 import { hasLength, useForm } from '@mantine/form';
-import { Button, Group, TextInput } from '@mantine/core';
+import { Box, Button, Group, TextInput } from '@mantine/core';
 import { db } from '@/lib/config/firebase';
 import { setDoc, collection, getDoc, doc } from 'firebase/firestore';
 import { Certificate } from './Certificate';
@@ -42,13 +42,15 @@ export default function CourseForm({ certificateId }: Props) {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Group justify='space-between'>
+      <Group align='center'>
         <TextInput
-          withAsterisk
-          label='Course'
+          size='xs'
+          placeholder='New Course'
           {...form.getInputProps('name')}
         />
-        <Button type='submit'>Add</Button>
+        <Button size='xs' type='submit' loading={isPending}>
+          Add
+        </Button>
       </Group>
     </form>
   );

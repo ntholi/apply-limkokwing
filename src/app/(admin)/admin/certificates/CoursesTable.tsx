@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Certificate } from './Certificate';
-import { Box, Divider, Paper, Table, Title } from '@mantine/core';
+import { Box, Divider, Paper, PaperProps, Table, Title } from '@mantine/core';
 import { db } from '@/lib/config/firebase';
 import { onSnapshot, getDoc, doc } from 'firebase/firestore';
 
 type Props = {
   certificate: Certificate;
-};
-export default function CoursesTable({ certificate }: Props) {
+} & PaperProps;
+export default function CoursesTable({ certificate, ...props }: Props) {
   const [courses, setCourses] = React.useState<string[]>([]);
 
   console.log('certificate', certificate);
@@ -32,14 +32,8 @@ export default function CoursesTable({ certificate }: Props) {
   ));
 
   return (
-    <Paper withBorder p='md'>
-      <Title order={4} fw={'lighter'}>
-        Courses
-      </Title>
-      <Divider mt={'xs'} mb={'sm'} />
-      <Table withRowBorders={false}>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    </Paper>
+    <Table withRowBorders={false} highlightOnHover>
+      <Table.Tbody>{rows}</Table.Tbody>
+    </Table>
   );
 }
