@@ -4,10 +4,13 @@ import {
   ActionIcon,
   Box,
   BoxProps,
+  Button,
   Divider,
+  Group,
   Paper,
   PaperProps,
   Table,
+  TextInput,
   Title,
 } from '@mantine/core';
 import { db } from '@/lib/config/firebase';
@@ -19,10 +22,12 @@ import {
   runTransaction,
 } from 'firebase/firestore';
 import { IconTrashFilled } from '@tabler/icons-react';
+import { hasLength, useForm } from '@mantine/form';
 
 type Props = {
   certificate: Certificate;
-} & BoxProps;
+} & PaperProps;
+
 export default function CoursesTable({ certificate, ...props }: Props) {
   const [courses, setCourses] = React.useState<string[]>([]);
   const [isPending, startTransition] = React.useTransition();
@@ -73,10 +78,64 @@ export default function CoursesTable({ certificate, ...props }: Props) {
   ));
 
   return (
-    <Box {...props}>
+    <Paper withBorder p='md' {...props}>
+      <Group justify='space-between'>
+        <Title order={4} fw={'lighter'}>
+          Courses
+        </Title>
+        <CourseForm certificateId={certificate.id} />
+      </Group>
+      <Divider mt={'xs'} mb={'sm'} />
       <Table withRowBorders={false} highlightOnHover>
         <Table.Tbody>{rows}</Table.Tbody>
       </Table>
-    </Box>
+    </Paper>
+  );
+}
+
+function CourseForm({ certificateId }: { certificateId: string }) {
+  const [isPending, startTransition] = React.useTransition();
+  const form = useForm({
+    initialValues: {
+      name: '',
+    },
+
+    validate: {
+      name: hasLength({ min: 1 }, 'Required'),
+    },
+  });
+
+  function handleSubmit(value: { name: string }) {
+    startTransition(async () => {
+      const res = await getDoc(doc(db, 'certificates', certificateId));
+      if (res.exists()) {
+        const data = res.data() as Certificate;
+        if (data) {
+          const courses: string[] = data.courses || [];
+          courses.push(value.name);
+          const certificate: Certificate = {
+            ...data,
+            courses,
+          };
+          await setDoc(doc(db, 'certificates', certificateId), certificate);
+          form.reset();
+        }
+      }
+    });
+  }
+
+  return (
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Group align='center'>
+        <TextInput
+          size='xs'
+          placeholder='New Course'
+          {...form.getInputProps('name')}
+        />
+        <Button size='xs' type='submit' loading={isPending}>
+          Add
+        </Button>
+      </Group>
+    </form>
   );
 }

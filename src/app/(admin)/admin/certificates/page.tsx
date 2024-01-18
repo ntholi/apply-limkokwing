@@ -13,9 +13,7 @@ import {
 } from '@/app/(admin)/admin-core';
 import { certificateRepository } from './repository';
 import { Certificate } from './Certificate';
-import { Divider, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import CoursesTable from './CoursesTable';
-import CourseForm from './CourseForm';
 
 export default function CertificatePage() {
   return (
@@ -34,7 +32,7 @@ function CertificateDetails({ item }: { item: Certificate }) {
   return (
     <DetailsView>
       <FieldView label='Name' value={item.name} />
-      <CoursesView certificate={item} />
+      <CoursesTable certificate={item} mt={'md'} />
     </DetailsView>
   );
 }
@@ -52,20 +50,5 @@ function CertificateEdit(props: EditViewProps<Certificate>) {
     <EditView {...props}>
       <TextField name='name' />
     </EditView>
-  );
-}
-
-function CoursesView({ certificate }: { certificate: Certificate }) {
-  return (
-    <Paper withBorder p='md'>
-      <Group justify='space-between'>
-        <Title order={4} fw={'lighter'}>
-          Courses
-        </Title>
-        <CourseForm certificateId={certificate.id} />
-      </Group>
-      <Divider mt={'xs'} mb={'sm'} />
-      <CoursesTable certificate={certificate} />
-    </Paper>
   );
 }
