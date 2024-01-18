@@ -54,9 +54,18 @@ export default function PrerequisiteDetails(props: BoxProps) {
       {loading ? (
         <Loader />
       ) : (
-        certificate && <PrerequisiteForm certificate={certificate} />
+        certificate && <PrerequisiteView certificate={certificate} />
       )}
     </Box>
+  );
+}
+
+function PrerequisiteView({ certificate }: { certificate: Certificate }) {
+  const [data, setData] = useState<Prerequisite[]>([]);
+  return (
+    <>
+      <PrerequisiteForm certificate={certificate} />
+    </>
   );
 }
 
