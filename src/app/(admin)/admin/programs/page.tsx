@@ -15,6 +15,7 @@ import { programRepository } from './repository';
 import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 import { Faculty } from './modal/faculty';
+import PrerequisiteView from './PrerequisiteView';
 
 export default function ProgramPage() {
   return (
@@ -34,6 +35,7 @@ function ProgramDetails({ item }: { item: Program }) {
     <DetailsView>
       <FieldView label='Name' value={item.name} />
       <FieldView label='Faculty' value={item.faculty} />
+      <PrerequisiteView program={item} />
     </DetailsView>
   );
 }
