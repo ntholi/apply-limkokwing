@@ -1,5 +1,5 @@
 import { Paper, Stack } from '@mantine/core';
-import { Certificate } from '../modal/Prerequisite';
+import { Certificate } from '../../certificates/Certificate';
 
 type Props = {
   certificate?: Certificate;

@@ -23,7 +23,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Certificate } from '../modal/Prerequisite';
+import { Certificate } from '../../certificates/Certificate';
 import { useQueryState } from 'nuqs';
 import NewCertificate from './NewCertificate';
 import PrerequisiteDetails from './PrerequisiteDetails';

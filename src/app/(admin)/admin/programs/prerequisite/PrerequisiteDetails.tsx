@@ -14,7 +14,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryState } from 'nuqs';
 import React, { useEffect, useState } from 'react';
-import { Certificate } from '../modal/Prerequisite';
+import { Certificate } from '../../certificates/Certificate';
 import { db } from '@/lib/config/firebase';
 import {
   collection,
