@@ -75,32 +75,3 @@ export default function PrerequisiteView({ program }: Props) {
     </Box>
   );
 }
-
-function PrerequisiteForm({ program }: Props) {
-  const form = useForm({
-    initialValues: {
-      name: '',
-      minGrade: [
-        {
-          level: 1,
-          grade: 'A*',
-        },
-        {
-          level: 2,
-          grade: 'A',
-        },
-      ],
-    },
-  });
-
-  return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
-      <TextInput
-        withAsterisk
-        label='Course Name'
-        {...form.getInputProps('name')}
-      />
-      <Select withAsterisk label='Mi'></Select>
-    </form>
-  );
-}
