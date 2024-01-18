@@ -14,7 +14,7 @@ type Props = {
 
 export default function CertificateView({ program }: Props) {
   const [certificates, setCertificates] = React.useState<Certificate[]>([]);
-  const [_, setCertificateId] = useQueryState('certificate');
+  const [certificateId, setCertificateId] = useQueryState('certificate');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -31,17 +31,17 @@ export default function CertificateView({ program }: Props) {
   }, [program.id]);
 
   return (
-      <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
-        {certificates.map((it) => (
-          <Button
-            key={it.id}
-            variant='default'
-            h={100}
-            onClick={() => setCertificateId(it.name)}
-          >
-            {it.name}
-          </Button>
-        ))}
-      </SimpleGrid>
+    <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
+      {certificates.map((it) => (
+        <Button
+          key={it.id}
+          variant={it.name === certificateId ? 'filled' : 'default'}
+          h={100}
+          onClick={() => setCertificateId(it.name)}
+        >
+          {it.name}
+        </Button>
+      ))}
+    </SimpleGrid>
   );
 }
