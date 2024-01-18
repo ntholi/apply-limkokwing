@@ -8,6 +8,7 @@ import {
   Box,
   BoxProps,
   Title,
+  Divider,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryState } from 'nuqs';
@@ -57,15 +58,18 @@ export default function PrerequisiteDetails(props: BoxProps) {
 function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
   const [prerequisiteId, setPrerequisiteId] = useQueryState('prerequisite');
   const [programId] = useQueryState('id');
+  const [isPending, startTransition] = React.useTransition();
+  const [name, setName] = useState(prerequisite?.name || '');
 
   function onDelete() {
-    if (programId && prerequisiteId) {
-      deleteDoc(doc(db, 'programs', programId, 'prerequisites', prerequisiteId))
-        .then(() => {
-          setPrerequisiteId(null);
-        })
-        .catch(console.error);
-    }
+    startTransition(async () => {
+      if (programId && prerequisiteId) {
+        await deleteDoc(
+          doc(db, 'programs', programId, 'prerequisites', prerequisiteId)
+        );
+        setPrerequisiteId(null);
+      }
+    });
   }
   if (!prerequisite) return null;
   if (!prerequisiteId) return null;
@@ -75,10 +79,22 @@ function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
         <Title order={4} fw={'normal'}>
           {prerequisite.name}
         </Title>
-        <Button size='xs' variant='outline' color='red' onClick={onDelete}>
+        <Button
+          size='xs'
+          variant='outline'
+          color='red'
+          onClick={onDelete}
+          loading={isPending}
+        >
           Delete
         </Button>
       </Group>
+      <Divider />
+      <TextInput
+        value={name}
+        onChange={(e) => setName(e.currentTarget.value)}
+        description='Certificate Name'
+      />
     </Stack>
   );
 }

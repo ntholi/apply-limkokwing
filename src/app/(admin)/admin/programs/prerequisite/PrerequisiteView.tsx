@@ -25,7 +25,7 @@ import {
 import { useForm } from '@mantine/form';
 import { Prerequisite } from '../modal/Prerequisite';
 import { useQueryState } from 'nuqs';
-import PrerequisiteModal from './PrerequisiteDetails';
+import PrerequisiteModal from './PrerequisiteModal';
 import PrerequisiteDetails from './PrerequisiteDetails';
 
 type Props = {
@@ -34,8 +34,7 @@ type Props = {
 
 export default function PrerequisiteView({ program }: Props) {
   const [prerequisites, setPrerequisites] = React.useState<Prerequisite[]>([]);
-  const [selected, setSelected] = useQueryState('prerequisite');
-  const [isPending, startTransition] = React.useTransition();
+  const [selectedId, setSelectedId] = useQueryState('prerequisite');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -51,21 +50,13 @@ export default function PrerequisiteView({ program }: Props) {
     return unsubscribe;
   }, [program.id]);
 
-  function createPrerequisite() {
-    startTransition(async () => {
-      await addDoc(collection(db, 'programs', program.id, 'prerequisites'), {
-        name: 'New Certificate',
-      });
-    });
-  }
-
   return (
     <Box p='xl'>
       <Group justify='space-between' align='center'>
         <Title order={3} fw={'lighter'}>
           Prerequisites
         </Title>
-        <Button onClick={createPrerequisite}>Create New</Button>
+        <PrerequisiteModal />
       </Group>
       <Divider mt={'xs'} />
       <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
@@ -74,7 +65,7 @@ export default function PrerequisiteView({ program }: Props) {
             key={it.id}
             variant='default'
             h={100}
-            onClick={() => setSelected(it.id)}
+            onClick={() => setSelectedId(it.id)}
           >
             {it.name}
           </Button>
