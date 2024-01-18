@@ -19,6 +19,7 @@ import {
   IconBike,
   IconBuildingStore,
   IconChevronRight,
+  IconFileDescription,
   IconGauge,
   IconLogout2,
   IconMailbox,
@@ -31,6 +32,7 @@ import {
   IconSun,
   IconTruckDelivery,
   IconUsers,
+  IconWallpaper,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
@@ -167,6 +169,14 @@ function Navigation() {
             rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
           />
         </NavLink>
+        <NavLink
+          label='Certificates'
+          component={Link}
+          active={pathname.startsWith('/admin/certificates')}
+          href={'/admin/certificates'}
+          leftSection={<IconFileDescription size='1.1rem' />}
+          rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
+        />
       </AppShell.Section>
       <AppShell.Section>
         <Divider mb='md' />
