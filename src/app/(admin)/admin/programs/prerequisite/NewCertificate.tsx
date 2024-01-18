@@ -5,23 +5,20 @@ import { useQueryState } from 'nuqs';
 import { db } from '@/lib/config/firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
-export default function PrerequisiteModal() {
+export default function NewCertificate() {
   const [opened, { open, close }] = useDisclosure(false);
   const [isPending, startTransition] = useTransition();
-  const [_, setPrerequisiteId] = useQueryState('prerequisite');
+  const [_, setCertificateId] = useQueryState('certificate');
   const [programId] = useQueryState('id');
   const [name, setName] = useState('');
 
   function handleCreate() {
     startTransition(async () => {
       if (programId && name.trim().length > 0) {
-        const doc = await addDoc(
-          collection(db, 'programs', programId, 'prerequisites'),
-          {
-            name,
-          }
-        );
-        await setPrerequisiteId(doc.id);
+        const doc = await addDoc(collection(db, 'certificates'), {
+          name,
+        });
+        await setCertificateId(doc.id);
         close();
       }
     });

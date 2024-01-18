@@ -23,28 +23,28 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Prerequisite } from '../modal/Prerequisite';
+import { Certificate } from '../modal/Prerequisite';
 import { useQueryState } from 'nuqs';
-import PrerequisiteModal from './PrerequisiteModal';
+import NewCertificate from './NewCertificate';
 import PrerequisiteDetails from './PrerequisiteDetails';
 
 type Props = {
   program: Program;
 };
 
-export default function PrerequisiteView({ program }: Props) {
-  const [prerequisites, setPrerequisites] = React.useState<Prerequisite[]>([]);
-  const [selectedId, setSelectedId] = useQueryState('prerequisite');
+export default function CertificateView({ program }: Props) {
+  const [certificates, setCertificates] = React.useState<Certificate[]>([]);
+  const [certificateId, setCertificateId] = useQueryState('certificate');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, 'programs', program.id, 'prerequisites'),
+      collection(db, 'certificates'),
       (snapshot: QuerySnapshot) => {
-        const prerequisites: Prerequisite[] = [];
+        const prerequisites: Certificate[] = [];
         snapshot.forEach((doc) => {
-          prerequisites.push({ ...doc.data(), id: doc.id } as Prerequisite);
+          prerequisites.push({ ...doc.data(), id: doc.id } as Certificate);
         });
-        setPrerequisites(prerequisites);
+        setCertificates(prerequisites);
       }
     );
     return unsubscribe;
@@ -54,24 +54,23 @@ export default function PrerequisiteView({ program }: Props) {
     <Box p='xl'>
       <Group justify='space-between' align='center'>
         <Title order={3} fw={'lighter'}>
-          Prerequisites
+          Certificates
         </Title>
-        <PrerequisiteModal />
+        <NewCertificate />
       </Group>
       <Divider mt={'xs'} />
       <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
-        {prerequisites.map((it) => (
+        {certificates.map((it) => (
           <Button
             key={it.id}
             variant='default'
             h={100}
-            onClick={() => setSelectedId(it.id)}
+            onClick={() => setCertificateId(it.id)}
           >
             {it.name}
           </Button>
         ))}
       </SimpleGrid>
-      <PrerequisiteDetails mt={'xl'} />
     </Box>
   );
 }

@@ -9,87 +9,61 @@ import {
   BoxProps,
   Title,
   Divider,
+  Paper,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryState } from 'nuqs';
 import React, { useEffect, useState } from 'react';
-import { Prerequisite } from '../modal/Prerequisite';
+import { Certificate } from '../modal/Prerequisite';
 import { db } from '@/lib/config/firebase';
 import {
   collection,
   deleteDoc,
   doc,
   getDocs,
-  onSnapshot,
   query,
-  QuerySnapshot,
   setDoc,
+  where,
 } from 'firebase/firestore';
 
 export default function PrerequisiteDetails(props: BoxProps) {
-  const [id] = useQueryState('prerequisite');
+  const [certificateId] = useQueryState('certificate');
   const [programId] = useQueryState('id');
-  const [prerequisite, setPrerequisite] = React.useState<Prerequisite>();
+  const [certificate, setCertificate] = React.useState<Certificate>();
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
-    if (id && programId) {
+    if (certificateId && programId) {
       setLoading(true);
-      getDocs(collection(db, 'programs', programId, 'prerequisites'))
-        .then((snapshot: QuerySnapshot) => {
-          snapshot.forEach((doc) => {
-            if (doc.id === id) {
-              setPrerequisite({ ...doc.data(), id: doc.id } as Prerequisite);
-            }
-          });
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
+      const q = query(
+        collection(db, 'certificates'),
+        where('name', '==', certificateId)
+      );
+      getDocs(q).then((snapshot) => {
+        snapshot.forEach((doc) => {
+          setCertificate({ ...doc.data(), id: doc.id } as Certificate);
+        });
+        setLoading(false);
+      });
     }
-  }, [id, programId]);
+  }, [certificateId, programId]);
 
   return (
     <Box {...props}>
-      {loading ? <Loader /> : <PrerequisiteForm prerequisite={prerequisite} />}
+      {loading ? <Loader /> : <PrerequisiteForm prerequisite={certificate} />}
     </Box>
   );
 }
 
-function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
-  const [prerequisiteId, setPrerequisiteId] = useQueryState('prerequisite');
-  const [programId] = useQueryState('id');
-  const [isPending, startTransition] = React.useTransition();
+function PrerequisiteForm({ prerequisite }: { prerequisite?: Certificate }) {
+  const [certificate, setCertificate] = useQueryState('certificate');
 
-  function onDelete() {
-    startTransition(async () => {
-      if (programId && prerequisiteId) {
-        await deleteDoc(
-          doc(db, 'programs', programId, 'prerequisites', prerequisiteId)
-        );
-        setPrerequisiteId(null);
-      }
-    });
-  }
   if (!prerequisite) return null;
-  if (!prerequisiteId) return null;
+  if (!certificate) return null;
   return (
-    <Stack>
-      <Group justify='space-between'>
-        <Title order={4} fw={'normal'}>
-          {prerequisite.name}
-        </Title>
-        <Button
-          size='xs'
-          variant='outline'
-          color='red'
-          onClick={onDelete}
-          loading={isPending}
-        >
-          Delete
-        </Button>
-      </Group>
-      <Divider />
-    </Stack>
+    <Paper p={'md'} withBorder>
+      <Stack></Stack>
+    </Paper>
   );
 }
 

@@ -15,9 +15,10 @@ import { programRepository } from './repository';
 import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 import { Faculty } from './modal/faculty';
-import PrerequisiteView from './prerequisite/PrerequisiteView';
+import CertificateView from './prerequisite/CertificateView';
 import { Tabs } from '@mantine/core';
 import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
+import PrerequisiteDetails from './prerequisite/PrerequisiteDetails';
 
 export default function ProgramPage() {
   return (
@@ -52,7 +53,8 @@ function ProgramDetails({ item }: { item: Program }) {
       </Tabs.Panel>
 
       <Tabs.Panel value='prerequisites'>
-        <PrerequisiteView program={item} />
+        <CertificateView program={item} />
+        <PrerequisiteDetails mt={'xl'} />
       </Tabs.Panel>
     </Tabs>
   );

@@ -5,7 +5,6 @@ interface Course {
   name: string;
 }
 
-export interface Prerequisite extends Resource {
+export interface Certificate extends Resource {
   name: string;
-  courses: Course[];
 }
