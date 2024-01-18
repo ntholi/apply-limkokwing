@@ -15,7 +15,9 @@ import { programRepository } from './repository';
 import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 import { Faculty } from './modal/faculty';
-import PrerequisiteView from './PrerequisiteView';
+import PrerequisiteView from './prerequisite/PrerequisiteView';
+import { Tabs } from '@mantine/core';
+import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
 
 export default function ProgramPage() {
   return (
@@ -32,11 +34,27 @@ export default function ProgramPage() {
 
 function ProgramDetails({ item }: { item: Program }) {
   return (
-    <DetailsView>
-      <FieldView label='Name' value={item.name} />
-      <FieldView label='Faculty' value={item.faculty} />
-      <PrerequisiteView program={item} />
-    </DetailsView>
+    <Tabs defaultValue='prerequisites'>
+      <Tabs.List>
+        <Tabs.Tab value='details' leftSection={<IconInfoCircle />}>
+          Details
+        </Tabs.Tab>
+        <Tabs.Tab value='prerequisites' leftSection={<IconTilde />}>
+          Prerequisites
+        </Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Panel value='details'>
+        <DetailsView>
+          <FieldView label='Name' value={item.name} />
+          <FieldView label='Faculty' value={item.faculty} />
+        </DetailsView>
+      </Tabs.Panel>
+
+      <Tabs.Panel value='prerequisites'>
+        <PrerequisiteView program={item} />
+      </Tabs.Panel>
+    </Tabs>
   );
 }
 
