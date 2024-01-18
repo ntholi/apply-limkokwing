@@ -13,6 +13,8 @@ import {
 } from '@/app/(admin)/admin-core';
 import { certificateRepository } from './repository';
 import { Certificate } from './Certificate';
+import { Stack, Text } from '@mantine/core';
+import CoursesTable from './CoursesTable';
 
 export default function CertificatePage() {
   return (
@@ -31,6 +33,7 @@ function CertificateDetails({ item }: { item: Certificate }) {
   return (
     <DetailsView>
       <FieldView label='Name' value={item.name} />
+      <CoursesTable certificate={item} />
     </DetailsView>
   );
 }
