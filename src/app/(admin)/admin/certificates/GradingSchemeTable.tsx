@@ -96,6 +96,13 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
       <Box pos='relative'>
         <LoadingOverlay visible={isPending} />
         <Table withRowBorders={false} highlightOnHover>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Td>Level</Table.Td>
+              <Table.Td>Grade</Table.Td>
+              <Table.Td />
+            </Table.Tr>
+          </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
       </Box>
