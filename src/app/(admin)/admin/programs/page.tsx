@@ -14,6 +14,7 @@ import {
 import { programRepository } from './repository';
 import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
+import { Faculty } from './modal/faculty';
 
 export default function ProgramPage() {
   return (
@@ -39,10 +40,14 @@ function ProgramDetails({ item }: { item: Program }) {
 
 function ProgramCreate(props: CreateViewProps<Program>) {
   const [filter] = useQueryState('filter', parseAsArrayOf(parseAsString));
-  const faculty = filter && filter[0] == 'faculty' ? filter[1] : '';
+  const faculty = (
+    filter && filter[0] == 'faculty' ? filter[1] : ''
+  ) as Faculty['code'];
+
+  const defaultValues = { name: '', faculty };
 
   return (
-    <CreateView {...props}>
+    <CreateView defaultValues={defaultValues} {...props}>
       <TextField name='name' />
       <TextField name='faculty' value={faculty} />
     </CreateView>
