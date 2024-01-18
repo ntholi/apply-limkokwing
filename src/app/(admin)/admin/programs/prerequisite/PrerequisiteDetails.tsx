@@ -7,29 +7,34 @@ import {
   Skeleton,
   Box,
   BoxProps,
+  Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useQueryState } from 'nuqs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Prerequisite } from '../modal/Prerequisite';
 import { db } from '@/lib/config/firebase';
 import {
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   onSnapshot,
+  query,
   QuerySnapshot,
   setDoc,
 } from 'firebase/firestore';
 
 export default function PrerequisiteDetails(props: BoxProps) {
-  const [id, setId] = useQueryState('prerequisite');
+  const [id] = useQueryState('prerequisite');
+  const [programId] = useQueryState('id');
   const [prerequisite, setPrerequisite] = React.useState<Prerequisite>();
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
-    if (id) {
+    if (id && programId) {
       setLoading(true);
-      getDocs(collection(db, 'prerequisites'))
+      getDocs(collection(db, 'programs', programId, 'prerequisites'))
         .then((snapshot: QuerySnapshot) => {
           snapshot.forEach((doc) => {
             if (doc.id === id) {
@@ -40,7 +45,7 @@ export default function PrerequisiteDetails(props: BoxProps) {
         .catch(console.error)
         .finally(() => setLoading(false));
     }
-  }, [id]);
+  }, [id, programId]);
 
   return (
     <Box {...props}>
@@ -50,11 +55,30 @@ export default function PrerequisiteDetails(props: BoxProps) {
 }
 
 function PrerequisiteForm({ prerequisite }: { prerequisite?: Prerequisite }) {
-  if (!prerequisite) return null;
+  const [prerequisiteId, setPrerequisiteId] = useQueryState('prerequisite');
+  const [programId] = useQueryState('id');
 
+  function onDelete() {
+    if (programId && prerequisiteId) {
+      deleteDoc(doc(db, 'programs', programId, 'prerequisites', prerequisiteId))
+        .then(() => {
+          setPrerequisiteId(null);
+        })
+        .catch(console.error);
+    }
+  }
+  if (!prerequisite) return null;
+  if (!prerequisiteId) return null;
   return (
     <Stack>
-      <TextInput label='Input label' description='Input description' />
+      <Group justify='space-between'>
+        <Title order={4} fw={'normal'}>
+          {prerequisite.name}
+        </Title>
+        <Button size='xs' variant='outline' color='red' onClick={onDelete}>
+          Delete
+        </Button>
+      </Group>
     </Stack>
   );
 }
