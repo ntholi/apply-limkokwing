@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Repository, Resource } from './repository/repository';
+import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 
 type DefaultState<T extends Resource> = {
   data: T[];
@@ -25,15 +26,20 @@ function RepositoryDataProvider<T extends Resource>({
 }: Props<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter] = useQueryState('filter', parseAsArrayOf(parseAsString));
 
   useEffect(() => {
+    const filterBy = filter
+      ? { field: filter[0], value: filter[1] }
+      : undefined;
+
     const unsubscribe = repository.listen((items) => {
       setData(items);
       setLoading(false);
-    });
+    }, filterBy);
 
     return () => unsubscribe();
-  }, [repository]);
+  }, [repository, filter]);
 
   return (
     <FirestoreDataContext.Provider value={{ data, loading }}>

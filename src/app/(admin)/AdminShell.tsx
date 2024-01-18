@@ -138,9 +138,9 @@ function Navigation() {
               component={Link}
               active={
                 pathname.startsWith(`/admin/programs`) &&
-                searchParams.get('faculty') === faculty.code
+                searchParams.get('filter') === `faculty,${faculty.code}`
               }
-              href={`/admin/programs?faculty=${faculty.code}`}
+              href={`/admin/programs?filter=faculty,${faculty.code}`}
               rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
             />
           ))}

@@ -19,18 +19,23 @@ import { Repository, Resource, ResourceCreate } from './repository';
 export class FirebaseRepository<T extends Resource> implements Repository<T> {
   constructor(protected readonly collectionName: string) {}
 
-  listen(callback: (resources: T[]) => void): () => void {
-    const q = query(
-      collection(db, this.collectionName),
-      orderBy('createdAt', 'desc')
-    );
-    return onSnapshot(q, (snapshot) => {
-      callback(
-        snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T))
-      );
+  listen(
+    callback: (resources: T[]) => void,
+    filter?: { field: string; value: any }
+  ): () => void {
+    const ref = collection(db, this.collectionName);
+    const q = filter
+      ? query(ref, where(filter.field, '==', filter.value))
+      : ref;
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const resources: T[] = [];
+      snapshot.forEach((doc) => {
+        resources.push({ id: doc.id, ...doc.data() } as T);
+      });
+      callback(resources);
     });
+    return unsubscribe;
   }
-
   async getAll(limit = 10): Promise<T[]> {
     const q = query(
       collection(db, this.collectionName),

@@ -13,6 +13,7 @@ import {
 } from '@/app/(admin)/admin-core';
 import { programRepository } from './repository';
 import { Program } from './modal/program';
+import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 
 export default function ProgramPage() {
   return (
@@ -31,14 +32,19 @@ function ProgramDetails({ item }: { item: Program }) {
   return (
     <DetailsView>
       <FieldView label='Name' value={item.name} />
+      <FieldView label='Faculty' value={item.faculty} />
     </DetailsView>
   );
 }
 
 function ProgramCreate(props: CreateViewProps<Program>) {
+  const [filter] = useQueryState('filter', parseAsArrayOf(parseAsString));
+  const faculty = filter && filter[0] == 'faculty' ? filter[1] : '';
+
   return (
     <CreateView {...props}>
       <TextField name='name' />
+      <TextField name='faculty' value={faculty} />
     </CreateView>
   );
 }
@@ -47,6 +53,7 @@ function ProgramEdit(props: EditViewProps<Program>) {
   return (
     <EditView {...props}>
       <TextField name='name' />
+      <TextField name='faculty' />
     </EditView>
   );
 }

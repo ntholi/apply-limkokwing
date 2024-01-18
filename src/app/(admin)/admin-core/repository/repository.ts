@@ -7,7 +7,10 @@ export interface Resource {
 export type ResourceCreate<OmitType> = Omit<OmitType, 'id' | 'updatedAt'>;
 
 export interface Repository<T extends Resource> {
-  listen: (callback: (resources: T[]) => void) => () => void;
+  listen: (
+    callback: (resources: T[]) => void,
+    filter?: { field: string; value: any }
+  ) => () => void;
   getAll: (limit?: number) => Promise<T[]>;
   get: (id: string) => Promise<T | undefined>;
   create: (resource: ResourceCreate<T>) => Promise<T>;
