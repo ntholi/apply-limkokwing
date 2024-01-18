@@ -44,10 +44,10 @@ function ProgramCreate(props: CreateViewProps<Program>) {
     filter && filter[0] == 'faculty' ? filter[1] : ''
   ) as Faculty['code'];
 
-  const defaultValues = { name: '', faculty };
+  const initialValues = { name: '', faculty };
 
   return (
-    <CreateView defaultValues={defaultValues} {...props}>
+    <CreateView initialValues={initialValues} {...props}>
       <TextField name='name' />
       <TextField name='faculty' value={faculty} />
     </CreateView>

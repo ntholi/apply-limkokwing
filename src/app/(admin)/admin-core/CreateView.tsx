@@ -9,16 +9,16 @@ import { useQueryState } from 'nuqs';
 export type CreateViewProps<T extends Resource> = {
   schema?: ZodObject<{ [K in any]: ZodTypeAny }>;
   repository: Repository<T>;
-  defaultValues?: ResourceCreate<T>;
+  initialValues?: ResourceCreate<T>;
 };
 
 export default function CreateView<T extends Resource>(
   props: PropsWithChildren<CreateViewProps<T>>
 ) {
-  const { children, schema, repository, defaultValues } = props;
+  const { children, schema, repository, initialValues } = props;
   const form = useForm<ResourceCreate<T>>({
     validate: schema && zodResolver(schema),
-    initialValues: defaultValues,
+    initialValues,
   });
   const [_, setView] = useQueryState('view');
   const [__, setId] = useQueryState('id');
