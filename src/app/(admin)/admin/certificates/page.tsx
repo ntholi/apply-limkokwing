@@ -14,6 +14,7 @@ import {
 import { certificateRepository } from './repository';
 import { Certificate } from './Certificate';
 import CoursesTable from './CoursesTable';
+import GradingSchemesTable from './GradingSchemeTable';
 
 export default function CertificatePage() {
   return (
@@ -33,6 +34,7 @@ function CertificateDetails({ item }: { item: Certificate }) {
     <DetailsView>
       <FieldView label='Name' value={item.name} />
       <CoursesTable certificate={item} mt={'md'} />
+      <GradingSchemesTable certificate={item} mt={'md'} />
     </DetailsView>
   );
 }

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { Certificate } from './Certificate';
+import { Certificate, GradingScheme } from './Certificate';
 import {
   ActionIcon,
   Box,
-  BoxProps,
   Button,
   Divider,
   Group,
   LoadingOverlay,
+  NumberInput,
   Paper,
   PaperProps,
   Table,
@@ -23,14 +23,16 @@ import {
   runTransaction,
 } from 'firebase/firestore';
 import { IconTrashFilled } from '@tabler/icons-react';
-import { hasLength, useForm } from '@mantine/form';
+import { hasLength, isInRange, useForm } from '@mantine/form';
 
 type Props = {
   certificate: Certificate;
 } & PaperProps;
 
-export default function CoursesTable({ certificate, ...props }: Props) {
-  const [courses, setCourses] = React.useState<string[]>([]);
+export default function GradingSchemesTable({ certificate, ...props }: Props) {
+  const [gradingSchemes, setGradingSchemes] = React.useState<GradingScheme[]>(
+    []
+  );
   const [isPending, startTransition] = React.useTransition();
 
   useEffect(() => {
@@ -39,38 +41,41 @@ export default function CoursesTable({ certificate, ...props }: Props) {
       if (doc.exists()) {
         const data = doc.data() as Certificate;
         if (data) {
-          setCourses(data.courses || []);
+          setGradingSchemes(data.gradingSchemes || []);
         }
       }
     });
     return () => unsubscribe();
   }, [certificate.id]);
 
-  function handleDelete(course: string) {
+  function handleDelete(gradingScheme: GradingScheme) {
     const docRef = doc(db, 'certificates', certificate.id);
     startTransition(async () => {
-      const newCourses = courses.filter((it) => it !== course);
+      const newGradingSchemes = gradingSchemes.filter(
+        (it) => it.level !== gradingScheme.level
+      );
       await runTransaction(db, async (transaction) => {
         const doc = await transaction.get(docRef);
         if (doc.exists()) {
           const data = doc.data() as Certificate;
           if (data) {
-            transaction.update(docRef, { courses: newCourses });
+            transaction.update(docRef, { gradingSchemes: newGradingSchemes });
           }
         }
       });
     });
   }
 
-  const rows = courses.map((course) => (
-    <Table.Tr key={course}>
-      <Table.Td>{course}</Table.Td>
+  const rows = gradingSchemes.map((it) => (
+    <Table.Tr key={it.level}>
+      <Table.Td>{it.level}</Table.Td>
+      <Table.Td>{it.grade}</Table.Td>
       <Table.Td align='right'>
         <ActionIcon
           color='red'
           disabled={isPending}
           variant='light'
-          onClick={() => handleDelete(course)}
+          onClick={() => handleDelete(it)}
         >
           <IconTrashFilled size={'0.9rem'} />
         </ActionIcon>
@@ -82,9 +87,9 @@ export default function CoursesTable({ certificate, ...props }: Props) {
     <Paper withBorder p='md' {...props}>
       <Group justify='space-between'>
         <Title order={4} fw={'lighter'}>
-          Courses
+          Grading Schemes
         </Title>
-        <CourseForm certificateId={certificate.id} />
+        <GradingSchemeForm certificateId={certificate.id} />
       </Group>
       <Divider mt={'xs'} mb={'sm'} />
       <Box pos='relative'>
@@ -97,29 +102,31 @@ export default function CoursesTable({ certificate, ...props }: Props) {
   );
 }
 
-function CourseForm({ certificateId }: { certificateId: string }) {
+function GradingSchemeForm({ certificateId }: { certificateId: string }) {
   const [isPending, startTransition] = React.useTransition();
-  const form = useForm({
+  const form = useForm<GradingScheme>({
     initialValues: {
-      name: '',
+      grade: '',
+      level: 0,
     },
 
     validate: {
-      name: hasLength({ min: 1 }, 'Required'),
+      grade: hasLength({ min: 1 }, 'Required'),
+      level: isInRange({ min: 1, max: 20 }, 'Out of range'),
     },
   });
 
-  function handleSubmit(value: { name: string }) {
+  function handleSubmit(value: GradingScheme) {
     startTransition(async () => {
       const res = await getDoc(doc(db, 'certificates', certificateId));
       if (res.exists()) {
         const data = res.data() as Certificate;
         if (data) {
-          const courses: string[] = data.courses || [];
-          courses.push(value.name);
+          const gradingSchemes: GradingScheme[] = data.gradingSchemes || [];
+          gradingSchemes.push(value);
           const certificate: Certificate = {
             ...data,
-            courses,
+            gradingSchemes,
           };
           await setDoc(doc(db, 'certificates', certificateId), certificate);
           form.reset();
@@ -133,8 +140,13 @@ function CourseForm({ certificateId }: { certificateId: string }) {
       <Group align='center'>
         <TextInput
           size='xs'
-          placeholder='New Course'
-          {...form.getInputProps('name')}
+          placeholder='Grade'
+          {...form.getInputProps('grade')}
+        />
+        <NumberInput
+          size='xs'
+          placeholder='Level'
+          {...form.getInputProps('level')}
         />
         <Button size='xs' type='submit' loading={isPending}>
           Add
