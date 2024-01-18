@@ -133,7 +133,8 @@ function Navigation() {
           {Faculties.map((faculty) => (
             <NavLink
               key={faculty.code}
-              label={faculty.name.replace('Faculty of ', '')}
+              label={faculty.code}
+              description={faculty.name}
               component={Link}
               active={pathname.startsWith(
                 `/admin/programs?faculty=${faculty.code}`
