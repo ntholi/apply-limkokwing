@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Certificate } from './Certificate';
-import { Table } from '@mantine/core';
+import { Box, Divider, Paper, Table, Title } from '@mantine/core';
 import { db } from '@/lib/config/firebase';
 import { onSnapshot, getDoc, doc } from 'firebase/firestore';
 
@@ -32,8 +32,14 @@ export default function CoursesTable({ certificate }: Props) {
   ));
 
   return (
-    <Table withTableBorder>
-      <Table.Tbody>{rows}</Table.Tbody>
-    </Table>
+    <Paper withBorder p='md'>
+      <Title order={4} fw={'lighter'}>
+        Courses
+      </Title>
+      <Divider mt={'xs'} mb={'sm'} />
+      <Table withRowBorders={false}>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
+    </Paper>
   );
 }
