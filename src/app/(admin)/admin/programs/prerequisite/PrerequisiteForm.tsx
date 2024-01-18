@@ -1,4 +1,4 @@
-import { Paper, Stack } from '@mantine/core';
+import { Divider, Paper, Stack, Title } from '@mantine/core';
 import { Certificate } from '../../certificates/Certificate';
 
 type Props = {
@@ -8,8 +8,9 @@ type Props = {
 export default function PrerequisiteForm({ certificate }: Props) {
   if (!certificate) return null;
   return (
-    <Paper p={'md'} withBorder>
+    <Stack>
+      <Divider mt={'xs'} />
       <Stack>{certificate.name}</Stack>
-    </Paper>
+    </Stack>
   );
 }

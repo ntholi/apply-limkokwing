@@ -1,32 +1,12 @@
 'use client';
-import React, { useEffect } from 'react';
-import { Program } from '../modal/program';
 import { db } from '@/lib/config/firebase';
-import {
-  QuerySnapshot,
-  collection,
-  setDoc,
-  getDocs,
-  onSnapshot,
-  addDoc,
-} from 'firebase/firestore';
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Group,
-  Select,
-  SimpleGrid,
-  Table,
-  TextInput,
-  Title,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { Certificate } from '../../certificates/Certificate';
+import { Box, Button, Divider, Group, SimpleGrid, Title } from '@mantine/core';
+import { QuerySnapshot, collection, onSnapshot } from 'firebase/firestore';
 import { useQueryState } from 'nuqs';
+import React, { useEffect } from 'react';
+import { Certificate } from '../../certificates/Certificate';
+import { Program } from '../modal/program';
 import NewCertificate from './NewCertificate';
-import PrerequisiteDetails from './PrerequisiteDetails';
 
 type Props = {
   program: Program;
@@ -34,7 +14,7 @@ type Props = {
 
 export default function CertificateView({ program }: Props) {
   const [certificates, setCertificates] = React.useState<Certificate[]>([]);
-  const [certificateId, setCertificateId] = useQueryState('certificate');
+  const [_, setCertificateId] = useQueryState('certificate');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -51,14 +31,6 @@ export default function CertificateView({ program }: Props) {
   }, [program.id]);
 
   return (
-    <Box p='xl'>
-      <Group justify='space-between' align='center'>
-        <Title order={3} fw={'lighter'}>
-          Certificates
-        </Title>
-        <NewCertificate />
-      </Group>
-      <Divider mt={'xs'} />
       <SimpleGrid mt={'lg'} cols={{ base: 1, sm: 2, lg: 4 }}>
         {certificates.map((it) => (
           <Button
@@ -71,6 +43,5 @@ export default function CertificateView({ program }: Props) {
           </Button>
         ))}
       </SimpleGrid>
-    </Box>
   );
 }

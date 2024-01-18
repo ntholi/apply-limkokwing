@@ -53,8 +53,10 @@ function ProgramDetails({ item }: { item: Program }) {
       </Tabs.Panel>
 
       <Tabs.Panel value='prerequisites'>
-        <CertificateView program={item} />
-        <PrerequisiteDetails mt={'xl'} />
+        <DetailsView>
+          <CertificateView program={item} />
+          <PrerequisiteDetails mt={'xl'} />
+        </DetailsView>
       </Tabs.Panel>
     </Tabs>
   );
