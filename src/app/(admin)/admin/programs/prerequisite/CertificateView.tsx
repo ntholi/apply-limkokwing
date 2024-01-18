@@ -65,7 +65,7 @@ export default function CertificateView({ program }: Props) {
             key={it.id}
             variant='default'
             h={100}
-            onClick={() => setCertificateId(it.id)}
+            onClick={() => setCertificateId(it.name)}
           >
             {it.name}
           </Button>

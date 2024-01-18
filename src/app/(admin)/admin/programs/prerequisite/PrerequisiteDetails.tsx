@@ -25,19 +25,20 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
+import PrerequisiteForm from './PrerequisiteForm';
 
 export default function PrerequisiteDetails(props: BoxProps) {
-  const [certificateId] = useQueryState('certificate');
+  const [certificateName] = useQueryState('certificate');
   const [programId] = useQueryState('id');
   const [certificate, setCertificate] = React.useState<Certificate>();
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
-    if (certificateId && programId) {
+    if (certificateName && programId) {
       setLoading(true);
       const q = query(
         collection(db, 'certificates'),
-        where('name', '==', certificateId)
+        where('name', '==', certificateName)
       );
       getDocs(q).then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -46,24 +47,12 @@ export default function PrerequisiteDetails(props: BoxProps) {
         setLoading(false);
       });
     }
-  }, [certificateId, programId]);
+  }, [certificateName, programId]);
 
   return (
     <Box {...props}>
-      {loading ? <Loader /> : <PrerequisiteForm prerequisite={certificate} />}
+      {loading ? <Loader /> : <PrerequisiteForm certificate={certificate} />}
     </Box>
-  );
-}
-
-function PrerequisiteForm({ prerequisite }: { prerequisite?: Certificate }) {
-  const [certificate, setCertificate] = useQueryState('certificate');
-
-  if (!prerequisite) return null;
-  if (!certificate) return null;
-  return (
-    <Paper p={'md'} withBorder>
-      <Stack></Stack>
-    </Paper>
   );
 }
 
