@@ -5,6 +5,7 @@ import { UrlObject } from 'url';
 import { Resource } from './repository/repository';
 import { FirestoreDataContext } from './RepositoryDataProvider';
 import { useQueryState } from 'nuqs';
+import { useSearchParams } from 'next/navigation';
 
 type Props<T extends Resource> = {
   navLinkProps: (
@@ -14,6 +15,7 @@ type Props<T extends Resource> = {
 };
 export default function Navbar<T extends Resource>(props: Props<T>) {
   const { navLinkProps } = props;
+  const searchParams = useSearchParams();
   const { data, loading } = useContext(FirestoreDataContext);
   const [id] = useQueryState('id');
 
@@ -27,7 +29,7 @@ export default function Navbar<T extends Resource>(props: Props<T>) {
             key={index}
             component={Link}
             active={id === item.id}
-            href={`?id=${item.id}`}
+            href={`?id=${item.id}&${searchParams.toString()}`}
             {...navLinkProps(item, index)}
           />
         ))
