@@ -24,6 +24,7 @@ import {
 } from 'firebase/firestore';
 import { IconTrashFilled } from '@tabler/icons-react';
 import { hasLength, isInRange, useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 
 type Props = {
   certificate: Certificate;
@@ -123,6 +124,13 @@ function GradingSchemeForm({ certificateId }: { certificateId: string }) {
         const data = res.data() as Certificate;
         if (data) {
           const gradingSchemes: GradingScheme[] = data.gradingSchemes || [];
+          if (gradingSchemes.some((it) => it.level === value.level)) {
+            notifications.show({
+              message: 'Level already exists',
+              color: 'red',
+            });
+            return;
+          }
           gradingSchemes.push(value);
           const certificate: Certificate = {
             ...data,
