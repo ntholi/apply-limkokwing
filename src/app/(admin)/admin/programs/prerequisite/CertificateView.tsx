@@ -35,9 +35,9 @@ export default function CertificateView({ program }: Props) {
       {certificates.map((it) => (
         <Button
           key={it.id}
-          variant={it.name === certificateId ? 'filled' : 'default'}
+          variant={it.id === certificateId ? 'filled' : 'default'}
           h={80}
-          onClick={() => setCertificateId(it.name)}
+          onClick={() => setCertificateId(it.id)}
         >
           {it.name}
         </Button>

@@ -51,7 +51,11 @@ export default function PrerequisiteDetails(props: BoxProps) {
 
   return (
     <Box {...props}>
-      {loading ? <Loader /> : <PrerequisiteForm certificate={certificate} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        certificate && <PrerequisiteForm certificate={certificate} />
+      )}
     </Box>
   );
 }

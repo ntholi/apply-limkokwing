@@ -13,21 +13,37 @@ import { Certificate, GradingScheme } from '../../certificates/Certificate';
 import { useEffect, useState, useTransition } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
+import { db } from '@/lib/config/firebase';
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
+import { useQueryState } from 'nuqs';
 
 type Props = {
-  certificate?: Certificate;
+  certificate: Certificate;
 };
 
 export default function PrerequisiteForm({ certificate }: Props) {
+  const [program] = useQueryState('id');
   const [course, setCourse] = useState<string | null>(null);
   const [grade, setGrade] = useState<ComboboxItem | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const [isPending, startTransition] = useTransition();
 
   function save() {
-    startTransition(() => {
-      if (course && grade) {
-        console.log(course, grade);
+    startTransition(async () => {
+      if (course && grade && program && certificate) {
+        const docRef = collection(db, 'programs', program, 'prerequisites');
+        await setDoc(doc(docRef), {
+          course,
+          grade: Number(grade.value),
+          certificate: certificate,
+        });
       }
     });
   }
