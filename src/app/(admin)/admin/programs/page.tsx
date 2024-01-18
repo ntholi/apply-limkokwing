@@ -49,7 +49,7 @@ function ProgramCreate(props: CreateViewProps<Program>) {
   return (
     <CreateView initialValues={initialValues} {...props}>
       <TextField name='name' />
-      <TextField name='faculty' value={faculty} />
+      <TextField name='faculty' value={faculty} hidden />
     </CreateView>
   );
 }

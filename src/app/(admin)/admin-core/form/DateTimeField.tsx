@@ -11,5 +11,13 @@ export default function DateTimeField(props: InputProps) {
     value = props.value.toDate();
   }
   const newProps = { ...props, value };
-  return <DateTimePicker {...newProps} label={label} />;
+  return (
+    <DateTimePicker
+      {...newProps}
+      label={label}
+      style={{
+        display: props.hidden ? 'none' : 'block',
+      }}
+    />
+  );
 }

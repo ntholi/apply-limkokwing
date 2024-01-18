@@ -11,6 +11,7 @@ export type InputProps = {
   onFocus?: any;
   onBlur?: any;
   disabled?: boolean;
+  hidden?: boolean;
 };
 
 export type ReferenceInputProps<T extends Resource> = InputProps & {
