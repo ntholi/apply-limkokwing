@@ -11,6 +11,7 @@ import {
   Indicator,
   LoadingOverlay,
   NavLink,
+  ScrollArea,
   useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
@@ -41,10 +42,11 @@ import { useSession } from '../(main)/auth/SessionProvider';
 import { auth } from '@/lib/config/firebase';
 import { signOut } from 'firebase/auth';
 import { Faculties } from './admin/programs/modal/faculty';
+import { useSearchParams } from 'next/navigation';
 
 export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
-  const { user, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const colorScheme = useComputedColorScheme('light');
 
@@ -118,15 +120,13 @@ function UserButton() {
 
 function Navigation() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   return (
-    <AppShell.Navbar p='md'>
-      <AppShell.Section grow>
+    <AppShell.Navbar p='xs'>
+      <AppShell.Section grow component={ScrollArea} pr={'lg'}>
         <NavLink
-          component={Link}
-          href={'/admin/programs'}
           label='Programs'
-          active={pathname.startsWith('/admin/programs')}
           leftSection={<IconSchool size='1.1rem' />}
           rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
         >
@@ -134,11 +134,12 @@ function Navigation() {
             <NavLink
               key={faculty.code}
               label={faculty.code}
-              description={faculty.name}
+              description={faculty.name.replace('Faculty of ', '')}
               component={Link}
-              active={pathname.startsWith(
-                `/admin/programs?faculty=${faculty.code}`
-              )}
+              active={
+                pathname.startsWith(`/admin/programs`) &&
+                searchParams.get('faculty') === faculty.code
+              }
               href={`/admin/programs?faculty=${faculty.code}`}
               rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
             />
