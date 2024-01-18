@@ -1,10 +1,18 @@
-import Link from 'next/link';
-import { Text } from '@mantine/core';
+import NextLink from 'next/link';
+import NextImage from 'next/image';
+import { Image, Paper } from '@mantine/core';
 
 export default function Logo() {
   return (
-    <Text component={Link} href={'/admin'}>
-      Limkokwing University
-    </Text>
+    <NextLink href='/admin'>
+      <Image
+        alt=''
+        src='/images/logo-transparent.png'
+        h={50}
+        component={NextImage}
+        width={100}
+        height={100}
+      />
+    </NextLink>
   );
 }
