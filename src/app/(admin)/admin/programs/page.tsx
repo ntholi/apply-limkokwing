@@ -69,7 +69,7 @@ function ProgramCreate(props: CreateViewProps<Program>) {
     filter && filter[0] == 'faculty' ? filter[1] : ''
   ) as Faculty['code'];
 
-  const initialValues = { name: '', faculty };
+  const initialValues = { name: '', faculty, prerequisites: [] };
 
   return (
     <CreateView initialValues={initialValues} {...props}>
