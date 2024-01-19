@@ -1,23 +1,10 @@
-import {
-  Button,
-  Group,
-  Modal,
-  Stack,
-  TextInput,
-  Skeleton,
-  Box,
-  BoxProps,
-  Title,
-  Divider,
-  Paper,
-} from '@mantine/core';
+import { Group, Stack, Skeleton, Box, BoxProps } from '@mantine/core';
 import { useQueryState } from 'nuqs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Certificate } from '../../certificates/Certificate';
 import { db } from '@/lib/config/firebase';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import PrerequisiteForm from './PrerequisiteForm';
-import { Prerequisite, Program } from '../modal/program';
 import PrerequisiteList from './PrerequisiteList';
 
 export default function PrerequisiteDetails(props: BoxProps) {
