@@ -17,19 +17,21 @@ import { db } from '@/lib/config/firebase';
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
   where,
 } from 'firebase/firestore';
 import { useQueryState } from 'nuqs';
+import { Prerequisite, Program } from '../modal/program';
 
 type Props = {
   certificate: Certificate;
 };
 
 export default function PrerequisiteForm({ certificate }: Props) {
-  const [program] = useQueryState('id');
+  const [programId] = useQueryState('id');
   const [course, setCourse] = useState<string | null>(null);
   const [grade, setGrade] = useState<ComboboxItem | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -37,13 +39,19 @@ export default function PrerequisiteForm({ certificate }: Props) {
 
   function save() {
     startTransition(async () => {
-      if (course && grade && program && certificate) {
-        const docRef = collection(db, 'programs', program, 'prerequisites');
-        await setDoc(doc(docRef), {
-          course,
-          grade: Number(grade.value),
-          certificate: certificate,
-        });
+      if (course && grade && programId && certificate) {
+        const docRef = doc(db, 'programs', programId);
+        const program = (await getDoc(docRef)).data() as Program;
+        const prerequisite: Prerequisite = {
+          courseName: course,
+          minGrade: Number(grade.value),
+        };
+        const prerequisites = program.prerequisites || [];
+        if (!prerequisites.find((it) => it.courseName === course)) {
+          prerequisites.push(prerequisite);
+        }
+        await setDoc(docRef, { ...program, prerequisites });
+        close();
       }
     });
   }

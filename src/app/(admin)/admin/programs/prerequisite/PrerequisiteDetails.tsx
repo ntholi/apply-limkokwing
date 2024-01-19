@@ -21,11 +21,13 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   query,
   setDoc,
   where,
 } from 'firebase/firestore';
 import PrerequisiteForm from './PrerequisiteForm';
+import { Prerequisite, Program } from '../modal/program';
 
 export default function PrerequisiteDetails(props: BoxProps) {
   const [certificateName] = useQueryState('certificate');
@@ -61,7 +63,19 @@ export default function PrerequisiteDetails(props: BoxProps) {
 }
 
 function PrerequisiteView({ certificate }: { certificate: Certificate }) {
-  const [data, setData] = useState<Prerequisite[]>([]);
+  const [data, setData] = useState<Prerequisite[]>();
+  const [programId] = useQueryState('id');
+  const [program, setProgram] = useState<Program>();
+
+  useEffect(() => {
+    if (programId) {
+      const unsubscribe = onSnapshot(doc(db, 'programs', programId), (doc) => {
+        setProgram({ ...doc.data(), id: doc.id } as Program);
+      });
+      return () => unsubscribe();
+    }
+  }, [programId]);
+
   return (
     <>
       <PrerequisiteForm certificate={certificate} />
