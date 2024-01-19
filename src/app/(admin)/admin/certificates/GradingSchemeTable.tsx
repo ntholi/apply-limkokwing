@@ -25,6 +25,7 @@ import {
 import { IconTrashFilled } from '@tabler/icons-react';
 import { hasLength, isInRange, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import GradingSchemeForm from './GradingSchemeForm';
 
 type Props = {
   certificate: Certificate;
@@ -90,7 +91,7 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
         <Title order={4} fw={'lighter'}>
           Grading Schemes
         </Title>
-        <GradingSchemeForm certificateId={certificate.id} />
+        <GradingSchemeForm />
       </Group>
       <Divider mt={'xs'} mb={'sm'} />
       <Box pos='relative'>
@@ -107,66 +108,5 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
         </Table>
       </Box>
     </Paper>
-  );
-}
-
-function GradingSchemeForm({ certificateId }: { certificateId: string }) {
-  const [isPending, startTransition] = React.useTransition();
-  const form = useForm<GradingScheme>({
-    initialValues: {
-      grade: '',
-      level: 0,
-    },
-
-    validate: {
-      grade: hasLength({ min: 1 }, 'Required'),
-      level: isInRange({ min: 1, max: 20 }, 'Out of range'),
-    },
-  });
-
-  function handleSubmit(value: GradingScheme) {
-    startTransition(async () => {
-      const res = await getDoc(doc(db, 'certificates', certificateId));
-      if (res.exists()) {
-        const data = res.data() as Certificate;
-        if (data) {
-          const gradingSchemes: GradingScheme[] = data.gradingSchemes || [];
-          if (gradingSchemes.some((it) => it.level === value.level)) {
-            notifications.show({
-              message: 'Level already exists',
-              color: 'red',
-            });
-            return;
-          }
-          gradingSchemes.push(value);
-          const certificate: Certificate = {
-            ...data,
-            gradingSchemes,
-          };
-          await setDoc(doc(db, 'certificates', certificateId), certificate);
-          form.reset();
-        }
-      }
-    });
-  }
-
-  return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Group align='center'>
-        <NumberInput
-          size='xs'
-          placeholder='Level'
-          {...form.getInputProps('level')}
-        />
-        <TextInput
-          size='xs'
-          placeholder='Grade'
-          {...form.getInputProps('grade')}
-        />
-        <Button size='xs' type='submit' loading={isPending}>
-          Add
-        </Button>
-      </Group>
-    </form>
   );
 }
