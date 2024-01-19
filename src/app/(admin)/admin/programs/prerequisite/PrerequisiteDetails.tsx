@@ -2,10 +2,9 @@ import { Group, Stack, Skeleton, Box, BoxProps } from '@mantine/core';
 import { useQueryState } from 'nuqs';
 import React, { useEffect } from 'react';
 import { Certificate } from '../../certificates/Certificate';
-import { db } from '@/lib/config/firebase';
-import { doc, getDoc } from 'firebase/firestore';
 import PrerequisiteForm from './PrerequisiteForm';
 import PrerequisiteList from './PrerequisiteList';
+import { certificateRepository } from '../../certificates/repository';
 
 export default function PrerequisiteDetails(props: BoxProps) {
   const [certificateId] = useQueryState('certificate');
@@ -16,11 +15,10 @@ export default function PrerequisiteDetails(props: BoxProps) {
   useEffect(() => {
     if (certificateId && programId) {
       setLoading(true);
-      const docRef = doc(db, 'certificates', certificateId);
-      getDoc(docRef).then((doc) => {
-        setCertificate({ ...doc.data(), id: doc.id } as Certificate);
-        setLoading(false);
-      });
+      certificateRepository
+        .get(certificateId)
+        .then(setCertificate)
+        .finally(() => setLoading(false));
     }
   }, [certificateId, programId]);
 

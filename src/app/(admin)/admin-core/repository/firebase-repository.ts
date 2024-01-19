@@ -36,6 +36,17 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     });
     return unsubscribe;
   }
+
+  listenForDocument(id: string, callback: (resource: T) => void): () => void {
+    const docRef = doc(db, this.collectionName, id);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        callback({ id: docSnap.id, ...docSnap.data() } as T);
+      }
+    });
+    return unsubscribe;
+  }
+
   async getAll(limit = 10): Promise<T[]> {
     const q = query(
       collection(db, this.collectionName),

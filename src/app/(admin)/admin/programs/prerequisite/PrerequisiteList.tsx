@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Prerequisite, Program } from '../modal/program';
+import { Prerequisite } from '../modal/program';
 import { useQueryState } from 'nuqs';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/config/firebase';
+import { programRepository } from '../repository';
 
 function PrerequisiteList() {
   const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([]);
@@ -11,14 +10,12 @@ function PrerequisiteList() {
 
   useEffect(() => {
     if (programId) {
-      const unsubscribe = onSnapshot(doc(db, 'programs', programId), (doc) => {
-        const data = { ...doc.data(), id: doc.id } as Program;
+      return programRepository.listenForDocument(programId, (data) => {
         const prerequisites = data.prerequisites || [];
         setPrerequisites(
           prerequisites.filter((it) => it.certificateId === certificateId)
         );
       });
-      return () => unsubscribe();
     }
   }, [certificateId, programId]);
 

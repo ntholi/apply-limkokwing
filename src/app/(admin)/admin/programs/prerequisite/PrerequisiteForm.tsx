@@ -1,20 +1,18 @@
 import {
-  Box,
   Button,
   ComboboxItem,
   Divider,
   Flex,
-  Group,
   Modal,
   Select,
   Stack,
   Title,
 } from '@mantine/core';
-import { Certificate, GradingScheme } from '../../certificates/Certificate';
-import { useEffect, useState, useTransition } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
 import { useQueryState } from 'nuqs';
+import { useState, useTransition } from 'react';
+import { Certificate } from '../../certificates/Certificate';
 import { Prerequisite } from '../modal/program';
 import { programRepository } from '../repository';
 
