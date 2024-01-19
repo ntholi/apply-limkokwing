@@ -1,7 +1,7 @@
 import { Resource } from '../../../admin-core/repository/repository';
 import { Faculty } from './faculty';
 
-export interface Prerequisite {
+export interface Prerequisite extends Resource {
   certificateId: string;
   courseName: string;
   minGrade: number;
