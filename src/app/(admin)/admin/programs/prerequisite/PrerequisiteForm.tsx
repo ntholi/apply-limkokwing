@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ComboboxItem,
+  Divider,
   Flex,
   Group,
   Modal,
@@ -96,6 +97,7 @@ export default function PrerequisiteForm({ certificate }: Props) {
           New
         </Button>
       </Flex>
+      <Divider mt='xs' mb={'lg'} />
     </>
   );
 }
