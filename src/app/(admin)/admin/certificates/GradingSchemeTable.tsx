@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Certificate, GradingScheme } from './Certificate';
 import GradingSchemeForm from './GradingSchemeForm';
 import { certificateRepository } from './repository';
+import DraggableTable from './DndListHandle';
 
 type Props = {
   certificate: Certificate;
@@ -40,23 +41,6 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
     });
   }
 
-  const rows = gradingSchemes.map((it) => (
-    <Table.Tr key={it.level}>
-      <Table.Td>{it.level}</Table.Td>
-      <Table.Td>{it.grade}</Table.Td>
-      <Table.Td align='right'>
-        <ActionIcon
-          color='red'
-          disabled={isPending}
-          variant='light'
-          onClick={() => handleDelete(it)}
-        >
-          <IconTrashFilled size={'0.9rem'} />
-        </ActionIcon>
-      </Table.Td>
-    </Table.Tr>
-  ));
-
   return (
     <Paper withBorder p='md' {...props}>
       <Group justify='space-between'>
@@ -68,16 +52,7 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
       <Divider mt={'xs'} mb={'sm'} />
       <Box pos='relative'>
         <LoadingOverlay visible={isPending} />
-        <Table withRowBorders={false} highlightOnHover>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Td>Level</Table.Td>
-              <Table.Td>Grade</Table.Td>
-              <Table.Td />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        <DraggableTable data={gradingSchemes} />
       </Box>
     </Paper>
   );
