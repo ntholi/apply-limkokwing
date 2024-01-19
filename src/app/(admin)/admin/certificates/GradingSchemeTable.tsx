@@ -1,31 +1,19 @@
-import React, { useEffect } from 'react';
-import { Certificate, GradingScheme } from './Certificate';
 import {
   ActionIcon,
   Box,
-  Button,
   Divider,
   Group,
   LoadingOverlay,
-  NumberInput,
   Paper,
   PaperProps,
   Table,
-  TextInput,
   Title,
 } from '@mantine/core';
-import { db } from '@/lib/config/firebase';
-import {
-  onSnapshot,
-  getDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from 'firebase/firestore';
 import { IconTrashFilled } from '@tabler/icons-react';
-import { hasLength, isInRange, useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
+import React, { useEffect } from 'react';
+import { Certificate, GradingScheme } from './Certificate';
 import GradingSchemeForm from './GradingSchemeForm';
+import { certificateRepository } from './repository';
 
 type Props = {
   certificate: Certificate;
@@ -38,33 +26,17 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
   const [isPending, startTransition] = React.useTransition();
 
   useEffect(() => {
-    const docRef = doc(db, 'certificates', certificate.id);
-    const unsubscribe = onSnapshot(docRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data() as Certificate;
-        if (data) {
-          setGradingSchemes(data.gradingSchemes || []);
-        }
-      }
+    return certificateRepository.listenForDocument(certificate.id, (data) => {
+      setGradingSchemes(data.gradingSchemes || []);
     });
-    return () => unsubscribe();
   }, [certificate.id]);
 
   function handleDelete(gradingScheme: GradingScheme) {
-    const docRef = doc(db, 'certificates', certificate.id);
     startTransition(async () => {
-      const newGradingSchemes = gradingSchemes.filter(
-        (it) => it.level !== gradingScheme.level
+      await certificateRepository.deleteGradingScheme(
+        certificate.id,
+        gradingScheme
       );
-      await runTransaction(db, async (transaction) => {
-        const doc = await transaction.get(docRef);
-        if (doc.exists()) {
-          const data = doc.data() as Certificate;
-          if (data) {
-            transaction.update(docRef, { gradingSchemes: newGradingSchemes });
-          }
-        }
-      });
     });
   }
 

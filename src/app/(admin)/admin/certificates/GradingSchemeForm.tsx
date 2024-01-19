@@ -1,31 +1,9 @@
-import React, { useEffect } from 'react';
-import { Certificate, GradingScheme } from './Certificate';
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Divider,
-  Group,
-  LoadingOverlay,
-  NumberInput,
-  Paper,
-  PaperProps,
-  Table,
-  TextInput,
-  Title,
-} from '@mantine/core';
-import { db } from '@/lib/config/firebase';
-import {
-  onSnapshot,
-  getDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from 'firebase/firestore';
-import { IconTrashFilled } from '@tabler/icons-react';
+import { Button, Group, NumberInput, TextInput } from '@mantine/core';
 import { hasLength, isInRange, useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { useQueryState } from 'nuqs';
+import React from 'react';
+import { GradingScheme } from './Certificate';
+import { certificateRepository } from './repository';
 
 export default function GradingSchemeForm() {
   const [certificateId] = useQueryState('id');
@@ -45,26 +23,8 @@ export default function GradingSchemeForm() {
   if (!certificateId) return null;
   function handleSubmit(value: GradingScheme) {
     startTransition(async () => {
-      const res = await getDoc(doc(db, 'certificates', certificateId!));
-      if (res.exists()) {
-        const data = res.data() as Certificate;
-        if (data) {
-          const gradingSchemes: GradingScheme[] = data.gradingSchemes || [];
-          if (gradingSchemes.some((it) => it.level === value.level)) {
-            notifications.show({
-              message: 'Level already exists',
-              color: 'red',
-            });
-            return;
-          }
-          gradingSchemes.push(value);
-          const certificate: Certificate = {
-            ...data,
-            gradingSchemes,
-          };
-          await setDoc(doc(db, 'certificates', certificateId!), certificate);
-          form.reset();
-        }
+      if (certificateId) {
+        await certificateRepository.addGradingScheme(certificateId, value);
       }
     });
   }

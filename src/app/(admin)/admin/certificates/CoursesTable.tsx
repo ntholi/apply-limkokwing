@@ -3,7 +3,6 @@ import { Certificate } from './Certificate';
 import {
   ActionIcon,
   Box,
-  BoxProps,
   Button,
   Divider,
   Group,
@@ -14,16 +13,9 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { db } from '@/lib/config/firebase';
-import {
-  onSnapshot,
-  getDoc,
-  doc,
-  setDoc,
-  runTransaction,
-} from 'firebase/firestore';
 import { IconTrashFilled } from '@tabler/icons-react';
 import { hasLength, useForm } from '@mantine/form';
+import { certificateRepository } from './repository';
 
 type Props = {
   certificate: Certificate;
@@ -34,31 +26,14 @@ export default function CoursesTable({ certificate, ...props }: Props) {
   const [isPending, startTransition] = React.useTransition();
 
   useEffect(() => {
-    const docRef = doc(db, 'certificates', certificate.id);
-    const unsubscribe = onSnapshot(docRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data() as Certificate;
-        if (data) {
-          setCourses(data.courses || []);
-        }
-      }
+    return certificateRepository.listenForDocument(certificate.id, (data) => {
+      setCourses(data.courses || []);
     });
-    return () => unsubscribe();
   }, [certificate.id]);
 
   function handleDelete(course: string) {
-    const docRef = doc(db, 'certificates', certificate.id);
     startTransition(async () => {
-      const newCourses = courses.filter((it) => it !== course);
-      await runTransaction(db, async (transaction) => {
-        const doc = await transaction.get(docRef);
-        if (doc.exists()) {
-          const data = doc.data() as Certificate;
-          if (data) {
-            transaction.update(docRef, { courses: newCourses });
-          }
-        }
-      });
+      await certificateRepository.deleteCourse(certificate.id, course);
     });
   }
 
@@ -111,20 +86,8 @@ function CourseForm({ certificateId }: { certificateId: string }) {
 
   function handleSubmit(value: { name: string }) {
     startTransition(async () => {
-      const res = await getDoc(doc(db, 'certificates', certificateId));
-      if (res.exists()) {
-        const data = res.data() as Certificate;
-        if (data) {
-          const courses: string[] = data.courses || [];
-          courses.push(value.name);
-          const certificate: Certificate = {
-            ...data,
-            courses,
-          };
-          await setDoc(doc(db, 'certificates', certificateId), certificate);
-          form.reset();
-        }
-      }
+      await certificateRepository.addCourse(certificateId, value.name);
+      form.reset();
     });
   }
 
