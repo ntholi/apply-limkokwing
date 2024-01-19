@@ -37,7 +37,7 @@ export default function DndList({ data: _data }: Props) {
                 stroke={1.5}
               />
               <Text size={rem(10)} c={'dark.1'}>
-                {item.level}
+                {index + 1}
               </Text>
             </Group>
 
