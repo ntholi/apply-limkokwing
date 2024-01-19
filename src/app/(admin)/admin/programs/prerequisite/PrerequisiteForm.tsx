@@ -14,18 +14,9 @@ import { Certificate, GradingScheme } from '../../certificates/Certificate';
 import { useEffect, useState, useTransition } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
-import { db } from '@/lib/config/firebase';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
 import { useQueryState } from 'nuqs';
-import { Prerequisite, Program } from '../modal/program';
+import { Prerequisite } from '../modal/program';
+import { programRepository } from '../repository';
 
 type Props = {
   certificate: Certificate;
@@ -41,23 +32,12 @@ export default function PrerequisiteForm({ certificate }: Props) {
   function save() {
     startTransition(async () => {
       if (course && grade && programId && certificate) {
-        const docRef = doc(db, 'programs', programId);
-        const program = (await getDoc(docRef)).data() as Program;
         const prerequisite = {
           certificateId: certificate.id,
           courseName: course,
           minGrade: Number(grade.value),
         } as Prerequisite;
-        const prerequisites = program.prerequisites || [];
-        if (
-          !prerequisites.find(
-            (it) =>
-              it.courseName === course && it.certificateId === certificate.id
-          )
-        ) {
-          prerequisites.push(prerequisite);
-        }
-        await setDoc(docRef, { ...program, prerequisites });
+        await programRepository.addPrerequisite(programId, prerequisite);
         close();
       }
     });
@@ -81,7 +61,9 @@ export default function PrerequisiteForm({ certificate }: Props) {
             value={grade ? grade.value : null}
             onChange={(_, option) => setGrade(option)}
           />
-          <Button onClick={save}>Save</Button>
+          <Button onClick={save} loading={isPending}>
+            Save
+          </Button>
         </Stack>
       </Modal>
 

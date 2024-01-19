@@ -1,9 +1,26 @@
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core/repository';
-import { Program } from './modal/program';
+import { Prerequisite, Program } from './modal/program';
+import { db } from '@/lib/config/firebase';
 
 class ProgramRepository extends FirebaseRepository<Program> {
   constructor() {
     super('programs');
+  }
+
+  async addPrerequisite(programId: string, prerequisite: Prerequisite) {
+    const docRef = doc(db, 'programs', programId);
+    const program = (await getDoc(docRef)).data() as Program;
+    const prerequisites = program.prerequisites || [];
+    const exists = prerequisites.find(
+      (it) =>
+        it.courseName === prerequisite.courseName &&
+        it.certificateId === prerequisite.certificateId
+    );
+    if (!exists) {
+      prerequisites.push(prerequisite);
+    }
+    await setDoc(docRef, { ...program, prerequisites });
   }
 }
 
