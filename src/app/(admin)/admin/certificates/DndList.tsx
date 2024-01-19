@@ -3,20 +3,18 @@ import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { GradingScheme } from './Certificate';
 import { IconGripVertical } from '@tabler/icons-react';
-
-const data: GradingScheme[] = [
-  { grade: 'A', level: 1 },
-  { grade: 'B', level: 3 },
-  { grade: 'C', level: 3 },
-  { grade: 'D', level: 4 },
-];
+import { useEffect } from 'react';
 
 type Props = {
   data: GradingScheme[];
 };
 
-export default function DndList({ data: _data }: Props) {
-  const [state, handlers] = useListState<GradingScheme>(data);
+export default function DndList({ data }: Props) {
+  const [state, { setState, ...handlers }] = useListState<GradingScheme>();
+
+  useEffect(() => {
+    setState(data);
+  }, [data, setState]);
 
   const items = state.map((item, index) => (
     <Draggable key={item.grade} index={index} draggableId={item.grade}>
