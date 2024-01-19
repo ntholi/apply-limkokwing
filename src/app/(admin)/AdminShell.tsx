@@ -156,16 +156,8 @@ function Navigation() {
             label='Applications'
             component={Link}
             active={pathname.startsWith('/admin/store-applications')}
-            href={'/admin/store-applications'}
+            href={'/admin/#'}
             leftSection={<IconMessage size='1.1rem' />}
-            rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-          />
-          <NavLink
-            label='Stores'
-            component={Link}
-            active={pathname.startsWith('/admin/stores')}
-            href={'/admin/stores'}
-            leftSection={<IconBuildingStore size='1.1rem' />}
             rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
           />
         </NavLink>
