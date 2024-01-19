@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { Certificate, GradingScheme } from './Certificate';
 import GradingSchemeForm from './GradingSchemeForm';
 import { certificateRepository } from './repository';
-import DraggableTable from './DndListHandle';
+import DndList from './DndList';
 
 type Props = {
   certificate: Certificate;
@@ -52,7 +52,7 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
       <Divider mt={'xs'} mb={'sm'} />
       <Box pos='relative'>
         <LoadingOverlay visible={isPending} />
-        <DraggableTable data={gradingSchemes} />
+        <DndList data={gradingSchemes} />
       </Box>
     </Paper>
   );
