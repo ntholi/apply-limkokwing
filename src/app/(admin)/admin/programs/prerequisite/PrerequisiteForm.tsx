@@ -43,11 +43,17 @@ export default function PrerequisiteForm({ certificate }: Props) {
         const docRef = doc(db, 'programs', programId);
         const program = (await getDoc(docRef)).data() as Program;
         const prerequisite: Prerequisite = {
+          certificateId: certificate.id,
           courseName: course,
           minGrade: Number(grade.value),
         };
         const prerequisites = program.prerequisites || [];
-        if (!prerequisites.find((it) => it.courseName === course)) {
+        if (
+          !prerequisites.find(
+            (it) =>
+              it.courseName === course && it.certificateId === certificate.id
+          )
+        ) {
           prerequisites.push(prerequisite);
         }
         await setDoc(docRef, { ...program, prerequisites });

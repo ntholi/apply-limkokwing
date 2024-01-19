@@ -11,45 +11,30 @@ import {
   Divider,
   Paper,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { useQueryState } from 'nuqs';
 import React, { useEffect, useState } from 'react';
 import { Certificate } from '../../certificates/Certificate';
 import { db } from '@/lib/config/firebase';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import PrerequisiteForm from './PrerequisiteForm';
 import { Prerequisite, Program } from '../modal/program';
 
 export default function PrerequisiteDetails(props: BoxProps) {
-  const [certificateName] = useQueryState('certificate');
+  const [certificateId] = useQueryState('certificate');
   const [programId] = useQueryState('id');
   const [certificate, setCertificate] = React.useState<Certificate>();
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
-    if (certificateName && programId) {
+    if (certificateId && programId) {
       setLoading(true);
-      const q = query(
-        collection(db, 'certificates'),
-        where('name', '==', certificateName)
-      );
-      getDocs(q).then((snapshot) => {
-        snapshot.forEach((doc) => {
-          setCertificate({ ...doc.data(), id: doc.id } as Certificate);
-        });
+      const docRef = doc(db, 'certificates', certificateId);
+      getDoc(docRef).then((doc) => {
+        setCertificate({ ...doc.data(), id: doc.id } as Certificate);
         setLoading(false);
       });
     }
-  }, [certificateName, programId]);
+  }, [certificateId, programId]);
 
   return (
     <Box {...props}>
