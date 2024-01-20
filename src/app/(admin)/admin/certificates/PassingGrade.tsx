@@ -1,7 +1,5 @@
-import { useQueryState } from 'nuqs';
-import React from 'react';
-import { Certificate, GradingScheme } from './Certificate';
-import { Button, Group, Select, TextInput, ComboboxData } from '@mantine/core';
+import { Select } from '@mantine/core';
+import { Certificate } from './Certificate';
 import { certificateRepository } from './repository';
 
 type Props = {
