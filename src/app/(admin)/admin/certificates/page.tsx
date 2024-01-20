@@ -14,7 +14,6 @@ import {
 import { certificateRepository } from './repository';
 import { Certificate } from './Certificate';
 import CoursesTable from './CoursesTable';
-import GradingSchemesTable from './GradingSchemeTable';
 import { Tabs, rem } from '@mantine/core';
 import {
   IconInfoCircle,
@@ -22,6 +21,7 @@ import {
   IconScoreboard,
 } from '@tabler/icons-react';
 import NumberField from '../../admin-core/form/NumberField';
+import GradingList from './GradingList';
 
 export default function CertificatePage() {
   return (
@@ -77,7 +77,7 @@ function CertificateDetails({ item }: { item: Certificate }) {
 
       <Tabs.Panel value='settings'>
         <DetailsView>
-          <GradingSchemesTable certificate={item} />
+          <GradingList certificateId={item.id} />
         </DetailsView>
       </Tabs.Panel>
     </Tabs>
