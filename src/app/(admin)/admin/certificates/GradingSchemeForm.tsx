@@ -13,6 +13,7 @@ export default function GradingSchemeForm() {
     startTransition(async () => {
       if (certificateId && grade.trim().length > 0) {
         await certificateRepository.addGradingScheme(certificateId, grade);
+        setGrade('');
       }
     });
   }
