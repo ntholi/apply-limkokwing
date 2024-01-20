@@ -10,6 +10,7 @@ import {
   TextField,
   EditViewProps,
   EditView,
+  SelectField,
 } from '@/app/(admin)/admin-core';
 import { programRepository } from './repository';
 import { Program } from './modal/program';
@@ -19,6 +20,18 @@ import CertificateView from './prerequisite/CertificateView';
 import { Divider, Tabs } from '@mantine/core';
 import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
 import PrerequisiteDetails from './prerequisite/PrerequisiteDetails';
+import NumberField from '../../admin-core/form/NumberField';
+
+const levels = [
+  'Certificate',
+  'Diploma',
+  'Associate Degree',
+  'Bachelor Degree',
+  'Honours Degree',
+  'Postgraduate Diploma',
+  'Master Degree',
+  'Doctorate Degree',
+];
 
 export default function ProgramPage() {
   return (
@@ -47,7 +60,9 @@ function ProgramDetails({ item }: { item: Program }) {
 
       <Tabs.Panel value='details'>
         <DetailsView>
+          <FieldView label='Level' value={item.level} />
           <FieldView label='Name' value={item.name} />
+          <FieldView label='Required Credits' value={item.requiredCredits} />
           <FieldView label='Faculty' value={item.faculty} />
         </DetailsView>
       </Tabs.Panel>
@@ -69,11 +84,19 @@ function ProgramCreate(props: CreateViewProps<Program>) {
     filter && filter[0] == 'faculty' ? filter[1] : ''
   ) as Faculty['code'];
 
-  const initialValues = { name: '', faculty, prerequisites: [] };
+  const initialValues = {
+    level: '',
+    name: '',
+    faculty,
+    requiredCredits: 0,
+    prerequisites: [],
+  };
 
   return (
     <CreateView initialValues={initialValues} {...props}>
+      <SelectField name='level' options={levels} />
       <TextField name='name' />
+      <NumberField name='requiredCredits' />
       <TextField name='faculty' value={faculty} hidden />
     </CreateView>
   );
@@ -82,8 +105,9 @@ function ProgramCreate(props: CreateViewProps<Program>) {
 function ProgramEdit(props: EditViewProps<Program>) {
   return (
     <EditView {...props}>
+      <SelectField name='level' options={levels} />
       <TextField name='name' />
-      <TextField name='faculty' />
+      <NumberField name='requiredCredits' />
     </EditView>
   );
 }
