@@ -14,7 +14,7 @@ import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { GradingScheme } from './Certificate';
 import { IconGripVertical, IconTrashX } from '@tabler/icons-react';
-import { useEffect, useTransition } from 'react';
+import { useEffect } from 'react';
 import { certificateRepository } from './repository';
 import GradingSchemeForm from './GradingSchemeForm';
 
