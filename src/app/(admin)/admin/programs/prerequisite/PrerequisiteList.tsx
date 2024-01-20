@@ -49,7 +49,12 @@ function PrerequisiteList(props: StackProps) {
                   stroke={1.5}
                 />
               </ThemeIcon>
-              <Text>{it.courseName}</Text>
+              <div>
+                <Text>{it.courseName}</Text>
+                <Text size='xs' c={'dimmed'}>
+                  Required Grade {it.minGrade}
+                </Text>
+              </div>
             </Group>
             <ActionIcon
               variant='light'
