@@ -12,29 +12,30 @@ import {
 } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { GradingScheme } from './Certificate';
+import { Certificate, GradingScheme } from './Certificate';
 import { IconGripVertical, IconTrashX } from '@tabler/icons-react';
 import { useEffect } from 'react';
 import { certificateRepository } from './repository';
 import GradingSchemeForm from './GradingSchemeForm';
+import PassingGrade from './PassingGrade';
 
 type Props = {
-  certificateId: string;
+  certificate: Certificate;
 } & PaperProps;
 
-export default function GradingList({ certificateId, ...props }: Props) {
+export default function GradingList({ certificate, ...props }: Props) {
   const [state, { setState }] = useListState<GradingScheme>();
 
   useEffect(() => {
-    return certificateRepository.listenForDocument(certificateId, (data) => {
+    return certificateRepository.listenForDocument(certificate.id, (data) => {
       const gradingSchemes = data.gradingSchemes || [];
       setState(gradingSchemes.sort((a, b) => a.level - b.level));
     });
-  }, [setState, certificateId]);
+  }, [setState, certificate.id]);
 
   async function handleDelete(gradingScheme: GradingScheme) {
     await certificateRepository.deleteGradingScheme(
-      certificateId,
+      certificate.id,
       gradingScheme
     );
   }
@@ -82,18 +83,16 @@ export default function GradingList({ certificateId, ...props }: Props) {
   ));
 
   return (
-    <Paper withBorder p='md' {...props}>
-      <Group justify='space-between'>
-        <Title order={4} fw={'lighter'}>
-          Grading Schemes
-        </Title>
-        <GradingSchemeForm />
-      </Group>
+    <Paper withBorder p='md' mt={0} {...props}>
+      <Flex justify='space-between' align={'end'}>
+        <PassingGrade certificate={certificate} />
+        <GradingSchemeForm certificate={certificate} />
+      </Flex>
       <Divider mt={'xs'} mb={'sm'} />
       <DragDropContext
         onDragEnd={({ destination, source }) => {
           certificateRepository.reorderGradingSchemes(
-            certificateId,
+            certificate.id,
             source.index + 1,
             (destination?.index || 0) + 1
           );

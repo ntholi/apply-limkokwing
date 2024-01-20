@@ -9,5 +9,5 @@ export interface Certificate extends Resource {
   name: string;
   courses: string[];
   gradingSchemes: GradingScheme[];
-  creditsLevel?: number; // change to passing grade
+  passingGrade: GradingScheme | null;
 }
