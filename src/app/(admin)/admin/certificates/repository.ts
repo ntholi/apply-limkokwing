@@ -32,14 +32,17 @@ class CertificateRepository extends FirebaseRepository<Certificate> {
     }
   }
 
-  async addGradingScheme(certificateId: string, gradingScheme: GradingScheme) {
+  async addGradingScheme(certificateId: string, grade: string) {
     const certificate = await this.get(certificateId);
     if (certificate) {
       const gradingSchemes: GradingScheme[] = certificate.gradingSchemes || [];
-      if (gradingSchemes.some((it) => it.grade === gradingScheme.grade)) {
+      if (gradingSchemes.some((it) => it.grade === grade)) {
         return;
       }
-      gradingSchemes.push(gradingScheme);
+      gradingSchemes.push({
+        grade,
+        level: gradingSchemes.length + 1,
+      });
       await this.update(certificateId, {
         ...certificate,
         gradingSchemes,
@@ -57,6 +60,61 @@ class CertificateRepository extends FirebaseRepository<Certificate> {
       const newGradingSchemes = gradingSchemes.filter(
         (it) => it.grade !== gradingScheme.grade
       );
+      await this.update(certificateId, {
+        ...certificate,
+        gradingSchemes: newGradingSchemes,
+      });
+    }
+  }
+
+  async updateGradingSchemeLevel(
+    certificateId: string,
+    gradingScheme: GradingScheme,
+    level: number
+  ) {
+    const certificate = await this.get(certificateId);
+    if (certificate) {
+      const gradingSchemes: GradingScheme[] = certificate.gradingSchemes || [];
+      const newGradingSchemes = gradingSchemes.map((it) => {
+        if (it.grade === gradingScheme.grade) {
+          return {
+            ...it,
+            level,
+          };
+        }
+        return it;
+      });
+      await this.update(certificateId, {
+        ...certificate,
+        gradingSchemes: newGradingSchemes,
+      });
+    }
+  }
+
+  async reorderGradingSchemes(certificateId: string, from: number, to: number) {
+    const certificate = await this.get(certificateId);
+    if (certificate) {
+      const gradingSchemes: GradingScheme[] = certificate.gradingSchemes || [];
+      const fromLevel = gradingSchemes.find((it) => it.level === from)?.level;
+      const toLevel = gradingSchemes.find((it) => it.level === to)?.level;
+      if (!fromLevel || !toLevel) {
+        return;
+      }
+      const newGradingSchemes = gradingSchemes.map((it) => {
+        if (it.level === fromLevel) {
+          return {
+            ...it,
+            level: toLevel,
+          };
+        }
+        if (it.level === toLevel) {
+          return {
+            ...it,
+            level: fromLevel,
+          };
+        }
+        return it;
+      });
       await this.update(certificateId, {
         ...certificate,
         gradingSchemes: newGradingSchemes,
