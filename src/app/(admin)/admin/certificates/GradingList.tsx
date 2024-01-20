@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Divider,
   Flex,
   Group,
@@ -12,7 +13,7 @@ import {
 import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { GradingScheme } from './Certificate';
-import { IconGripVertical } from '@tabler/icons-react';
+import { IconGripVertical, IconTrashX } from '@tabler/icons-react';
 import { useEffect, useTransition } from 'react';
 import { certificateRepository } from './repository';
 import GradingSchemeForm from './GradingSchemeForm';
@@ -50,18 +51,30 @@ export default function GradingList({ certificateId, ...props }: Props) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <Flex align={'center'} gap={'md'}>
-            <Group align='center' gap={5}>
-              <IconGripVertical
+          <Flex align={'center'} gap={'md'} justify={'space-between'}>
+            <Group>
+              <Group align='center' gap={5}>
+                <IconGripVertical
+                  style={{ width: rem(18), height: rem(18) }}
+                  stroke={1.5}
+                />
+                <Text size={rem(10)} c={'dark.1'}>
+                  {item.level}
+                </Text>
+              </Group>
+
+              <Title w={50}>{item.grade}</Title>
+            </Group>
+            <ActionIcon
+              variant='light'
+              color='red'
+              onClick={() => handleDelete(item)}
+            >
+              <IconTrashX
                 style={{ width: rem(18), height: rem(18) }}
                 stroke={1.5}
               />
-              <Text size={rem(10)} c={'dark.1'}>
-                {item.level}
-              </Text>
-            </Group>
-
-            <Title w={50}>{item.grade}</Title>
+            </ActionIcon>
           </Flex>
         </Paper>
       )}
