@@ -50,7 +50,7 @@ export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
   const { status } = useSession();
   const router = useRouter();
-  const colorScheme = useComputedColorScheme('light');
+  const colorScheme = useComputedColorScheme('dark');
 
   if (status == 'loading') {
     return (

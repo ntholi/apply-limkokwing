@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript forceColorScheme='dark' />
       </head>
       <body>
         <Providers>

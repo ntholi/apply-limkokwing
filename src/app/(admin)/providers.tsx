@@ -1,5 +1,9 @@
 'use client';
-import { MantineProvider, createTheme } from '@mantine/core';
+import {
+  MantineColorSchemeManager,
+  MantineProvider,
+  createTheme,
+} from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import React from 'react';
 import { ModalsProvider } from '@mantine/modals';
@@ -14,7 +18,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <MantineProvider defaultColorScheme='dark' theme={theme}>
+    <MantineProvider forceColorScheme='dark' theme={theme}>
       <Notifications />
       <ModalsProvider>
         <SessionProvider>
