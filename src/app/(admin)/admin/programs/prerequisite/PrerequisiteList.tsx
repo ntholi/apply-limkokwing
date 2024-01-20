@@ -2,6 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Prerequisite } from '../modal/program';
 import { useQueryState } from 'nuqs';
 import { programRepository } from '../repository';
+import {
+  Group,
+  List,
+  ThemeIcon,
+  Text,
+  ActionIcon,
+  rem,
+  Flex,
+  Stack,
+} from '@mantine/core';
+import { IconCheck, IconTrashX } from '@tabler/icons-react';
 
 function PrerequisiteList() {
   const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([]);
@@ -19,12 +30,40 @@ function PrerequisiteList() {
     }
   }, [certificateId, programId]);
 
+  async function handleDelete(prerequisite: Prerequisite) {
+    if (programId) {
+      await programRepository.removePrerequisite(programId, prerequisite);
+    }
+  }
+
   return (
-    <div>
+    <Stack>
       {prerequisites.map((it) => (
-        <div key={`${it.certificateId}${it.courseName}`}>{it.courseName}</div>
+        <Flex key={`${it.certificateId}${it.courseName}`}>
+          <Flex w='100%' justify='space-between'>
+            <Group>
+              <ThemeIcon color='teal' size='sm' radius='xl'>
+                <IconCheck
+                  style={{ width: rem(18), height: rem(18) }}
+                  stroke={1.5}
+                />
+              </ThemeIcon>
+              <Text>{it.courseName}</Text>
+            </Group>
+            <ActionIcon
+              variant='light'
+              color='red'
+              onClick={() => handleDelete(it)}
+            >
+              <IconTrashX
+                style={{ width: rem(18), height: rem(18) }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          </Flex>
+        </Flex>
       ))}
-    </div>
+    </Stack>
   );
 }
 

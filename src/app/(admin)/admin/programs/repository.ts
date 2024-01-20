@@ -9,7 +9,7 @@ class ProgramRepository extends FirebaseRepository<Program> {
   }
 
   async addPrerequisite(programId: string, prerequisite: Prerequisite) {
-    const docRef = doc(db, 'programs', programId);
+    const docRef = doc(db, this.collectionName, programId);
     const program = (await getDoc(docRef)).data() as Program;
     const prerequisites = program.prerequisites || [];
     const exists = prerequisites.find(
@@ -19,6 +19,22 @@ class ProgramRepository extends FirebaseRepository<Program> {
     );
     if (!exists) {
       prerequisites.push(prerequisite);
+    }
+    await setDoc(docRef, { ...program, prerequisites });
+  }
+
+  async removePrerequisite(programId: string, prerequisite: Prerequisite) {
+    const docRef = doc(db, this.collectionName, programId);
+    const program = (await getDoc(docRef)).data() as Program;
+    const prerequisites = program.prerequisites || [];
+    const exists = prerequisites.find(
+      (it) =>
+        it.courseName === prerequisite.courseName &&
+        it.certificateId === prerequisite.certificateId
+    );
+    if (exists) {
+      const index = prerequisites.indexOf(exists);
+      prerequisites.splice(index, 1);
     }
     await setDoc(docRef, { ...program, prerequisites });
   }
