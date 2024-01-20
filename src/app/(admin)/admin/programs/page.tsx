@@ -70,7 +70,7 @@ function ProgramDetails({ item }: { item: Program }) {
       <Tabs.Panel value='prerequisites'>
         <DetailsView>
           <CertificateView program={item} />
-          <Divider />
+          <Divider mt={'lg'} />
           <PrerequisiteDetails />
         </DetailsView>
       </Tabs.Panel>

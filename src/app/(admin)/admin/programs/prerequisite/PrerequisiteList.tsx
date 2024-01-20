@@ -11,10 +11,11 @@ import {
   rem,
   Flex,
   Stack,
+  StackProps,
 } from '@mantine/core';
 import { IconCheck, IconTrashX } from '@tabler/icons-react';
 
-function PrerequisiteList() {
+function PrerequisiteList(props: StackProps) {
   const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([]);
   const [programId] = useQueryState('id');
   const [certificateId] = useQueryState('certificate');
@@ -37,7 +38,7 @@ function PrerequisiteList() {
   }
 
   return (
-    <Stack>
+    <Stack {...props}>
       {prerequisites.map((it) => (
         <Flex key={`${it.certificateId}${it.courseName}`}>
           <Flex w='100%' justify='space-between'>

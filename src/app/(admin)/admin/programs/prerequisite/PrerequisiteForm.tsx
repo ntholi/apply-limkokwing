@@ -3,6 +3,7 @@ import {
   ComboboxItem,
   Divider,
   Flex,
+  FlexProps,
   Group,
   Modal,
   Select,
@@ -19,9 +20,9 @@ import { programRepository } from '../repository';
 
 type Props = {
   certificate: Certificate;
-};
+} & FlexProps;
 
-export default function PrerequisiteForm({ certificate }: Props) {
+export default function PrerequisiteForm({ certificate, ...props }: Props) {
   const [programId] = useQueryState('id');
   const [course, setCourse] = useState<string | null>(null);
   const [grade, setGrade] = useState<ComboboxItem | null>(null);
@@ -45,7 +46,7 @@ export default function PrerequisiteForm({ certificate }: Props) {
   if (!certificate) return null;
   return (
     <>
-      <Flex justify={'space-between'}>
+      <Flex justify={'space-between'} {...props}>
         <Title order={4} fw={'lighter'}>
           Prerequisites
         </Title>
