@@ -28,7 +28,8 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
 
   useEffect(() => {
     return certificateRepository.listenForDocument(certificate.id, (data) => {
-      setGradingSchemes(data.gradingSchemes || []);
+      const gradingSchemes = data.gradingSchemes || [];
+      setGradingSchemes(gradingSchemes.sort((a, b) => a.level - b.level));
     });
   }, [certificate.id]);
 
@@ -52,7 +53,7 @@ export default function GradingSchemesTable({ certificate, ...props }: Props) {
       <Divider mt={'xs'} mb={'sm'} />
       <Box pos='relative'>
         <LoadingOverlay visible={isPending} />
-        <DndList data={gradingSchemes} />
+        <DndList data={gradingSchemes} certificateId={certificate.id} />
       </Box>
     </Paper>
   );

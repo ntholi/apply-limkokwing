@@ -4,12 +4,15 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { GradingScheme } from './Certificate';
 import { IconGripVertical } from '@tabler/icons-react';
 import { useEffect } from 'react';
+import { certificateRepository } from './repository';
+import { useQueryState } from 'nuqs';
 
 type Props = {
+  certificateId: string;
   data: GradingScheme[];
 };
 
-export default function DndList({ data }: Props) {
+export default function DndList({ data, certificateId }: Props) {
   const [state, { setState, ...handlers }] = useListState<GradingScheme>();
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export default function DndList({ data }: Props) {
                 stroke={1.5}
               />
               <Text size={rem(10)} c={'dark.1'}>
-                {index + 1}
+                {item.level}
               </Text>
             </Group>
 
@@ -48,9 +51,13 @@ export default function DndList({ data }: Props) {
 
   return (
     <DragDropContext
-      onDragEnd={({ destination, source }) =>
-        handlers.reorder({ from: source.index, to: destination?.index || 0 })
-      }
+      onDragEnd={({ destination, source }) => {
+        certificateRepository.reorderGradingSchemes(
+          certificateId,
+          source.index + 1,
+          (destination?.index || 0) + 1
+        );
+      }}
     >
       <Droppable droppableId='dnd-list' direction='vertical'>
         {(provided) => (

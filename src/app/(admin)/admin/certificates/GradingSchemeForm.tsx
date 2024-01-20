@@ -1,46 +1,30 @@
-import { Button, Group, NumberInput, TextInput } from '@mantine/core';
-import { hasLength, isInRange, useForm } from '@mantine/form';
+import { Button, Group, TextInput } from '@mantine/core';
 import { useQueryState } from 'nuqs';
 import React from 'react';
-import { GradingScheme } from './Certificate';
 import { certificateRepository } from './repository';
 
 export default function GradingSchemeForm() {
   const [certificateId] = useQueryState('id');
   const [isPending, startTransition] = React.useTransition();
-  const form = useForm<GradingScheme>({
-    initialValues: {
-      grade: '',
-      level: 0,
-    },
+  const [grade, setGrade] = React.useState('');
 
-    validate: {
-      grade: hasLength({ min: 1 }, 'Required'),
-      level: isInRange({ min: 1, max: 20 }, 'Out of range'),
-    },
-  });
-
-  if (!certificateId) return null;
-  function handleSubmit(value: GradingScheme) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     startTransition(async () => {
-      if (certificateId) {
-        await certificateRepository.addGradingScheme(certificateId, value);
+      if (certificateId && grade.trim().length > 0) {
+        await certificateRepository.addGradingScheme(certificateId, grade);
       }
     });
   }
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={handleSubmit}>
       <Group align='center'>
-        <NumberInput
-          size='xs'
-          placeholder='Level'
-          {...form.getInputProps('level')}
-        />
         <TextInput
           size='xs'
           placeholder='Grade'
-          {...form.getInputProps('grade')}
+          value={grade}
+          onChange={(event) => setGrade(event.currentTarget.value)}
         />
         <Button size='xs' type='submit' loading={isPending}>
           Add
