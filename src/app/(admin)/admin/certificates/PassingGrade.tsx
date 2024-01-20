@@ -17,11 +17,16 @@ export default function PassingGrade({ certificate }: Props) {
     });
   }
 
+  const data =
+    certificate.gradingSchemes
+      ?.sort((a, b) => a.level - b.level)
+      .map((it) => it.grade) || [];
+
   return (
     <Select
       label='Passing Grade'
       withAsterisk={!certificate.passingGrade}
-      data={certificate.gradingSchemes?.map((it) => it.grade) || []}
+      data={data}
       value={certificate.passingGrade?.grade}
       onChange={handleChange}
     />
