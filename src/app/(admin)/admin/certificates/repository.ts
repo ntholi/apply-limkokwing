@@ -9,7 +9,7 @@ class CertificateRepository extends FirebaseRepository<Certificate> {
   async addCourse(certificateId: string, courseName: string) {
     const certificate = await this.get(certificateId);
     if (certificate) {
-      const courses = certificate.courses;
+      const courses = certificate.courses || [];
       if (!courses.includes(courseName)) {
         await this.update(certificateId, {
           ...certificate,

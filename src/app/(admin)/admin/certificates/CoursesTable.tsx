@@ -94,12 +94,8 @@ function CourseForm({ certificateId }: { certificateId: string }) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group align='center'>
-        <TextInput
-          size='xs'
-          placeholder='New Course'
-          {...form.getInputProps('name')}
-        />
-        <Button size='xs' type='submit' loading={isPending}>
+        <TextInput placeholder='New Course' {...form.getInputProps('name')} />
+        <Button type='submit' loading={isPending}>
           Add
         </Button>
       </Group>
