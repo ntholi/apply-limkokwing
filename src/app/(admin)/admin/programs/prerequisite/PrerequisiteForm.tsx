@@ -3,6 +3,7 @@ import {
   ComboboxItem,
   Divider,
   Flex,
+  Group,
   Modal,
   Select,
   Stack,
@@ -24,7 +25,6 @@ export default function PrerequisiteForm({ certificate }: Props) {
   const [programId] = useQueryState('id');
   const [course, setCourse] = useState<string | null>(null);
   const [grade, setGrade] = useState<ComboboxItem | null>(null);
-  const [opened, { open, close }] = useDisclosure(false);
   const [isPending, startTransition] = useTransition();
 
   function save() {
@@ -36,7 +36,8 @@ export default function PrerequisiteForm({ certificate }: Props) {
           minGrade: Number(grade.value),
         } as Prerequisite;
         await programRepository.addPrerequisite(programId, prerequisite);
-        close();
+        setCourse(null);
+        setGrade(null);
       }
     });
   }
@@ -44,8 +45,11 @@ export default function PrerequisiteForm({ certificate }: Props) {
   if (!certificate) return null;
   return (
     <>
-      <Modal opened={opened} onClose={close} title='New Prerequisite'>
-        <Stack>
+      <Flex justify={'space-between'}>
+        <Title order={4} fw={'lighter'}>
+          Prerequisites
+        </Title>
+        <Group>
           <Select
             data={certificate.courses}
             value={course}
@@ -59,23 +63,10 @@ export default function PrerequisiteForm({ certificate }: Props) {
             value={grade ? grade.value : null}
             onChange={(_, option) => setGrade(option)}
           />
-          <Button onClick={save} loading={isPending}>
-            Save
+          <Button color='gray' onClick={save} loading={isPending}>
+            Create
           </Button>
-        </Stack>
-      </Modal>
-
-      <Flex justify={'space-between'}>
-        <Title order={4} fw={'lighter'}>
-          Prerequisites
-        </Title>
-        <Button
-          color='gray'
-          onClick={open}
-          leftSection={<IconPlus size={16} />}
-        >
-          New
-        </Button>
+        </Group>
       </Flex>
       <Divider mt='xs' mb={'lg'} />
     </>
