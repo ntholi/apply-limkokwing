@@ -34,7 +34,10 @@ export default function PrerequisiteForm({ certificate, ...props }: Props) {
         const prerequisite = {
           certificateId: certificate.id,
           courseName: course,
-          minGrade: Number(grade.value),
+          minGrade: {
+            grade: grade.label,
+            level: Number(grade.value),
+          },
         } as Prerequisite;
         await programRepository.addPrerequisite(programId, prerequisite);
         setCourse(null);

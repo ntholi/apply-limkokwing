@@ -40,33 +40,36 @@ function PrerequisiteList(props: StackProps) {
   return (
     <Stack {...props}>
       {prerequisites.map((it) => (
-        <Flex key={`${it.certificateId}${it.courseName}`}>
-          <Flex w='100%' justify='space-between'>
-            <Group>
-              <ThemeIcon color='teal' size='sm' radius='xl'>
-                <IconCheck
-                  style={{ width: rem(18), height: rem(18) }}
-                  stroke={1.5}
-                />
-              </ThemeIcon>
-              <div>
-                <Text>{it.courseName}</Text>
-                <Text size='xs' c={'dimmed'}>
-                  Required Grade {it.minGrade}
-                </Text>
-              </div>
-            </Group>
-            <ActionIcon
-              variant='light'
-              color='red'
-              onClick={() => handleDelete(it)}
-            >
-              <IconTrashX
+        <Flex
+          key={`${it.certificateId}${it.courseName}`}
+          w='100%'
+          justify='space-between'
+          align={'center'}
+        >
+          <Group>
+            <ThemeIcon color='teal' size='sm' radius='xl'>
+              <IconCheck
                 style={{ width: rem(18), height: rem(18) }}
                 stroke={1.5}
               />
-            </ActionIcon>
-          </Flex>
+            </ThemeIcon>
+            <div>
+              <Text>{it.courseName}</Text>
+              <Text size='xs' c={'dimmed'}>
+                Required Grade: {it.minGrade.grade}
+              </Text>
+            </div>
+          </Group>
+          <ActionIcon
+            variant='light'
+            color='red'
+            onClick={() => handleDelete(it)}
+          >
+            <IconTrashX
+              style={{ width: rem(18), height: rem(18) }}
+              stroke={1.5}
+            />
+          </ActionIcon>
         </Flex>
       ))}
     </Stack>
