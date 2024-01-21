@@ -1,12 +1,9 @@
-import { Button, ButtonProps } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
-import { useSelector, useDispatch } from 'react-redux';
 import { Check } from 'lucide-react';
-import { RootState } from '@/lib/redux/store';
-import { setStep } from '@/lib/redux/features/stepSlice';
-import { useSession } from '../auth/SessionProvider';
+import { parseAsInteger, useQueryState } from 'nuqs';
 
 type Props = {
   className?: string;
@@ -43,9 +40,10 @@ type StepProps = {
 };
 
 function Step({ step, name, description, showLine = false }: StepProps) {
-  const activeStep = useSelector((state: RootState) => state.stepper.value);
-  const dispatch = useDispatch();
-  const { user } = useSession();
+  const [activeStep, setActiveStep] = useQueryState(
+    'step',
+    parseAsInteger.withDefault(1)
+  );
 
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   return (
@@ -64,14 +62,9 @@ function Step({ step, name, description, showLine = false }: StepProps) {
           variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
           color={activeStep && step <= activeStep ? 'primary' : 'default'}
           size='lg'
-          onClick={() =>
-            dispatch(
-              setStep({
-                value: step,
-                userId: user?.uid!,
-              })
-            )
-          }
+          onClick={() => {
+            setActiveStep(step);
+          }}
         >
           {activeStep && step < activeStep ? <Check /> : step}
         </Button>
