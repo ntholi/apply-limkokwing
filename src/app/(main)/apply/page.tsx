@@ -9,7 +9,7 @@ import {
   CardHeader,
 } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
-import InputSymbols from './InputSymbols';
+import Qualifications from './Qualifications';
 
 export default function StartPage() {
   return (
@@ -19,7 +19,7 @@ export default function StartPage() {
       <div className='mt-5 flex flex-col gap-5'>
         <Card>
           <CardBody className='items-center'>
-            <InputSymbols />
+            <Qualifications />
           </CardBody>
         </Card>
         <nav className='flex justify-between'>
