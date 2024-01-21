@@ -21,7 +21,7 @@ export default function Home() {
         className='mt-20 w-full sm:w-52'
         radius='full'
         as={NextLink}
-        href='/start'
+        href='/apply'
       >
         Apply Now
       </Button>
