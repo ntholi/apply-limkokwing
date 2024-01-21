@@ -1,9 +1,13 @@
 'use client';
-import { Certificate } from '@/app/(admin)/admin/certificates/Certificate';
+import {
+  Certificate,
+  GradingScheme,
+} from '@/app/(admin)/admin/certificates/Certificate';
 import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
 import {
   Autocomplete,
   AutocompleteItem,
+  Button,
   Divider,
   Select,
   SelectItem,
@@ -17,8 +21,7 @@ import {
   TableRow,
   getKeyValue,
 } from '@nextui-org/react';
-import React, { Key, use, useEffect } from 'react';
-import { useSession } from '../auth/SessionProvider';
+import React, { Key, useEffect, useTransition } from 'react';
 import { User } from 'firebase/auth';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Results } from '@/app/(admin)/admin/applications/modals/Results';
@@ -35,9 +38,9 @@ export default function Qualifications({ user }: Props) {
       {certificate && (
         <>
           <div className='mt-10'>
-            <ResultsInput certificate={certificate} />
+            <ResultsInput user={user} certificate={certificate} />
           </div>
-          <div className='mt-10'>
+          <div className='mt-2'>
             <ResultsTable user={user} />
           </div>
         </>
@@ -46,21 +49,68 @@ export default function Qualifications({ user }: Props) {
   );
 }
 
-function ResultsInput({ certificate }: { certificate: Certificate }) {
+function ResultsInput({
+  certificate,
+  user,
+}: {
+  certificate: Certificate;
+  user: User;
+}) {
+  const [course, setCourse] = React.useState<string>();
+  const [grade, setGrade] = React.useState<GradingScheme>();
+  const [isPending, startTransition] = useTransition();
+
+  function handleSubmit() {
+    startTransition(() => {
+      if (course && grade) {
+        applicationsRepository.addResults(user.uid, {
+          course,
+          grade,
+        });
+      }
+    });
+  }
+
   return (
     <div className='w-full'>
       <Divider className='mt-1 mb-5' />
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 '>
-        {certificate.courses.map((course) => (
-          <Select
-            key={course}
-            label={course}
-            variant='flat'
-            items={certificate.gradingSchemes}
-          >
-            {(it) => <SelectItem key={it.level}>{it.grade}</SelectItem>}
-          </Select>
-        ))}
+      <div className='grid grid-cols-12 gap-3 items-center'>
+        <Autocomplete
+          label='Course'
+          defaultItems={certificate.courses.map((course, index) => ({
+            key: index,
+            name: course,
+          }))}
+          className='col-span-5'
+          size='sm'
+          selectedKey={course}
+          onSelectionChange={(item: Key) => {
+            setCourse(item as string);
+          }}
+        >
+          {(item) => <SelectItem key={item.key}>{item.name}</SelectItem>}
+        </Autocomplete>
+        <Select
+          className='col-span-5'
+          label={'Results'}
+          variant='flat'
+          selectedKeys={grade?.grade}
+          onSelectionChange={(item) => {
+            console.log(item as string);
+            setGrade(certificate.gradingSchemes.find((it) => it.grade == item));
+          }}
+          isDisabled={!course}
+          size='sm'
+          items={certificate.gradingSchemes.map((it) => ({
+            key: it.level,
+            name: it.grade,
+          }))}
+        >
+          {(it) => <SelectItem key={it.key}>{it.name}</SelectItem>}
+        </Select>
+        <Button className='col-span-1' fullWidth={true} isDisabled={!grade}>
+          Add
+        </Button>
       </div>
     </div>
   );
@@ -122,14 +172,13 @@ function CertificateInput({ setValue, value }: CertificateProps) {
   return (
     <>
       {loading ? (
-        <Skeleton className='w-full sm:w-1/2 h-14 rounded-lg' />
+        <Skeleton className='w-full h-14 rounded-lg' />
       ) : (
         <Autocomplete
           label='Highest Qualification'
           className='w-full'
           selectedKey={value?.id}
           onSelectionChange={(item: Key) => {
-            console.log(item);
             setValue(certificates.find((c) => c.id === item));
           }}
           defaultItems={certificates}

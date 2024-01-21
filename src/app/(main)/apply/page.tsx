@@ -15,12 +15,11 @@ import { useSession } from '../auth/SessionProvider';
 import { useRouter } from 'next/navigation';
 
 export default function StartPage() {
-  const { user } = useSession();
+  const { user, status } = useSession();
   const router = useRouter();
 
-  if (!user) {
+  if (status === 'unauthenticated') {
     router.push('/signin');
-    return null;
   }
 
   return (
@@ -30,7 +29,7 @@ export default function StartPage() {
       <div className='mt-5 flex flex-col gap-5'>
         <Card>
           <CardBody className='items-center'>
-            <Qualifications user={user} />
+            {user && <Qualifications user={user} />}
           </CardBody>
         </Card>
         <nav className='flex justify-between'>
