@@ -61,9 +61,9 @@ function ResultsInput({
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit() {
-    startTransition(() => {
+    startTransition(async () => {
       if (course && grade) {
-        applicationsRepository.addResults(user.uid, {
+        await applicationsRepository.addResults(user.uid, {
           course,
           grade,
         });
@@ -95,20 +95,23 @@ function ResultsInput({
           label={'Results'}
           variant='flat'
           selectedKeys={grade?.grade}
-          onSelectionChange={(item) => {
-            console.log(item as string);
+          onChange={(event) => {
+            const item = event.target.value;
             setGrade(certificate.gradingSchemes.find((it) => it.grade == item));
           }}
           isDisabled={!course}
           size='sm'
-          items={certificate.gradingSchemes.map((it) => ({
-            key: it.level,
-            name: it.grade,
-          }))}
+          items={certificate.gradingSchemes}
         >
-          {(it) => <SelectItem key={it.key}>{it.name}</SelectItem>}
+          {(it) => <SelectItem key={it.grade}>{it.grade}</SelectItem>}
         </Select>
-        <Button className='col-span-1' fullWidth={true} isDisabled={!grade}>
+        <Button
+          className='col-span-1'
+          fullWidth={true}
+          isDisabled={!grade}
+          isLoading={isPending}
+          onClick={handleSubmit}
+        >
           Add
         </Button>
       </div>
