@@ -4,6 +4,7 @@ import { certificateRepository } from '@/app/(admin)/admin/certificates/reposito
 import {
   Autocomplete,
   AutocompleteItem,
+  Divider,
   Select,
   SelectItem,
   Skeleton,
@@ -28,7 +29,8 @@ export default function Qualifications() {
 function ResultsInput({ certificate }: { certificate: Certificate }) {
   return (
     <div className='w-full'>
-      <h3></h3>
+      <h3>Enter your {certificate.name} results</h3>
+      <Divider className='mt-1 mb-5' />
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 '>
         {certificate.courses.map((course) => (
           <Select
