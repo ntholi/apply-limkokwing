@@ -18,7 +18,7 @@ function Container({ children, as, width = 'lg', ...props }: Props) {
   };
 
   return (
-    <div className='bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] via-50% to-60% from-violet-900 via-slate-950 to-black min-h-[91.5vh]'>
+    <div className='bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] via-20% to-60% from-slate-900 via-slate-950 to-black min-h-[91.5vh]'>
       {React.createElement(
         as || 'div',
         {
