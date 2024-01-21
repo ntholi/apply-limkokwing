@@ -76,7 +76,7 @@ function CertificateInput({ setValue, value }: CertificateProps) {
         <Skeleton className='w-full sm:w-1/2 h-14 rounded-lg' />
       ) : (
         <Autocomplete
-          label='Highest Qualification Obtained'
+          label='Highest Qualification'
           className='w-full'
           selectedKey={value?.id}
           onSelectionChange={(item: Key) => {
@@ -84,6 +84,7 @@ function CertificateInput({ setValue, value }: CertificateProps) {
             setValue(certificates.find((c) => c.id === item));
           }}
           defaultItems={certificates}
+          description={!value && 'Please select your highest qualification'}
           isLoading={loading}
         >
           {(item) => (
