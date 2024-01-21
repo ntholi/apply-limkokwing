@@ -12,8 +12,9 @@ import {
   Flex,
   Stack,
   StackProps,
+  Switch,
 } from '@mantine/core';
-import { IconCheck, IconTrashX } from '@tabler/icons-react';
+import { IconCheck, IconQuestionMark, IconTrashX } from '@tabler/icons-react';
 
 function PrerequisiteList(props: StackProps) {
   const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([]);
@@ -37,6 +38,18 @@ function PrerequisiteList(props: StackProps) {
     }
   }
 
+  async function updatePrerequisite(
+    prerequisite: Prerequisite,
+    value: boolean
+  ) {
+    if (programId) {
+      await programRepository.updatePrerequisite(programId, prerequisite, {
+        ...prerequisite,
+        mandatory: value,
+      });
+    }
+  }
+
   return (
     <Stack {...props}>
       {prerequisites.map((it) => (
@@ -47,19 +60,32 @@ function PrerequisiteList(props: StackProps) {
           align={'center'}
         >
           <Group>
-            <ThemeIcon color='teal' size='sm' radius='xl'>
-              <IconCheck
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-              />
+            <ThemeIcon
+              color={it.mandatory ? 'teal' : 'gray'}
+              size='sm'
+              radius='xl'
+            >
+              <IconCheck size={'1rem'} stroke={2} />
             </ThemeIcon>
             <div>
               <Text>{it.courseName}</Text>
               <Text size='xs' c={'dimmed'}>
-                Required Grade: {it.minGrade.grade}
+                Mandatory Grade: {it.minGrade.grade}
               </Text>
             </div>
+            <Stack gap={5} ml={60}>
+              <Switch
+                onChange={(e) => updatePrerequisite(it, e.target.checked)}
+                size='xs'
+                checked={it.mandatory}
+                label={it.mandatory ? 'Mandatory' : 'Optional'}
+                description={`Prerequisite is ${
+                  it.mandatory ? 'Mandatory' : 'Optional'
+                }`}
+              />
+            </Stack>
           </Group>
+
           <ActionIcon
             variant='light'
             color='red'

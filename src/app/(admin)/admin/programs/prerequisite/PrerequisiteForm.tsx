@@ -34,6 +34,7 @@ export default function PrerequisiteForm({ certificate, ...props }: Props) {
         const prerequisite = {
           certificateId: certificate.id,
           courseName: course,
+          mandatory: true,
           minGrade: {
             grade: grade.label,
             level: Number(grade.value),

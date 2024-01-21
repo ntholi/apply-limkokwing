@@ -6,6 +6,7 @@ export interface Prerequisite extends Resource {
   certificateId: string;
   courseName: string;
   minGrade: GradingScheme;
+  mandatory: boolean;
 }
 
 export interface Program extends Resource {

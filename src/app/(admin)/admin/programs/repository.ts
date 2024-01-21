@@ -38,6 +38,26 @@ class ProgramRepository extends FirebaseRepository<Program> {
     }
     await setDoc(docRef, { ...program, prerequisites });
   }
+
+  async updatePrerequisite(
+    programId: string,
+    oldPrerequisite: Prerequisite,
+    newPrerequisite: Prerequisite
+  ) {
+    const docRef = doc(db, this.collectionName, programId);
+    const program = (await getDoc(docRef)).data() as Program;
+    const prerequisites = program.prerequisites || [];
+    const exists = prerequisites.find(
+      (it) =>
+        it.courseName === oldPrerequisite.courseName &&
+        it.certificateId === oldPrerequisite.certificateId
+    );
+    if (exists) {
+      const index = prerequisites.indexOf(exists);
+      prerequisites.splice(index, 1, newPrerequisite);
+    }
+    await setDoc(docRef, { ...program, prerequisites });
+  }
 }
 
 export const programRepository = new ProgramRepository();
