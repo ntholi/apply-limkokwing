@@ -72,12 +72,26 @@ class ProgramRepository extends FirebaseRepository<Program> {
         }
         return acc;
       }, 0);
-      console.log('credits', credits);
-      console.log('program.requiredCredits', program.requiredCredits);
       if (credits < program.requiredCredits) {
         return false;
       }
-
+      if (program.prerequisites) {
+        const prerequisites = program.prerequisites;
+        const passedPrerequisites = prerequisites.filter((prerequisite) => {
+          const result = results.find(
+            (result) => result.course === prerequisite.courseName
+          );
+          if (result) {
+            console.log(result);
+            console.log(result.grade.grade, prerequisite.minGrade.grade);
+            return result.grade.level <= prerequisite.minGrade.level;
+          }
+          return false;
+        });
+        if (passedPrerequisites.length !== prerequisites.length) {
+          return false;
+        }
+      }
       return true;
     });
     return suitablePrograms;
