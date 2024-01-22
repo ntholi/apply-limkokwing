@@ -139,10 +139,15 @@ function getScore(
 
   const score = credits * 2 - countPrerequisites.length;
   const maxScore = program.requiredCredits * 2;
+  const percentage = Math.round((maxScore / score) * 100);
 
-  return `Prerequisites: ${
-    countPrerequisites.length
-  }, credits ${credits}, Required Credits: ${
-    program.requiredCredits
-  } = ${Math.round((maxScore / score) * 100)}%`;
+  console.log(
+    `Prerequisites: ${
+      countPrerequisites.length
+    }, Obtained credits ${credits}(${score}), Required Credits: ${
+      program.requiredCredits
+    }(${maxScore}) = ${Math.round((maxScore / score) * 100)}%`
+  );
+
+  return percentage;
 }
