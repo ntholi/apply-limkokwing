@@ -126,6 +126,7 @@ function ResultsTable({ user }: { user: User }) {
       setResults(data.results);
     });
   }, [user]);
+  return null;
   return (
     <Table>
       <TableHeader>

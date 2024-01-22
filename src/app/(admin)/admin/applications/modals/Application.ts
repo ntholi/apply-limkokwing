@@ -10,7 +10,6 @@ type Status =
   | 'waitlisted';
 
 export interface Application extends Resource {
-  userId: string;
   status: Status;
   results: Results[];
 }
