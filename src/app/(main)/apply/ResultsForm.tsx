@@ -46,7 +46,9 @@ export default function ResultsForm({ certificate, user }: Props) {
 
   return (
     <>
-      <Button onPress={onOpen}>Add</Button>
+      <Button variant='bordered' onPress={onOpen}>
+        Add
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (

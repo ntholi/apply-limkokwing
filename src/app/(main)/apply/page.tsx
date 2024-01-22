@@ -1,14 +1,7 @@
 'use client';
 import React from 'react';
 import Container from '../core/Container';
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-} from '@nextui-org/react';
+import { Button, Card, CardBody } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
 import Qualifications from './Qualifications';
 import { useSession } from '../auth/SessionProvider';
@@ -27,7 +20,7 @@ export default function StartPage() {
       <h1 className='text-2xl'>Application</h1>
       <Stepper className='my-10' />
       <div className='mt-5 flex flex-col gap-5'>
-        <Card>
+        <Card className='bg-black/50'>
           <CardBody className='items-center'>
             {user && <Qualifications user={user} />}
           </CardBody>

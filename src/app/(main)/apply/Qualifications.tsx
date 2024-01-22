@@ -41,7 +41,10 @@ export default function Qualifications({ user }: Props) {
         <>
           <div className='mt-10'>
             <Divider className='mt-1 mb-5' />
-            <ResultsForm user={user} certificate={certificate} />
+            <div className='flex justify-between'>
+              <h2>Add your results</h2>
+              <ResultsForm user={user} certificate={certificate} />
+            </div>
           </div>
           <div className='mt-2'>
             <ResultsTable user={user} />
