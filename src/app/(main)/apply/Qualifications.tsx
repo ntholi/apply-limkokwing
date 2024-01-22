@@ -22,16 +22,11 @@ import React, { Key, useEffect } from 'react';
 import ResultsForm from './ResultsForm';
 
 type Props = {
+  application: Application | undefined;
   user: User;
 };
-export default function Qualifications({ user }: Props) {
+export default function Qualifications({ application, user }: Props) {
   const [certificate, setCertificate] = React.useState<Certificate>();
-  const [application, setApplication] = React.useState<Application>();
-  useEffect(() => {
-    return applicationsRepository.listenForDocument(user.uid, (data) => {
-      setApplication(data);
-    });
-  }, [user]);
 
   return (
     <div className='w-full'>
