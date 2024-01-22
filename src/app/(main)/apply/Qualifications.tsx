@@ -25,6 +25,7 @@ import React, { Key, useEffect, useTransition } from 'react';
 import { User } from 'firebase/auth';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Results } from '@/app/(admin)/admin/applications/modals/Results';
+import ResultsForm from './ResultsForm';
 
 type Props = {
   user: User;
@@ -38,83 +39,14 @@ export default function Qualifications({ user }: Props) {
       {certificate && (
         <>
           <div className='mt-10'>
-            <ResultsInput user={user} certificate={certificate} />
+            <Divider className='mt-1 mb-5' />
+            <ResultsForm user={user} certificate={certificate} />
           </div>
           <div className='mt-2'>
             <ResultsTable user={user} />
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-function ResultsInput({
-  certificate,
-  user,
-}: {
-  certificate: Certificate;
-  user: User;
-}) {
-  const [course, setCourse] = React.useState<string>();
-  const [grade, setGrade] = React.useState<GradingScheme>();
-  const [isPending, startTransition] = useTransition();
-
-  function handleSubmit() {
-    startTransition(async () => {
-      if (course && grade) {
-        await applicationsRepository.addResults(user.uid, {
-          course,
-          grade,
-        });
-      }
-    });
-  }
-
-  return (
-    <div className='w-full'>
-      <Divider className='mt-1 mb-5' />
-      <div className='grid grid-cols-12 gap-3 items-center'>
-        <Autocomplete
-          label='Course'
-          defaultItems={certificate.courses.map((course, index) => ({
-            key: index,
-            name: course,
-          }))}
-          className='col-span-5'
-          size='sm'
-          selectedKey={course}
-          onSelectionChange={(item: Key) => {
-            setCourse(item as string);
-          }}
-        >
-          {(item) => <SelectItem key={item.key}>{item.name}</SelectItem>}
-        </Autocomplete>
-        <Select
-          className='col-span-5'
-          label={'Results'}
-          variant='flat'
-          selectedKeys={grade?.grade}
-          onChange={(event) => {
-            const item = event.target.value;
-            setGrade(certificate.gradingSchemes.find((it) => it.grade == item));
-          }}
-          isDisabled={!course}
-          size='sm'
-          items={certificate.gradingSchemes}
-        >
-          {(it) => <SelectItem key={it.grade}>{it.grade}</SelectItem>}
-        </Select>
-        <Button
-          className='col-span-1'
-          fullWidth={true}
-          isDisabled={!grade}
-          isLoading={isPending}
-          onClick={handleSubmit}
-        >
-          Add
-        </Button>
-      </div>
     </div>
   );
 }
