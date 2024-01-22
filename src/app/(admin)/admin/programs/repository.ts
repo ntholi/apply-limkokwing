@@ -2,6 +2,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core/repository';
 import { Prerequisite, Program } from './modal/program';
 import { db } from '@/lib/config/firebase';
+import { Results } from '../applications/modals/Results';
 
 class ProgramRepository extends FirebaseRepository<Program> {
   constructor() {
@@ -57,6 +58,29 @@ class ProgramRepository extends FirebaseRepository<Program> {
       prerequisites.splice(index, 1, newPrerequisite);
     }
     await setDoc(docRef, { ...program, prerequisites });
+  }
+
+  async getSuitablePrograms(results?: Results[]) {
+    if (!results) {
+      return [];
+    }
+    const programs = await this.getAll();
+    const suitablePrograms = programs.filter((program) => {
+      const credits = results.reduce((acc, result) => {
+        if (result.grade.level <= program.requiredCredits) {
+          acc += 1;
+        }
+        return acc;
+      }, 0);
+      console.log('credits', credits);
+      console.log('program.requiredCredits', program.requiredCredits);
+      if (credits < program.requiredCredits) {
+        return false;
+      }
+
+      return true;
+    });
+    return suitablePrograms;
   }
 }
 
