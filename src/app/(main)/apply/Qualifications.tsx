@@ -71,7 +71,7 @@ function ResultsTable({ user }: { user: User }) {
           <TableRow key={result.course}>
             <TableCell>{result.course}</TableCell>
             <TableCell>{result.grade.grade}</TableCell>
-            <TableCell>
+            <TableCell className='flex justify-end'>
               <Button
                 isIconOnly
                 color='danger'
