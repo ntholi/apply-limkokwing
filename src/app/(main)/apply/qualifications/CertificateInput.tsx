@@ -19,18 +19,15 @@ export default function CertificateInput() {
       name: 'Other',
       passingGrade: null,
     } as Certificate;
-    async function getData() {
-      try {
-        const data = await certificateRepository.getAll();
+
+    certificateRepository
+      .getAll()
+      .then((data) => {
         setCertificates([...data, other]);
-        const certificate = data.find(
-          (c) => c.id === application?.certificate?.id
-        );
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    }
-    getData();
+      });
   }, [application?.certificate?.id]);
 
   function handleSelectionChange(item: Key) {
