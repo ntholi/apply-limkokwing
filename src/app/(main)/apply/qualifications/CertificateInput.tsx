@@ -4,13 +4,9 @@ import { certificateRepository } from '@/app/(admin)/admin/certificates/reposito
 import { Autocomplete, AutocompleteItem, Skeleton } from '@nextui-org/react';
 import React, { Key, useEffect } from 'react';
 import { useApplication } from '../ApplicationProvider';
+import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 
-type Props = {
-  setValue: (value: Certificate | undefined) => void;
-  value: Certificate | undefined;
-};
-
-export default function CertificateInput({ setValue, value }: Props) {
+export default function CertificateInput() {
   const [loading, setLoading] = React.useState(true);
   const [certificates, setCertificates] = React.useState<Certificate[]>([]);
   const application = useApplication();
@@ -30,13 +26,19 @@ export default function CertificateInput({ setValue, value }: Props) {
         const certificate = data.find(
           (c) => c.id === application?.certificate?.id
         );
-        setValue(certificate);
       } finally {
         setLoading(false);
       }
     }
     getData();
-  }, [application?.certificate?.id, setValue]);
+  }, [application?.certificate?.id]);
+
+  function handleSelectionChange(item: Key) {
+    const certificate = certificates.find((c) => c.id === item);
+    if (application && certificate) {
+      applicationsRepository.updateCertificate(application?.id, certificate);
+    }
+  }
 
   return (
     <>
@@ -46,13 +48,14 @@ export default function CertificateInput({ setValue, value }: Props) {
         <Autocomplete
           label='Highest Qualification'
           className='w-full'
-          selectedKey={value?.id}
+          selectedKey={application?.certificate?.id}
           variant='bordered'
-          onSelectionChange={(item: Key) => {
-            setValue(certificates.find((c) => c.id === item));
-          }}
+          onSelectionChange={handleSelectionChange}
           defaultItems={certificates}
-          description={!value && 'Please select your highest qualification'}
+          description={
+            !application?.certificate &&
+            'Please select your highest qualification'
+          }
           isLoading={loading}
         >
           {(item) => (

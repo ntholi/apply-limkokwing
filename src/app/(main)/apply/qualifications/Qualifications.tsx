@@ -12,18 +12,30 @@ import {
   TableRow,
 } from '@nextui-org/react';
 import { IconTrash } from '@tabler/icons-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useApplication } from '../ApplicationProvider';
 import ResultsForm from './ResultsForm';
 import CertificateInput from './CertificateInput';
+import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
 
 export default function Qualifications() {
   const [certificate, setCertificate] = React.useState<Certificate>();
   const application = useApplication();
 
+  useEffect(() => {
+    certificateRepository.getAll().then((data) => {
+      const certificate = data.find(
+        (c) => c.id === application?.certificate?.id
+      );
+      if (certificate) {
+        setCertificate(certificate);
+      }
+    });
+  }, [application]);
+
   return (
     <div className='w-full'>
-      <CertificateInput setValue={setCertificate} value={certificate} />
+      <CertificateInput />
       {certificate && (
         <>
           <div className='mt-10'>

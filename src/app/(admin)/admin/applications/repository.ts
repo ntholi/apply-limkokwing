@@ -3,6 +3,7 @@ import { FirebaseRepository } from '../../admin-core';
 import { Application } from './modals/Application';
 import { Results } from './modals/Results';
 import { db } from '@/lib/config/firebase';
+import { Certificate } from '../certificates/Certificate';
 
 class ApplicationsRepository extends FirebaseRepository<Application> {
   constructor() {
@@ -56,6 +57,22 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       await this.update(userId, {
         ...application,
         results: list.filter((item) => item.course !== results.course),
+      });
+    }
+  }
+
+  async updateCertificate(userId: string, certificate: Certificate) {
+    const application = await this.get(userId);
+    if (!application) {
+      await this.createForUser(userId);
+    }
+    if (application) {
+      await this.update(userId, {
+        ...application,
+        certificate: {
+          id: certificate.id,
+          name: certificate.name,
+        },
       });
     }
   }
