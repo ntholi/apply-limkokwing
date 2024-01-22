@@ -24,10 +24,12 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       await this.createForUser(userId);
     }
     const list = application?.results || [];
+    const newResults = list.filter((item) => item.course !== results.course);
+    newResults.push(results);
     if (application) {
       await this.update(userId, {
         ...application,
-        results: [...list, results],
+        results: newResults,
       });
     }
   }
