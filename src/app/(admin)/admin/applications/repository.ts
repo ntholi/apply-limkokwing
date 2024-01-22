@@ -31,6 +31,20 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       });
     }
   }
+
+  async removeResult(userId: string, results: Results) {
+    const application = await this.get(userId);
+    if (!application) {
+      await this.createForUser(userId);
+    }
+    const list = application?.results || [];
+    if (application) {
+      await this.update(userId, {
+        ...application,
+        results: list.filter((item) => item.course !== results.course),
+      });
+    }
+  }
 }
 
 export const applicationsRepository = new ApplicationsRepository();

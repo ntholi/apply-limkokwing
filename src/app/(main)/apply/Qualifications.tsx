@@ -26,6 +26,7 @@ import { User } from 'firebase/auth';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Results } from '@/app/(admin)/admin/applications/modals/Results';
 import ResultsForm from './ResultsForm';
+import { IconTrash } from '@tabler/icons-react';
 
 type Props = {
   user: User;
@@ -58,21 +59,33 @@ function ResultsTable({ user }: { user: User }) {
       setResults(data.results);
     });
   }, [user]);
-  return null;
   return (
     <Table>
       <TableHeader>
-        <TableColumn>course</TableColumn>
-        <TableColumn>grade</TableColumn>
+        <TableColumn>Course</TableColumn>
+        <TableColumn>Grade</TableColumn>
+        <TableColumn>{''}</TableColumn>
       </TableHeader>
-      <TableBody items={results}>
-        {(item) => (
-          <TableRow key={item.course}>
-            {(columnKey) => (
-              <TableCell>{getKeyValue(item, columnKey)}</TableCell>
-            )}
+      <TableBody>
+        {results.map((result) => (
+          <TableRow key={result.course}>
+            <TableCell>{result.course}</TableCell>
+            <TableCell>{result.grade.grade}</TableCell>
+            <TableCell>
+              <Button
+                isIconOnly
+                color='danger'
+                aria-label='Delete'
+                size='sm'
+                onClick={() => {
+                  applicationsRepository.removeResult(user.uid, result);
+                }}
+              >
+                <IconTrash size={'1rem'} />
+              </Button>
+            </TableCell>
           </TableRow>
-        )}
+        ))}
       </TableBody>
     </Table>
   );
