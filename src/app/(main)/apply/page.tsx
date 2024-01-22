@@ -14,7 +14,12 @@ export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const [application, setApplication] = React.useState<Application>();
   const { user, status } = useSession();
+  const [canProceed, setCanProceed] = React.useState(false);
   const router = useRouter();
+
+  if (status === 'unauthenticated') {
+    router.push('/signin');
+  }
 
   useEffect(() => {
     if (!user) return;
@@ -23,9 +28,15 @@ export default function StartPage() {
     });
   }, [user]);
 
-  if (status === 'unauthenticated') {
-    router.push('/signin');
-  }
+  useEffect(() => {
+    if (!application) return;
+    if (step === 1 && application.results.length > 0) {
+      setCanProceed(true);
+    } else {
+      setCanProceed(false);
+    }
+  }, [application, step]);
+
   if (!user) {
     return (
       <div className='w-full mt-20 flex justify-center'>
@@ -61,6 +72,7 @@ export default function StartPage() {
           </Button>
           <Button
             color='primary'
+            isDisabled={!canProceed}
             onClick={() => {
               setStep(step + 1);
             }}
