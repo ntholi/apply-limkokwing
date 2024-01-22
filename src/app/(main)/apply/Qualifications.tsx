@@ -27,12 +27,19 @@ import { applicationsRepository } from '@/app/(admin)/admin/applications/reposit
 import { Results } from '@/app/(admin)/admin/applications/modals/Results';
 import ResultsForm from './ResultsForm';
 import { IconTrash } from '@tabler/icons-react';
+import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 
 type Props = {
   user: User;
 };
 export default function Qualifications({ user }: Props) {
   const [certificate, setCertificate] = React.useState<Certificate>();
+  const [application, setApplication] = React.useState<Application>();
+  useEffect(() => {
+    return applicationsRepository.listenForDocument(user.uid, (data) => {
+      setApplication(data);
+    });
+  }, [user]);
 
   return (
     <div className='w-full'>
@@ -42,12 +49,15 @@ export default function Qualifications({ user }: Props) {
           <div className='mt-10'>
             <Divider className='mt-1 mb-5' />
             <div className='flex justify-between'>
-              <h2>Add your results</h2>
+              <div>
+                <h2>Add your results</h2>
+                <p></p>
+              </div>
               <ResultsForm user={user} certificate={certificate} />
             </div>
           </div>
           <div className='mt-2'>
-            <ResultsTable user={user} />
+            <ResultsTable application={application} />
           </div>
         </>
       )}
@@ -55,13 +65,8 @@ export default function Qualifications({ user }: Props) {
   );
 }
 
-function ResultsTable({ user }: { user: User }) {
-  const [results, setResults] = React.useState<Results[]>([]);
-  useEffect(() => {
-    return applicationsRepository.listenForDocument(user.uid, (data) => {
-      setResults(data.results);
-    });
-  }, [user]);
+function ResultsTable({ application }: { application?: Application }) {
+  const results = application?.results ?? [];
   return (
     <Table>
       <TableHeader>
@@ -81,7 +86,7 @@ function ResultsTable({ user }: { user: User }) {
                 aria-label='Delete'
                 size='sm'
                 onClick={() => {
-                  applicationsRepository.removeResult(user.uid, result);
+                  applicationsRepository.removeResult(application!.id, result);
                 }}
               >
                 <IconTrash size={'1rem'} />

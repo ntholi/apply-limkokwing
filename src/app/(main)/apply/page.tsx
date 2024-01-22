@@ -20,8 +20,8 @@ export default function StartPage() {
       <h1 className='text-2xl'>Application</h1>
       <Stepper className='my-10' />
       <div className='mt-5 flex flex-col gap-5'>
-        <Card className='bg-black/50'>
-          <CardBody className='items-center'>
+        <Card className='bg-black/40'>
+          <CardBody className='items-center p-8'>
             {user && <Qualifications user={user} />}
           </CardBody>
         </Card>
