@@ -73,7 +73,7 @@ class ProgramRepository extends FirebaseRepository<Program> {
   async getWithMinCredits(minCredits: number) {
     const q = query(
       collection(db, this.collectionName),
-      where('minCredits', '>=', minCredits)
+      where('requiredCredits', '<=', minCredits)
     );
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
@@ -105,6 +105,9 @@ class ProgramRepository extends FirebaseRepository<Program> {
           )
         );
     });
+    console.log('credits', credits.length);
+    console.log('withMatchingCredits', withMatchingCredits);
+    console.log('programs', programs);
     return programs.map((it) => {
       const prerequisites = it.prerequisites || [];
       const match = 20;
