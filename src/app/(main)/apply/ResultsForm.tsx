@@ -33,6 +33,8 @@ export default function ResultsForm({ certificate, user }: Props) {
   function handleSubmit() {
     startTransition(async () => {
       if (course && grade) {
+        setCourse(undefined);
+        setGrade(undefined);
         await applicationsRepository.addResults(user.uid, {
           course,
           grade,
@@ -55,10 +57,12 @@ export default function ResultsForm({ certificate, user }: Props) {
               <ModalBody>
                 <Autocomplete
                   label='Course'
-                  defaultItems={certificate.courses.map((course, index) => ({
-                    key: index,
-                    name: course,
-                  }))}
+                  defaultItems={certificate.courses
+                    .sort((a, b) => a.localeCompare(b))
+                    .map((course) => ({
+                      key: course,
+                      name: course,
+                    }))}
                   className='col-span-5'
                   size='sm'
                   selectedKey={course}
