@@ -17,8 +17,8 @@ export default function Stepper({ className }: Props) {
       name: 'Qualifications',
       description: 'Enter your qualifications',
     },
-    { step: 2, name: 'Documents', description: 'Upload your documents' },
-    { step: 3, name: 'Review', description: 'Review your application' },
+    { step: 2, name: 'Course', description: 'Pick a course you qualify for' },
+    { step: 3, name: 'Documents', description: 'Upload your documents' },
   ];
   return (
     <section
