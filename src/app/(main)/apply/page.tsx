@@ -16,6 +16,7 @@ export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const { user, status } = useSession();
   const [canProceed, setCanProceed] = React.useState(false);
+  const [program] = useQueryState('program');
   const router = useRouter();
   const application = useApplication();
 
@@ -27,10 +28,12 @@ export default function StartPage() {
     if (!application) return;
     if (step === 1 && application.results.length > 0) {
       setCanProceed(true);
+    } else if (step === 2 && program) {
+      setCanProceed(true);
     } else {
       setCanProceed(false);
     }
-  }, [application, step]);
+  }, [application, step, program]);
 
   if (!application) {
     return (
