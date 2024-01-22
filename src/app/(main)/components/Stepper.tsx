@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import { Check } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import useIsMobile from '@/app/hooks/useIsMobile';
 
 type Props = {
   className?: string;
@@ -41,12 +42,9 @@ type StepProps = {
 };
 
 function Step({ step, name, description, showLine = false }: StepProps) {
-  const [activeStep, setActiveStep] = useQueryState(
-    'step',
-    parseAsInteger.withDefault(1)
-  );
-
+  const [activeStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const isMobile = useIsMobile();
   return (
     <>
       <article
@@ -62,18 +60,18 @@ function Step({ step, name, description, showLine = false }: StepProps) {
           isIconOnly
           variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
           color={activeStep && step <= activeStep ? 'primary' : 'default'}
-          size='lg'
-          onClick={() => {
-            setActiveStep(step);
-          }}
+          size={isMobile ? 'md' : 'lg'}
         >
           {activeStep && step < activeStep ? <Check /> : step}
         </Button>
         <div className='flex flex-col'>
-          <span className='font-bold text-sm'>{name}</span>
-          <span className='text-xs'>{description}</span>
+          <span className='font-light sm:font-bold text-xs sm:text-sm'>
+            {name}
+          </span>
+          {showLine && <div className='h-2 border-b w-full block sm:hidden' />}
+          <span className='hidden sm:block text-xs'>{description}</span>
         </div>
-        {showLine && <div className='h-2 border-b w-full' />}
+        {showLine && <div className='h-2 border-b w-full hidden sm:block' />}
       </article>
     </>
   );

@@ -21,7 +21,7 @@ export default function StartPage() {
       <Stepper className='my-10' />
       <div className='mt-5 flex flex-col gap-5'>
         <Card className='bg-black/40'>
-          <CardBody className='items-center p-8'>
+          <CardBody className='items-center p-4 sm:p-8'>
             {user && <Qualifications user={user} />}
           </CardBody>
         </Card>

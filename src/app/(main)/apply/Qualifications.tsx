@@ -61,7 +61,7 @@ export default function Qualifications({ user }: Props) {
 function ResultsTable({ application }: { application?: Application }) {
   const results = application?.results ?? [];
   return (
-    <Table>
+    <Table removeWrapper>
       <TableHeader>
         <TableColumn>Course</TableColumn>
         <TableColumn>Grade</TableColumn>
