@@ -16,4 +16,8 @@ export interface Application extends Resource {
     id: string;
     name: string;
   };
+  program: {
+    id: string;
+    name: string;
+  };
 }

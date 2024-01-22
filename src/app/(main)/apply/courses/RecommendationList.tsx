@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import {
@@ -15,6 +15,7 @@ import {
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { useQueryState } from 'nuqs';
 import clsx from 'clsx';
+import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 
 type Props = {
   application: Application;
@@ -30,21 +31,40 @@ export default function RecommendationList({ application }: Props) {
   return (
     <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
       {courses.map((course) => (
-        <RecommendationCard key={course.programId} item={course} />
+        <RecommendationCard
+          application={application}
+          key={course.programId}
+          item={course}
+        />
       ))}
     </section>
   );
 }
 
-const RecommendationCard = ({ item }: { item: Recommendation }) => {
-  const [active, setActive] = useQueryState('program');
+const RecommendationCard = ({
+  item,
+  application,
+}: {
+  item: Recommendation;
+  application: Application;
+}) => {
+  const handleSelect = () => {
+    applicationsRepository
+      .updateProgram(application.id, {
+        id: item.programId,
+        name: item.programName,
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
   return (
     <Card
       isPressable
-      className={clsx([active === item.programId && 'border border-primary'])}
-      onPress={() => {
-        setActive(item.programId);
-      }}
+      className={clsx([
+        item.programId == application.program.id && 'border border-primary',
+      ])}
+      onPress={handleSelect}
     >
       <CardHeader className='flex gap-3'>
         <Button
