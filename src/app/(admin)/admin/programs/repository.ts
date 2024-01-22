@@ -138,6 +138,7 @@ function getScore(
   });
 
   const score = credits * 2 - countPrerequisites.length;
+  const maxScore = program.requiredCredits * 2;
 
-  return `${score}/${program.requiredCredits}`;
+  return `${maxScore}/${score} = ${Math.round((maxScore / score) * 100)}%`;
 }
