@@ -1,33 +1,25 @@
 'use client';
-import {
-  Certificate,
-  GradingScheme,
-} from '@/app/(admin)/admin/certificates/Certificate';
+import { Application } from '@/app/(admin)/admin/applications/modals/Application';
+import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
+import { Certificate } from '@/app/(admin)/admin/certificates/Certificate';
 import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
 import {
   Autocomplete,
   AutocompleteItem,
   Button,
   Divider,
-  Select,
-  SelectItem,
   Skeleton,
-  Slider,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  getKeyValue,
 } from '@nextui-org/react';
-import React, { Key, useEffect, useTransition } from 'react';
-import { User } from 'firebase/auth';
-import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
-import { Results } from '@/app/(admin)/admin/applications/modals/Results';
-import ResultsForm from './ResultsForm';
 import { IconTrash } from '@tabler/icons-react';
-import { Application } from '@/app/(admin)/admin/applications/modals/Application';
+import { User } from 'firebase/auth';
+import React, { Key, useEffect } from 'react';
+import ResultsForm from './ResultsForm';
 
 type Props = {
   user: User;
@@ -47,11 +39,12 @@ export default function Qualifications({ user }: Props) {
       {certificate && (
         <>
           <div className='mt-10'>
-            <Divider className='mt-1 mb-5' />
             <div className='flex justify-between'>
               <div>
                 <h2>Add your results</h2>
-                <p></p>
+                <p className='text-xs text-gray-500'>
+                  {application?.results.length} results added
+                </p>
               </div>
               <ResultsForm user={user} certificate={certificate} />
             </div>
@@ -135,6 +128,7 @@ function CertificateInput({ setValue, value }: CertificateProps) {
           label='Highest Qualification'
           className='w-full'
           selectedKey={value?.id}
+          variant='bordered'
           onSelectionChange={(item: Key) => {
             setValue(certificates.find((c) => c.id === item));
           }}

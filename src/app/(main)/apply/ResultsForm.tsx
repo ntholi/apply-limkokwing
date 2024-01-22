@@ -17,6 +17,7 @@ import {
 } from '@/app/(admin)/admin/certificates/Certificate';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { User } from 'firebase/auth';
+import { IconPlus } from '@tabler/icons-react';
 
 type Props = {
   certificate: Certificate;
@@ -46,7 +47,11 @@ export default function ResultsForm({ certificate, user }: Props) {
 
   return (
     <>
-      <Button variant='bordered' onPress={onOpen}>
+      <Button
+        variant='bordered'
+        onPress={onOpen}
+        startContent={<IconPlus size={'1rem'} />}
+      >
         Add
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
