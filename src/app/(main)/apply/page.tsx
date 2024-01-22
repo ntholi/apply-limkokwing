@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Container from '../core/Container';
 import { Button, Card, CardBody, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
-import Qualifications from './Qualifications';
+import Qualifications from './qualifications/Qualifications';
 import { useSession } from '../auth/SessionProvider';
 import { useRouter } from 'next/navigation';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
