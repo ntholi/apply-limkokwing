@@ -101,7 +101,7 @@ class ProgramRepository extends FirebaseRepository<Program> {
           credits.find(
             (it) =>
               it.course === prerequisite.courseName &&
-              it.grade.level < prerequisite.minGrade.level
+              it.grade.level <= prerequisite.minGrade.level
           )
         );
     });
