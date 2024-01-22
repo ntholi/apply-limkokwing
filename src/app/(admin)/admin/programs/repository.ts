@@ -1,8 +1,18 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core/repository';
 import { Prerequisite, Program } from './modal/program';
 import { db } from '@/lib/config/firebase';
 import { Results } from '../applications/modals/Results';
+import { Application } from '../applications/modals/Application';
+import { certificateRepository } from '../certificates/repository';
 
 class ProgramRepository extends FirebaseRepository<Program> {
   constructor() {
@@ -60,41 +70,51 @@ class ProgramRepository extends FirebaseRepository<Program> {
     await setDoc(docRef, { ...program, prerequisites });
   }
 
-  async getSuitablePrograms(results?: Results[]) {
-    if (!results) {
+  async getWithMinCredits(minCredits: number) {
+    const q = query(
+      collection(db, this.collectionName),
+      where('minCredits', '>=', minCredits)
+    );
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return [];
+    return snapshot.docs.map(
+      (doc) => ({ ...doc.data(), id: doc.id } as Program)
+    );
+  }
+
+  async getRecommendations(
+    application: Application
+  ): Promise<Recommendation[]> {
+    if (application.results.length === 0) {
       return [];
     }
-    const programs = await this.getAll();
-    const suitablePrograms = programs.filter((program) => {
-      const credits = results.reduce((acc, result) => {
-        if (result.grade.level <= program.requiredCredits) {
-          acc += 1;
-        }
-        return acc;
-      }, 0);
-      if (credits < program.requiredCredits) {
-        return false;
-      }
-      if (program.prerequisites) {
-        const prerequisites = program.prerequisites;
-        const passedPrerequisites = prerequisites.filter((prerequisite) => {
-          const result = results.find(
-            (result) => result.course === prerequisite.courseName
-          );
-          if (result) {
-            console.log(result);
-            console.log(result.grade.grade, prerequisite.minGrade.grade);
-            return result.grade.level <= prerequisite.minGrade.level;
-          }
-          return false;
-        });
-        if (passedPrerequisites.length !== prerequisites.length) {
-          return false;
-        }
-      }
-      return true;
+    const cert = await certificateRepository.get(application.certificate.id);
+    const credits = application.results.filter(
+      (it) => it.grade.level <= (cert?.passingGrade?.level || 3)
+    );
+    const withMatchingCredits = await this.getWithMinCredits(credits.length);
+    const programs = withMatchingCredits.filter((it) => {
+      const prerequisites = it.prerequisites || [];
+      return prerequisites
+        .filter((it) => it.mandatory)
+        .every((prerequisite) =>
+          credits.find(
+            (it) =>
+              it.course === prerequisite.courseName &&
+              it.grade.level < prerequisite.minGrade.level
+          )
+        );
     });
-    return suitablePrograms;
+    return programs.map((it) => {
+      const prerequisites = it.prerequisites || [];
+      const match = 20;
+      return {
+        programId: it.id,
+        programName: it.name,
+        faculty: it.faculty,
+        match,
+      } as Recommendation;
+    });
   }
 }
 

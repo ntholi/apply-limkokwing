@@ -9,7 +9,7 @@ type Props = {
 export default function CourseList({ application }: Props) {
   const [courses, setCourses] = React.useState([]);
   useEffect(() => {
-    programRepository.getSuitablePrograms(application?.results).then((data) => {
+    programRepository.getRecommendations(application).then((data) => {
       console.log('Done', data);
     });
   }, [application]);
