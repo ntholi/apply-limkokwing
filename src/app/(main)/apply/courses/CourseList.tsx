@@ -7,11 +7,20 @@ type Props = {
 };
 
 export default function CourseList({ application }: Props) {
-  const [courses, setCourses] = React.useState([]);
+  const [courses, setCourses] = React.useState<Recommendation[]>([]);
   useEffect(() => {
     programRepository.getRecommendations(application).then((data) => {
-      console.log('Done', data);
+      setCourses(data);
     });
   }, [application]);
-  return <div>CourseList</div>;
+  return (
+    <div>
+      {courses.map((course) => (
+        <div key={course.programId}>
+          <div>{course.programName}</div>
+          <div>{course.match}</div>
+        </div>
+      ))}
+    </div>
+  );
 }

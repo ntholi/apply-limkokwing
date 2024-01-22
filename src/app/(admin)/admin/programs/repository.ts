@@ -82,9 +82,7 @@ class ProgramRepository extends FirebaseRepository<Program> {
     );
   }
 
-  async getRecommendations(
-    application: Application
-  ): Promise<Recommendation[]> {
+  async getRecommendations(application: Application) {
     if (application.results.length === 0) {
       return [];
     }
@@ -105,20 +103,41 @@ class ProgramRepository extends FirebaseRepository<Program> {
           )
         );
     });
-    console.log('credits', credits.length);
-    console.log('withMatchingCredits', withMatchingCredits);
-    console.log('programs', programs);
+
     return programs.map((it) => {
       const prerequisites = it.prerequisites || [];
-      const match = 20;
       return {
         programId: it.id,
         programName: it.name,
         faculty: it.faculty,
-        match,
+        match: getScore(it, credits, prerequisites),
       } as Recommendation;
     });
   }
 }
 
 export const programRepository = new ProgramRepository();
+
+function getScore(
+  program: Program,
+  results: Results[],
+  prerequisites: Prerequisite[]
+) {
+  const credits = results
+    .sort((a, b) => a.grade.level - b.grade.level)
+    .slice(0, program.requiredCredits)
+    .reduce((acc, curr) => acc + curr.grade.level, 0);
+
+  const countPrerequisites = results.filter((it) => {
+    const prerequisite = prerequisites.find(
+      (prerequisite) =>
+        prerequisite.courseName === it.course &&
+        prerequisite.minGrade.level <= it.grade.level
+    );
+    return !!prerequisite;
+  });
+
+  const score = credits * 2 - countPrerequisites.length;
+
+  return `${score}/${program.requiredCredits}`;
+}
