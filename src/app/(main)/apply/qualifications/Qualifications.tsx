@@ -17,16 +17,13 @@ import {
   TableRow,
 } from '@nextui-org/react';
 import { IconTrash } from '@tabler/icons-react';
-import { User } from 'firebase/auth';
 import React, { Key, useEffect } from 'react';
 import ResultsForm from './ResultsForm';
+import { useApplication } from '../ApplicationProvider';
 
-type Props = {
-  application: Application | undefined;
-  user: User;
-};
-export default function Qualifications({ application, user }: Props) {
+export default function Qualifications() {
   const [certificate, setCertificate] = React.useState<Certificate>();
+  const application = useApplication();
 
   return (
     <div className='w-full'>
@@ -41,7 +38,7 @@ export default function Qualifications({ application, user }: Props) {
                   {application?.results.length} results added
                 </p>
               </div>
-              <ResultsForm user={user} certificate={certificate} />
+              <ResultsForm certificate={certificate} />
             </div>
           </div>
           <div className='mt-2'>
@@ -95,24 +92,30 @@ type CertificateProps = {
 function CertificateInput({ setValue, value }: CertificateProps) {
   const [loading, setLoading] = React.useState(true);
   const [certificates, setCertificates] = React.useState<Certificate[]>([]);
+  const application = useApplication();
 
   useEffect(() => {
-    certificateRepository
-      .getAll()
-      .then((data) => {
-        setCertificates([
-          ...data,
-          {
-            courses: [],
-            gradingSchemes: [],
-            id: '0',
-            name: 'Other',
-            passingGrade: null,
-          },
-        ]);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    const other = {
+      courses: [],
+      gradingSchemes: [],
+      id: '-1',
+      name: 'Other',
+      passingGrade: null,
+    } as Certificate;
+    async function getData() {
+      try {
+        const data = await certificateRepository.getAll();
+        setCertificates([...data, other]);
+        const certificate = data.find(
+          (c) => c.id === application?.certificate?.id
+        );
+        setValue(certificate);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getData();
+  }, [application?.certificate?.id, setValue]);
 
   return (
     <>

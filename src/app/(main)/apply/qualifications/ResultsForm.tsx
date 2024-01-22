@@ -18,14 +18,15 @@ import {
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { User } from 'firebase/auth';
 import { IconPlus } from '@tabler/icons-react';
+import { useApplication } from '../ApplicationProvider';
 
 type Props = {
   certificate: Certificate;
-  user: User;
 };
 
-export default function ResultsForm({ certificate, user }: Props) {
+export default function ResultsForm({ certificate }: Props) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const application = useApplication();
 
   const [course, setCourse] = React.useState<string>();
   const [grade, setGrade] = React.useState<GradingScheme>();
@@ -33,10 +34,10 @@ export default function ResultsForm({ certificate, user }: Props) {
 
   function handleSubmit() {
     startTransition(async () => {
-      if (course && grade) {
+      if (course && grade && application) {
         setCourse(undefined);
         setGrade(undefined);
-        await applicationsRepository.addResults(user.uid, {
+        await applicationsRepository.addResults(application.id, {
           course,
           grade,
         });

@@ -9,24 +9,18 @@ import { useRouter } from 'next/navigation';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { useApplication } from './ApplicationProvider';
 
 export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
-  const [application, setApplication] = React.useState<Application>();
   const { user, status } = useSession();
   const [canProceed, setCanProceed] = React.useState(false);
   const router = useRouter();
+  const application = useApplication();
 
   if (status === 'unauthenticated') {
     router.push('/signin');
   }
-
-  useEffect(() => {
-    if (!user) return;
-    return applicationsRepository.listenForDocument(user.uid, (data) => {
-      setApplication(data);
-    });
-  }, [user]);
 
   useEffect(() => {
     if (!application) return;
@@ -45,9 +39,7 @@ export default function StartPage() {
     );
   }
 
-  const steps = [
-    <Qualifications key={1} application={application} user={user} />,
-  ];
+  const steps = [<Qualifications key={1} />];
 
   return (
     <Container>

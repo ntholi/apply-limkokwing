@@ -32,8 +32,8 @@ export default function ApplicationProvider({ children }: PropsWithChildren) {
 
 export function useApplication() {
   const context = React.useContext(ApplicationContext);
-  if (context === undefined) {
-    throw new Error('useApplication must be used within a ApplicationProvider');
-  }
+  // if (context === undefined) {
+  //   throw new Error('useApplication must be used within a ApplicationProvider');
+  // }
   return context;
 }

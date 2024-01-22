@@ -12,4 +12,8 @@ type Status =
 export interface Application extends Resource {
   status: Status;
   results: Results[];
+  certificate: {
+    id: string;
+    name: string;
+  };
 }
