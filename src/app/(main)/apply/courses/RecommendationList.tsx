@@ -13,12 +13,14 @@ import {
   Link,
 } from '@nextui-org/react';
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
+import { useQueryState } from 'nuqs';
+import clsx from 'clsx';
 
 type Props = {
   application: Application;
 };
 
-export default function CourseList({ application }: Props) {
+export default function RecommendationList({ application }: Props) {
   const [courses, setCourses] = React.useState<Recommendation[]>([]);
   useEffect(() => {
     programRepository.getRecommendations(application).then((data) => {
@@ -35,8 +37,15 @@ export default function CourseList({ application }: Props) {
 }
 
 const RecommendationCard = ({ item }: { item: Recommendation }) => {
+  const [active, setActive] = useQueryState('program');
   return (
-    <Card isPressable>
+    <Card
+      isPressable
+      className={clsx([active === item.programId && 'border border-primary'])}
+      onPress={() => {
+        setActive(item.programId);
+      }}
+    >
       <CardHeader className='flex gap-3'>
         <Button
           color={getColor(item.match)}
@@ -60,16 +69,6 @@ const RecommendationCard = ({ item }: { item: Recommendation }) => {
       <CardBody className='text-small'>
         <p>Make beautiful websites regardless of your design experience.</p>
       </CardBody>
-      {/* <Divider />
-      <CardFooter>
-        <Link
-          isExternal
-          showAnchorIcon
-          href='https://github.com/nextui-org/nextui'
-        >
-          Visit source code on GitHub.
-        </Link>
-      </CardFooter> */}
     </Card>
   );
 };

@@ -10,7 +10,7 @@ import { applicationsRepository } from '@/app/(admin)/admin/applications/reposit
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
-import CourseList from './courses/CourseList';
+import RecommendationList from './courses/RecommendationList';
 
 export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
@@ -42,7 +42,7 @@ export default function StartPage() {
 
   const steps = [
     <Qualifications key={1} />,
-    <CourseList key={2} application={application} />,
+    <RecommendationList key={2} application={application} />,
   ];
 
   return (
