@@ -12,6 +12,7 @@ import {
 } from '@nextui-org/react';
 import Image from 'next/image';
 import AccountButton from '../auth/AccountButton';
+import NextLink from 'next/link';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -19,14 +20,10 @@ export default function Navbar() {
   const menuItems = [
     {
       name: 'Home',
-      href: '#',
+      href: '/',
     },
     {
       name: 'Courses',
-      href: '#',
-    },
-    {
-      name: 'Contact',
       href: '#',
     },
   ];
@@ -45,27 +42,31 @@ export default function Navbar() {
 
       <NavbarContent className='sm:hidden pr-3' justify='center'>
         <NavbarBrand>
-          <Image
-            src={'/images/logo.png'}
-            className='w-full h-16'
-            height={100}
-            width={100}
-            priority={false}
-            alt='Logo'
-          />
+          <NextLink href='/'>
+            <Image
+              src={'/images/logo.png'}
+              className='w-full h-16'
+              height={100}
+              width={100}
+              priority={false}
+              alt='Logo'
+            />
+          </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className='hidden sm:flex gap-4' justify='center'>
         <NavbarBrand>
-          <Image
-            src={'/images/logo.png'}
-            className='w-full h-16'
-            height={100}
-            width={100}
-            priority={false}
-            alt='Logo'
-          />
+          <NextLink href='/'>
+            <Image
+              src={'/images/logo.png'}
+              className='w-full h-16'
+              height={100}
+              width={100}
+              priority={false}
+              alt='Logo'
+            />
+          </NextLink>
         </NavbarBrand>
         {menuItems.map((item) => (
           <NavbarItem key={item.name}>
