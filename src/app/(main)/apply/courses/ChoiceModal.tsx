@@ -1,11 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Button,
   useDisclosure,
   CardBody,
   Card,
