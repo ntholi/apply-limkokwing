@@ -39,13 +39,17 @@ export default function RecommendationList({ application }: Props) {
   }, [application]);
   return (
     <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-      {courses.map((course) => (
-        <RecommendationCard
-          application={application}
-          key={course.programId}
-          item={course}
-        />
-      ))}
+      {loading && courses.length === 0 ? (
+        <Loader />
+      ) : (
+        courses.map((course) => (
+          <RecommendationCard
+            application={application}
+            key={course.programId}
+            item={course}
+          />
+        ))
+      )}
     </section>
   );
 }
