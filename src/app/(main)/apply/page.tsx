@@ -11,6 +11,7 @@ import { Application } from '@/app/(admin)/admin/applications/modals/Application
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
 import RecommendationList from './courses/RecommendationList';
+import DocumentsUpload from './documents/DocumentsUpload';
 
 export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
@@ -45,6 +46,7 @@ export default function StartPage() {
   const steps = [
     <Qualifications key={1} />,
     <RecommendationList key={2} application={application} />,
+    <DocumentsUpload key={3} />,
   ];
 
   return (
@@ -75,7 +77,7 @@ export default function StartPage() {
               setStep(step + 1);
             }}
           >
-            Next
+            {step === steps.length ? 'Submit' : 'Next'}
           </Button>
         </nav>
       </div>
