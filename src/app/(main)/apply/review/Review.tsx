@@ -1,16 +1,9 @@
 import React from 'react';
-import { ContentWrapper } from '../page';
 import { useApplication } from '../ApplicationProvider';
 import ResultsTable from './ResultsTable';
-import {
-  Accordion,
-  AccordionItem,
-  Button,
-  CardHeader,
-  Link,
-} from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Link } from '@nextui-org/react';
 import { IconCheck } from '@tabler/icons-react';
-import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
+import ContentWrapper from '../../components/ContentWrapper';
 
 export default function Review() {
   const application = useApplication();
@@ -20,7 +13,9 @@ export default function Review() {
     <ContentWrapper>
       <Accordion>
         <AccordionItem key='1' title='Qualifications'>
-          <h2 className='p-1 font-semibold'>{application.certificate.name}</h2>
+          <h2 className='p-1 font-semibold'>
+            {application?.certificate?.name}
+          </h2>
           <ResultsTable application={application} />
         </AccordionItem>
         <AccordionItem key='2' title='Courses'>

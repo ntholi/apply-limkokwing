@@ -1,18 +1,18 @@
 'use client';
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Container from '../core/Container';
-import { Button, Card, CardBody, Spinner } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
 import Qualifications from './qualifications/Qualifications';
 import { useSession } from '../auth/SessionProvider';
-import { usePathname, useRouter } from 'next/navigation';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
-import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
 import RecommendationList from './courses/RecommendationList';
 import DocumentsUpload from './documents/DocumentsUpload';
 import Review from './review/Review';
+import ContentWrapper from '../components/ContentWrapper';
+import { useRouter } from 'next/navigation';
 
 export default function StartPage() {
   const [isPending, startTransition] = React.useTransition();
@@ -103,13 +103,5 @@ export default function StartPage() {
         </nav>
       </div>
     </Container>
-  );
-}
-
-export function ContentWrapper({ children }: PropsWithChildren) {
-  return (
-    <Card className='bg-black/40'>
-      <CardBody className='items-center p-4 sm:p-8'>{children}</CardBody>
-    </Card>
   );
 }

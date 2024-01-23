@@ -83,7 +83,7 @@ class ProgramRepository extends FirebaseRepository<Program> {
   }
 
   async getRecommendations(application: Application) {
-    if (application.results.length === 0) {
+    if (application.results.length === 0 || !application.certificate) {
       return [];
     }
     const cert = await certificateRepository.get(application.certificate.id);
