@@ -15,11 +15,20 @@ import DocumentsUpload from './documents/DocumentsUpload';
 import Review from './review/Review';
 
 export default function StartPage() {
+  const [isPending, startTransition] = React.useTransition();
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const { user, status } = useSession();
   const [canProceed, setCanProceed] = React.useState(false);
   const router = useRouter();
   const application = useApplication();
+
+  function handleSubmit() {
+    startTransition(async () => {
+      if (application) {
+        await applicationsRepository.updateStatus(application.id, 'submitted');
+      }
+    });
+  }
 
   if (status === 'unauthenticated') {
     router.push('/signin');
@@ -80,8 +89,13 @@ export default function StartPage() {
             color='primary'
             isDisabled={!canProceed}
             onClick={() => {
-              setStep(step + 1);
+              if (step < steps.length) {
+                setStep(step + 1);
+              } else {
+                handleSubmit();
+              }
             }}
+            isLoading={isPending}
           >
             {step === steps.length ? 'Submit' : 'Next'}
           </Button>
