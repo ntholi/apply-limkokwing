@@ -11,7 +11,7 @@ import { Skeleton } from '@nextui-org/skeleton';
 import React from 'react';
 import Link from 'next/link';
 import { useSession } from './SessionProvider';
-import { LogOut, UserRound } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { auth } from '@/lib/config/firebase';
 import { signOut } from 'firebase/auth';
 
