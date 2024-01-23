@@ -11,6 +11,7 @@ import {
   CardHeader,
   Divider,
   Link,
+  Skeleton,
 } from '@nextui-org/react';
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { useQueryState } from 'nuqs';
@@ -23,20 +24,32 @@ type Props = {
 
 export default function RecommendationList({ application }: Props) {
   const [courses, setCourses] = React.useState<Recommendation[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
   useEffect(() => {
-    programRepository.getRecommendations(application).then((data) => {
-      setCourses(data);
-    });
+    setLoading(true);
+    programRepository
+      .getRecommendations(application)
+      .then((data) => {
+        setCourses(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [application]);
   return (
     <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-      {courses.map((course) => (
-        <RecommendationCard
-          application={application}
-          key={course.programId}
-          item={course}
-        />
-      ))}
+      {loading ? (
+        <Loader />
+      ) : (
+        courses.map((course) => (
+          <RecommendationCard
+            application={application}
+            key={course.programId}
+            item={course}
+          />
+        ))
+      )}
     </section>
   );
 }
@@ -92,6 +105,12 @@ const RecommendationCard = ({
     </Card>
   );
 };
+
+function Loader() {
+  return Array.from({ length: 4 }).map((_, i) => (
+    <Skeleton key={i} className='w-full h-36 rounded-lg' />
+  ));
+}
 
 function getColor(match: number): AvatarProps['color'] {
   if (match > 85) return 'success';
