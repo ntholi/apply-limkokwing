@@ -5,7 +5,7 @@ import { Button, Card, CardBody, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
 import Qualifications from './qualifications/Qualifications';
 import { useSession } from '../auth/SessionProvider';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { parseAsInteger, useQueryState } from 'nuqs';
@@ -21,6 +21,7 @@ export default function StartPage() {
   const [canProceed, setCanProceed] = React.useState(false);
   const router = useRouter();
   const application = useApplication();
+  const pathname = usePathname();
 
   function handleSubmit() {
     startTransition(async () => {
@@ -32,7 +33,7 @@ export default function StartPage() {
   }
 
   if (status === 'unauthenticated') {
-    router.push('/signin');
+    router.push(`/auth/signin?redirect=${encodeURIComponent(pathname)}`);
   }
 
   useEffect(() => {
