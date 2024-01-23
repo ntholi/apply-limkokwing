@@ -60,8 +60,8 @@ const RecommendationCard = ({
   const handleSelect = () => {
     applicationsRepository
       .updateProgram(application.id, {
-        id: item.programId,
-        name: item.programName,
+        programId: item.programId,
+        programName: item.programName,
       })
       .catch((e) => {
         console.error(e);
@@ -71,7 +71,8 @@ const RecommendationCard = ({
     <Card
       isPressable
       className={clsx([
-        item.programId == application.program.id && 'border border-primary',
+        item.programId == application.firstChoice?.programId &&
+          'border border-primary',
       ])}
       onPress={handleSelect}
     >

@@ -1,6 +1,10 @@
 import { doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core';
-import { Application, UploadDocument } from './modals/Application';
+import {
+  Application,
+  ProgramChoice,
+  UploadDocument,
+} from './modals/Application';
 import { Results } from './modals/Results';
 import { db } from '@/lib/config/firebase';
 import { Certificate } from '../certificates/Certificate';
@@ -77,12 +81,12 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async updateProgram(id: string, program: { id: string; name: string }) {
+  async updateProgram(id: string, program: ProgramChoice) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
         ...application,
-        program,
+        firstChoice: program,
       });
     }
   }

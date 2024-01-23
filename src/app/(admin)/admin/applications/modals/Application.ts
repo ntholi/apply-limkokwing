@@ -14,16 +14,19 @@ export interface UploadDocument {
   url: string;
 }
 
+export interface ProgramChoice {
+  programId: string;
+  programName: string;
+}
+
 export interface Application extends Resource {
   status: Status;
   documents: UploadDocument[];
   results: Results[];
-  certificate: {
+  certificate?: {
     id: string;
     name: string;
   };
-  program: {
-    id: string;
-    name: string;
-  };
+  firstChoice?: ProgramChoice;
+  secondChoice?: ProgramChoice;
 }
