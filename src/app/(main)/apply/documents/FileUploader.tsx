@@ -78,10 +78,12 @@ export default function FileUploader(props: Props) {
         if (inputRef.current) inputRef.current.click();
       }}
     >
-      <label className='ps-2 text-sm text-center'>{label}</label>
-      <div className='flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-gray-700 h-48 w-56 p-2'>
-        <MdUpload className='text-4xl text-gray-600' />
-        <p className='rounded-full bg-gray-600 px-5 py-2 text-xs'>Upload</p>
+      <label className='ps-2 text-sm text-center mb-1'>{label}</label>
+      <div className='flex cursor-pointer flex-col items-center justify-center rounded-2xl border-1.5 border-dashed border-gray-700 h-48 w-56 p-2'>
+        <MdUpload className='text-4xl text-gray-700/60' />
+        <p className='rounded-full border border-gray-700/60 px-10 py-2 mt-1 text-xs'>
+          Upload
+        </p>
         {inputRef.current?.files && inputRef.current?.files.length > 0 && (
           <p className='mt-2 text-center text-xs text-gray-400'>
             {inputRef.current?.files[0].name}

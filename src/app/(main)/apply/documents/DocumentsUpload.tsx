@@ -1,7 +1,6 @@
 import React from 'react';
 import FileUploader from './FileUploader';
 import { useApplication } from '../ApplicationProvider';
-import { Divider } from '@nextui-org/react';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 
 export default function DocumentsUpload() {
@@ -24,7 +23,7 @@ export default function DocumentsUpload() {
           }}
         />
         <FileUploader
-          label={application.certificate.name}
+          label={`${application.certificate.name} Certificate`}
           filePath={`${application.id}/id`}
           onCompleted={(url) => {
             applicationsRepository.updateDocuments(application.id, {
