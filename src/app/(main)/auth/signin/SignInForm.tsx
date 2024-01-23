@@ -1,16 +1,32 @@
 'use client';
-import { auth } from '@/lib/config/firebase';
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
-import axios from 'axios';
+import React from 'react';
 import {
+  Modal,
+  ModalContent,
+  useDisclosure,
+  ModalHeader,
+  ModalBody,
+} from '@nextui-org/modal';
+import { Button } from '@nextui-org/button';
+import { Divider } from '@nextui-org/divider';
+import { Input } from '@nextui-org/input';
+import { Link } from '@nextui-org/link';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebook } from 'react-icons/fa';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { MdArrowBack } from 'react-icons/md';
+import { auth } from '@/lib/config/firebase';
+import axios from 'axios';
 
 type Input = {
+  names: string;
   email: string;
   password: string;
   confirm_password: string;
@@ -83,6 +99,15 @@ export default function SignInForm({ step, setStep }: Props) {
         />
         {step === 'sign_up' && (
           <>
+            <Input
+              type='text'
+              variant='bordered'
+              label='Full Names'
+              {...register('names', {
+                required: true,
+                minLength: 3,
+              })}
+            />
             <Input
               type='password'
               variant='bordered'
