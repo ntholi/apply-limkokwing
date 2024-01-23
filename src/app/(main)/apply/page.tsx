@@ -13,6 +13,7 @@ import DocumentsUpload from './documents/DocumentsUpload';
 import Review from './review/Review';
 import ContentWrapper from '../components/ContentWrapper';
 import { useRouter } from 'next/navigation';
+import CoursePicker from './courses/CoursePicker';
 
 export default function StartPage() {
   const [isPending, startTransition] = React.useTransition();
@@ -62,7 +63,9 @@ export default function StartPage() {
     <ContentWrapper key={1}>
       <Qualifications />
     </ContentWrapper>,
-    <RecommendationList key={2} application={application} />,
+    <ContentWrapper key={2}>
+      <CoursePicker application={application} />
+    </ContentWrapper>,
     <ContentWrapper key={3}>
       <DocumentsUpload />
     </ContentWrapper>,

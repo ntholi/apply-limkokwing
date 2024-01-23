@@ -81,7 +81,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async updateProgram(id: string, program: ProgramChoice) {
+  async setFirstChoice(id: string, program: ProgramChoice) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
@@ -91,7 +91,17 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async removeFirstOption(id: string) {
+  async setSecondChoice(id: string, program: ProgramChoice) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        secondChoice: program,
+      });
+    }
+  }
+
+  async removeFirstChoice(id: string) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
@@ -101,7 +111,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async removeSecondOption(id: string) {
+  async removeSecondChoice(id: string) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
