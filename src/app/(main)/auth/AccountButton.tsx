@@ -20,7 +20,7 @@ export default function AccountButton() {
   if (status === 'loading')
     return <Skeleton className='flex size-10 rounded-full' />;
   return user ? (
-    <Dropdown placement='bottom-end'>
+    <Dropdown placement='bottom-end' size='sm'>
       <DropdownTrigger>
         <Avatar
           isBordered
