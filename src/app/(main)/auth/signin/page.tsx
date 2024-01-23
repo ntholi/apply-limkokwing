@@ -14,9 +14,11 @@ import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Container from '../../core/Container';
 import SignInForm, { Steps } from './SignInForm';
+import { useRouter } from 'next/navigation';
 
 export default function SigninPage() {
   const [step, setStep] = React.useState<Steps>('start');
+  const router = useRouter();
   return (
     <Container width='xs'>
       <Card>
@@ -36,9 +38,9 @@ export default function SigninPage() {
                       startContent={<FcGoogle size='1.4rem' />}
                       onClick={() =>
                         signInWithPopup(auth, new GoogleAuthProvider())
-                          // .then(() => {
-                          //   router.push('/admin');
-                          // })
+                          .then(() => {
+                            router.push('/');
+                          })
                           .catch((error) => {
                             console.error({ error });
                           })

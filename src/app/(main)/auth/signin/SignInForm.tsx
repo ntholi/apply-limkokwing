@@ -24,6 +24,7 @@ import {
 import { MdArrowBack } from 'react-icons/md';
 import { auth } from '@/lib/config/firebase';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 type Input = {
   names: string;
@@ -46,6 +47,7 @@ export default function SignInForm({ step, setStep }: Props) {
   } = useForm<Input>();
   const [error, setError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<Input> = async (data) => {
     setLoading(true);
@@ -65,6 +67,7 @@ export default function SignInForm({ step, setStep }: Props) {
           setError('Error signing up. Please try again.');
         }
       }
+      router.push('/');
     } finally {
       setLoading(false);
     }
