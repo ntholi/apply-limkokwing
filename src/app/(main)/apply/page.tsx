@@ -28,6 +28,7 @@ export default function StartPage() {
         await applicationsRepository.updateStatus(application.id, 'submitted');
       }
     });
+    router.push('/apply/status');
   }
 
   if (status === 'unauthenticated') {
