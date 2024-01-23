@@ -10,7 +10,6 @@ import {
 import { Skeleton } from '@nextui-org/skeleton';
 import React from 'react';
 import Link from 'next/link';
-import LoginModal from './LoginModal';
 import { useSession } from './SessionProvider';
 import { LogOut, UserRound } from 'lucide-react';
 import { auth } from '@/lib/config/firebase';
@@ -55,7 +54,7 @@ export default function AccountButton() {
       </DropdownMenu>
     </Dropdown>
   ) : (
-    <LoginModal>Account</LoginModal>
+    <Link href={'/auth/signin'}>Account</Link>
   );
 }
 

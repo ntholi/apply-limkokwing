@@ -3,12 +3,13 @@ import { twMerge } from 'tailwind-merge';
 
 type Props = {
   children: React.ReactNode;
-  width?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  width?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   as?: React.ElementType;
 } & React.HTMLAttributes<HTMLElement>;
 
 function Container({ children, as, width = 'lg', ...props }: Props) {
   const widthMap = {
+    xs: 'max-w-[30rem]',
     sm: 'max-w-screen-sm',
     md: 'max-w-screen-md',
     lg: 'max-w-screen-lg',
