@@ -31,7 +31,9 @@ function ChoiceModal({ label, application, onSelected }: Props) {
       </Card>
       <Modal isOpen={isOpen} onClose={onClose} size='5xl'>
         <ModalContent>
-          <ModalHeader className='flex flex-col gap-1'>{label}</ModalHeader>
+          <ModalHeader className='flex flex-col gap-1'>
+            Pick {label}
+          </ModalHeader>
           <ModalBody>
             <RecommendationList
               application={application}

@@ -67,7 +67,11 @@ const RecommendationCard = ({ item, onSelected }: CardProps) => {
       size='sm'
       isInvisible
     >
-      <Card isPressable onPress={() => onSelected(item)}>
+      <Card
+        isPressable
+        onPress={() => onSelected(item)}
+        className='bg-default-100 border border-transparent hover:border hover:border-primary-500 '
+      >
         <CardHeader className='flex gap-3'>
           <Button
             color={getColor(item.match)}
