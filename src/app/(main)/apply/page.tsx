@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import Container from '../core/Container';
 import { Button, Card, CardBody, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
@@ -47,9 +47,13 @@ export default function StartPage() {
   }
 
   const steps = [
-    <Qualifications key={1} />,
+    <ContentWrapper key={1}>
+      <Qualifications />
+    </ContentWrapper>,
     <RecommendationList key={2} application={application} />,
-    <DocumentsUpload key={3} />,
+    <ContentWrapper key={3}>
+      <DocumentsUpload />
+    </ContentWrapper>,
     <Review key={4} />,
   ];
 
@@ -58,11 +62,7 @@ export default function StartPage() {
       <h1 className='text-2xl'>Application</h1>
       <Stepper className='my-10' />
       <div className='mt-5 flex flex-col gap-5'>
-        <Card className='bg-black/40'>
-          <CardBody className='items-center p-4 sm:p-8'>
-            {steps[step - 1]}
-          </CardBody>
-        </Card>
+        {steps[step - 1]}
         <nav className='flex justify-between'>
           <Button
             isDisabled={step === 1}
@@ -86,5 +86,13 @@ export default function StartPage() {
         </nav>
       </div>
     </Container>
+  );
+}
+
+export function ContentWrapper({ children }: PropsWithChildren) {
+  return (
+    <Card className='bg-black/40'>
+      <CardBody className='items-center p-4 sm:p-8'>{children}</CardBody>
+    </Card>
   );
 }
