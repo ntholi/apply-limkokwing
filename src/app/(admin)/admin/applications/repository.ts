@@ -91,6 +91,26 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
+  async removeFirstOption(id: string) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        firstChoice: null,
+      });
+    }
+  }
+
+  async removeSecondOption(id: string) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        secondChoice: null,
+      });
+    }
+  }
+
   async updateDocuments(id: string, document: UploadDocument) {
     const application = await this.get(id);
     if (!application) {

@@ -17,6 +17,7 @@ import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { useQueryState } from 'nuqs';
 import clsx from 'clsx';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
+import { IconCheck, IconQuestionMark, IconTrash } from '@tabler/icons-react';
 
 type Props = {
   application: Application;
@@ -37,20 +38,58 @@ export default function RecommendationList({ application }: Props) {
         setLoading(false);
       });
   }, [application]);
+
   return (
-    <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-      {loading && courses.length === 0 ? (
-        <Loader />
-      ) : (
-        courses.map((course) => (
-          <RecommendationCard
-            application={application}
-            key={course.programId}
-            item={course}
-          />
-        ))
-      )}
-    </section>
+    <>
+      <div>
+        <div className='flex gap-2 text-sm items-center'>
+          <Status status={!!application.firstChoice} />
+          <p>1st Option:</p>
+          <p>{application.firstChoice?.programName}</p>
+          <Button
+            isIconOnly
+            color='danger'
+            variant='light'
+            size='sm'
+            onClick={() => {
+              applicationsRepository.removeFirstOption(application.id);
+            }}
+          >
+            <IconTrash size={'1rem'} />
+          </Button>
+        </div>
+        <div className='flex gap-2 text-sm items-center'>
+          <Status status={!!application.secondChoice} />
+          <p>2st Option:</p>
+          <p>{application.secondChoice?.programName}</p>
+          <Button
+            isIconOnly
+            color='danger'
+            variant='light'
+            size='sm'
+            onClick={() => {
+              applicationsRepository.removeFirstOption(application.id);
+            }}
+          >
+            <IconTrash size={'1rem'} />
+          </Button>
+        </div>
+      </div>
+      <Divider />
+      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+        {loading && courses.length === 0 ? (
+          <Loader />
+        ) : (
+          courses.map((course) => (
+            <RecommendationCard
+              application={application}
+              key={course.programId}
+              item={course}
+            />
+          ))
+        )}
+      </section>
+    </>
   );
 }
 
@@ -111,6 +150,18 @@ function Loader() {
   return Array.from({ length: 4 }).map((_, i) => (
     <Skeleton key={i} className='w-full h-36 rounded-lg' />
   ));
+}
+
+function Status({ status }: { status: boolean }) {
+  return status ? (
+    <span className='bg-teal-500 rounded-full p-0.5'>
+      <IconCheck size={'1rem'} />
+    </span>
+  ) : (
+    <span className='bg-gray-500 rounded-full p-0.5'>
+      <IconQuestionMark size={'1rem'} />
+    </span>
+  );
 }
 
 function getColor(match: number): AvatarProps['color'] {

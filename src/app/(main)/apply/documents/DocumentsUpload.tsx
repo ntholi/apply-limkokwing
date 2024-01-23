@@ -23,11 +23,11 @@ export default function DocumentsUpload() {
           }}
         />
         <FileUploader
-          label={`${application.certificate.name} Certificate`}
+          label={`${application?.certificate?.name} Certificate`}
           filePath={`${application.id}/id`}
           onCompleted={(url) => {
             applicationsRepository.updateDocuments(application.id, {
-              name: application.certificate.name,
+              name: `${application?.certificate?.name} Certificate`,
               url,
             });
           }}

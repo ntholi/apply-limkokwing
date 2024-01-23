@@ -27,6 +27,6 @@ export interface Application extends Resource {
     id: string;
     name: string;
   };
-  firstChoice?: ProgramChoice;
-  secondChoice?: ProgramChoice;
+  firstChoice?: ProgramChoice | null;
+  secondChoice?: ProgramChoice | null;
 }
