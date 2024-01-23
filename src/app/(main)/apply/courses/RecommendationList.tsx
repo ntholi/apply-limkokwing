@@ -4,6 +4,7 @@ import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import {
   Avatar,
   AvatarProps,
+  Badge,
   Button,
   Card,
   CardBody,
@@ -111,38 +112,46 @@ const RecommendationCard = ({
       });
   };
   return (
-    <Card
-      isPressable
-      className={clsx([
-        item.programId == application.firstChoice?.programId &&
-          'border border-primary',
-      ])}
-      onPress={handleSelect}
+    <Badge
+      content='1st Choice'
+      shape='circle'
+      color='primary'
+      size='sm'
+      isInvisible
     >
-      <CardHeader className='flex gap-3'>
-        <Button
-          color={getColor(item.match)}
-          variant='flat'
-          isIconOnly
-          size='lg'
-          radius='full'
-        >
-          <div>
-            <p className='text-sm'>{item.match}%</p>
+      <Card
+        isPressable
+        className={clsx([
+          item.programId == application.firstChoice?.programId &&
+            'border border-primary',
+        ])}
+        onPress={handleSelect}
+      >
+        <CardHeader className='flex gap-3'>
+          <Button
+            color={getColor(item.match)}
+            variant='flat'
+            isIconOnly
+            size='lg'
+            radius='full'
+          >
+            <div>
+              <p className='text-sm'>{item.match}%</p>
+            </div>
+          </Button>
+          <div className='flex flex-col text-start'>
+            <p className='text-md'>{item.programName}</p>
+            <p className='text-tiny text-default-500'>
+              {Faculties.find((it) => it.code === item.faculty)?.name}
+            </p>
           </div>
-        </Button>
-        <div className='flex flex-col text-start'>
-          <p className='text-md'>{item.programName}</p>
-          <p className='text-tiny text-default-500'>
-            {Faculties.find((it) => it.code === item.faculty)?.name}
-          </p>
-        </div>
-      </CardHeader>
-      <Divider />
-      <CardBody className='text-small'>
-        <p>Make beautiful websites regardless of your design experience.</p>
-      </CardBody>
-    </Card>
+        </CardHeader>
+        <Divider />
+        <CardBody className='text-small'>
+          <p>Make beautiful websites regardless of your design experience.</p>
+        </CardBody>
+      </Card>
+    </Badge>
   );
 };
 
