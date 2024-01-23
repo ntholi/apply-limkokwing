@@ -31,6 +31,8 @@ export default function StartPage() {
       setCanProceed(true);
     } else if (step === 2 && application.program) {
       setCanProceed(true);
+    } else if (step === 3 && application.documents.length > 0) {
+      setCanProceed(true);
     } else {
       setCanProceed(false);
     }
