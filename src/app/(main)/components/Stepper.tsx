@@ -19,10 +19,11 @@ export default function Stepper({ className }: Props) {
     },
     {
       step: 2,
-      name: 'Select Course',
-      description: 'Select your course',
+      name: 'Course',
+      description: 'Select course',
     },
     { step: 3, name: 'Documents', description: 'Upload your documents' },
+    { step: 4, name: 'Review', description: 'Review your application' },
   ];
   return (
     <section
