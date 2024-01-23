@@ -32,17 +32,7 @@ export default function AccountButton() {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label='Profile Actions' variant='flat'>
-        <DropdownSection title={user?.displayName || ''} showDivider>
-          <DropdownItem
-            startContent={<UserRound />}
-            key='profile'
-            as={Link}
-            href={`/users/${user?.uid}`}
-          >
-            View Profile
-          </DropdownItem>
-        </DropdownSection>
-        <DropdownSection>
+        <DropdownSection title={user?.displayName || ''}>
           <DropdownItem
             startContent={<LogOut />}
             onClick={() => signOut(auth)}
