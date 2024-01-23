@@ -23,10 +23,10 @@ export interface Application extends Resource {
   status: Status;
   documents: UploadDocument[];
   results: Results[];
-  certificate?: {
+  certificate: {
     id: string;
     name: string;
-  };
-  firstChoice?: ProgramChoice | null;
-  secondChoice?: ProgramChoice | null;
+  } | null;
+  firstChoice: ProgramChoice | null;
+  secondChoice: ProgramChoice | null;
 }

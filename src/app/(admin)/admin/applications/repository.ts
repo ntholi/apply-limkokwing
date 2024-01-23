@@ -8,6 +8,7 @@ import {
 import { Results } from './modals/Results';
 import { db } from '@/lib/config/firebase';
 import { Certificate } from '../certificates/Certificate';
+import { ResourceCreate } from '../../admin-core/repository/repository';
 
 class ApplicationsRepository extends FirebaseRepository<Application> {
   constructor() {
@@ -27,12 +28,15 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
   }
 
   async createForUser(userId: string) {
-    await setDoc(doc(db, 'applications', userId), {
+    const data: ResourceCreate<Application> = {
       status: 'incomplete',
       results: [] as Results[],
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
+      certificate: null,
+      firstChoice: null,
+      secondChoice: null,
+      documents: [] as UploadDocument[],
+    };
+    await setDoc(doc(db, 'applications', userId), data);
   }
 
   async addResults(userId: string, results: Results) {
