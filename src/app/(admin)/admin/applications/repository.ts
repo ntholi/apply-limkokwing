@@ -1,6 +1,6 @@
 import { doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core';
-import { Application } from './modals/Application';
+import { Application, UploadDocument } from './modals/Application';
 import { Results } from './modals/Results';
 import { db } from '@/lib/config/firebase';
 import { Certificate } from '../certificates/Certificate';
@@ -83,6 +83,32 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       await this.update(id, {
         ...application,
         program,
+      });
+    }
+  }
+
+  async updateDocuments(id: string, document: UploadDocument) {
+    const application = await this.get(id);
+    if (!application) {
+      await this.createForUser(id);
+    }
+    const list = application?.documents || [];
+    const newDocuments = list.filter((item) => item.name !== document.name);
+    newDocuments.push(document);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        documents: newDocuments,
+      });
+    }
+  }
+
+  async updateStatus(id: string, status: Application['status']) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        status,
       });
     }
   }

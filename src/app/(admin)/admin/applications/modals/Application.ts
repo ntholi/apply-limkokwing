@@ -9,8 +9,14 @@ type Status =
   | 'rejected'
   | 'waitlisted';
 
+export interface UploadDocument {
+  name: string;
+  url: string;
+}
+
 export interface Application extends Resource {
   status: Status;
+  documents: UploadDocument[];
   results: Results[];
   certificate: {
     id: string;

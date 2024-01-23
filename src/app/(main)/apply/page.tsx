@@ -12,6 +12,7 @@ import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
 import RecommendationList from './courses/RecommendationList';
 import DocumentsUpload from './documents/DocumentsUpload';
+import Review from './review/Review';
 
 export default function StartPage() {
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
@@ -47,6 +48,7 @@ export default function StartPage() {
     <Qualifications key={1} />,
     <RecommendationList key={2} application={application} />,
     <DocumentsUpload key={3} />,
+    <Review key={4} />,
   ];
 
   return (
