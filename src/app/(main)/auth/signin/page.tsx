@@ -14,11 +14,13 @@ import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Container from '../../core/Container';
 import SignInForm, { Steps } from './SignInForm';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SigninPage() {
   const [step, setStep] = React.useState<Steps>('start');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect');
   return (
     <Container width='xs'>
       <Card>
@@ -39,7 +41,7 @@ export default function SigninPage() {
                       onClick={() =>
                         signInWithPopup(auth, new GoogleAuthProvider())
                           .then(() => {
-                            router.push('/');
+                            router.push('/' + redirect || '');
                           })
                           .catch((error) => {
                             console.error({ error });

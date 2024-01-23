@@ -21,7 +21,6 @@ export default function StartPage() {
   const [canProceed, setCanProceed] = React.useState(false);
   const router = useRouter();
   const application = useApplication();
-  const pathname = usePathname();
 
   function handleSubmit() {
     startTransition(async () => {
@@ -33,7 +32,7 @@ export default function StartPage() {
   }
 
   if (status === 'unauthenticated') {
-    router.push(`/auth/signin?redirect=${encodeURIComponent(pathname)}`);
+    router.push(`/auth/signin?redirect=apply`);
   }
 
   useEffect(() => {

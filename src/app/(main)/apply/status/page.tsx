@@ -9,6 +9,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Spinner,
 } from '@nextui-org/react';
 import { useSession } from '../../auth/SessionProvider';
 import { useApplication } from '../ApplicationProvider';
@@ -23,9 +24,16 @@ export default function ApplicationStatusPage() {
   const pathname = usePathname();
 
   if (status === 'unauthenticated') {
-    router.push(`/signin?redirect=${encodeURIComponent(pathname)}`);
+    router.push(`/auth/signin?redirect=apply/status`);
   }
 
+  if (!application) {
+    return (
+      <div className='w-full mt-20 flex justify-center'>
+        <Spinner size='lg' />
+      </div>
+    );
+  }
   return (
     <Container>
       <Card className='max-w-[400px]'>
