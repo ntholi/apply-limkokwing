@@ -16,15 +16,17 @@ export default function Home() {
       <h2 className='md:text-8xl text-center font-bold uppercase text-5xl'>
         Be The Most Successful
       </h2>
-      <Button
-        color='primary'
-        className='mt-20 w-full sm:w-52'
-        radius='full'
-        as={NextLink}
-        href='/apply'
-      >
-        Apply Now
-      </Button>
+      <nav>
+        <Button
+          color='primary'
+          className='mt-20 w-full sm:w-52'
+          radius='full'
+          as={NextLink}
+          href='/apply'
+        >
+          Apply Now
+        </Button>
+      </nav>
     </Container>
   );
 }
