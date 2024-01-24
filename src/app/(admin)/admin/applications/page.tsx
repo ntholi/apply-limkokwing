@@ -1,10 +1,11 @@
 'use client';
 
 import { DetailsView, FieldView, ResourcePage } from '@/app/(admin)/admin-core';
-import { Card, Grid, GridCol, Stack } from '@mantine/core';
+import { Button, Card, Grid, GridCol, Stack, Text } from '@mantine/core';
 import { Application } from './modals/Application';
 import { applicationsRepository } from './repository';
 import StatusUpdater from './StatusUpdater';
+import { IconExternalLink } from '@tabler/icons-react';
 
 export default function applicationPage() {
   return (
@@ -55,6 +56,28 @@ function applicationDetails({ item }: { item: Application }) {
               label='Second Choice'
               value={item.secondChoice?.programName || '(None)'}
             />
+          </Stack>
+        </Card>
+      </GridCol>
+      <GridCol span={{ base: 12, md: 5 }}>
+        <Card shadow='sm' radius='md' withBorder>
+          <Stack gap={'xs'}>
+            <Text size='sm' fw={500}>
+              Documents
+            </Text>
+            {item.documents.map((doc) => (
+              <Button
+                key={doc.name}
+                variant='default'
+                size='sm'
+                component='a'
+                target='_blank'
+                href={doc.url}
+                rightSection={<IconExternalLink size={18} />}
+              >
+                {doc.name}
+              </Button>
+            ))}
           </Stack>
         </Card>
       </GridCol>
