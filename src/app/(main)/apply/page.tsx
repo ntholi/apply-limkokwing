@@ -8,7 +8,6 @@ import { useSession } from '../auth/SessionProvider';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
-import RecommendationList from './courses/RecommendationList';
 import DocumentsUpload from './documents/DocumentsUpload';
 import Review from './review/Review';
 import ContentWrapper from '../components/ContentWrapper';
