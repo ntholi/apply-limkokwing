@@ -61,7 +61,7 @@ export default function Qualifications() {
 function ResultsTable({ application }: { application?: Application }) {
   const results = application?.results ?? [];
   return (
-    <Table removeWrapper>
+    <Table removeWrapper aria-label='Results Table'>
       <TableHeader>
         <TableColumn>Course</TableColumn>
         <TableColumn>Grade</TableColumn>

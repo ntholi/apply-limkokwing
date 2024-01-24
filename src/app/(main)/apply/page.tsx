@@ -8,17 +8,18 @@ import { useSession } from '../auth/SessionProvider';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useApplication } from './ApplicationProvider';
-import RecommendationList from './courses/RecommendationList';
 import DocumentsUpload from './documents/DocumentsUpload';
 import Review from './review/Review';
 import ContentWrapper from '../components/ContentWrapper';
 import { useRouter } from 'next/navigation';
+import CoursePicker from './courses/CoursePicker';
+import UserDetailsInput from './user/UserDetailsInput';
 
 export default function StartPage() {
   const [isPending, startTransition] = React.useTransition();
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const { user, status } = useSession();
-  const [canProceed, setCanProceed] = React.useState(false);
+  const [canProceed, setCanProceed] = React.useState(true);
   const router = useRouter();
   const application = useApplication();
 
@@ -37,20 +38,27 @@ export default function StartPage() {
 
   useEffect(() => {
     if (!application) return;
-    if (step === 1 && application.results.length > 0) {
+    if (
+      step === 1 &&
+      application.userDetails?.firstName &&
+      application.userDetails?.lastName
+    ) {
       setCanProceed(true);
-    } else if (step === 2 && application.firstChoice) {
+    } else if (step === 2 && application.results.length > 0) {
       setCanProceed(true);
-    } else if (step === 3 && application.documents.length > 0) {
+    } else if (step === 3 && application.firstChoice) {
       setCanProceed(true);
-    } else if (step === 4) {
+    } else if (step === 4 && application.documents.length > 0) {
+      setCanProceed(true);
+    } else if (step === 5) {
       setCanProceed(true);
     } else {
+      console.log('step', step, 'application', application);
       setCanProceed(false);
     }
   }, [application, step]);
 
-  if (!application) {
+  if (!application || !user) {
     return (
       <div className='w-full mt-20 flex justify-center'>
         <Spinner size='lg' />
@@ -60,13 +68,18 @@ export default function StartPage() {
 
   const steps = [
     <ContentWrapper key={1}>
+      <UserDetailsInput user={user} application={application} />
+    </ContentWrapper>,
+    <ContentWrapper key={2}>
       <Qualifications />
     </ContentWrapper>,
-    <RecommendationList key={2} application={application} />,
     <ContentWrapper key={3}>
+      <CoursePicker application={application} />
+    </ContentWrapper>,
+    <ContentWrapper key={4}>
       <DocumentsUpload />
     </ContentWrapper>,
-    <Review key={4} />,
+    <Review key={5} />,
   ];
 
   return (

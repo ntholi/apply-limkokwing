@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import {
-  Avatar,
   AvatarProps,
   Badge,
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Divider,
-  Link,
   Skeleton,
 } from '@nextui-org/react';
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
-import { useQueryState } from 'nuqs';
 import clsx from 'clsx';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
-import { IconCheck, IconQuestionMark, IconTrash } from '@tabler/icons-react';
 
 type Props = {
   application: Application;
+  onSelected: (recommendation: Recommendation) => void;
 };
 
-export default function RecommendationList({ application }: Props) {
+export default function RecommendationList({ application, onSelected }: Props) {
   const [courses, setCourses] = React.useState<Recommendation[]>([]);
   const [loading, setLoading] = React.useState(false);
 
@@ -41,76 +37,28 @@ export default function RecommendationList({ application }: Props) {
   }, [application]);
 
   return (
-    <>
-      <div>
-        <div className='flex gap-2 text-sm items-center'>
-          <Status status={!!application.firstChoice} />
-          <p>1st Option:</p>
-          <p>{application.firstChoice?.programName}</p>
-          <Button
-            isIconOnly
-            color='danger'
-            variant='light'
-            size='sm'
-            onClick={() => {
-              applicationsRepository.removeFirstOption(application.id);
-            }}
-          >
-            <IconTrash size={'1rem'} />
-          </Button>
-        </div>
-        <div className='flex gap-2 text-sm items-center'>
-          <Status status={!!application.secondChoice} />
-          <p>2st Option:</p>
-          <p>{application.secondChoice?.programName}</p>
-          <Button
-            isIconOnly
-            color='danger'
-            variant='light'
-            size='sm'
-            onClick={() => {
-              applicationsRepository.removeFirstOption(application.id);
-            }}
-          >
-            <IconTrash size={'1rem'} />
-          </Button>
-        </div>
-      </div>
-      <Divider />
-      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-        {loading && courses.length === 0 ? (
-          <Loader />
-        ) : (
-          courses.map((course) => (
-            <RecommendationCard
-              application={application}
-              key={course.programId}
-              item={course}
-            />
-          ))
-        )}
-      </section>
-    </>
+    <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+      {loading && courses.length === 0 ? (
+        <Loader />
+      ) : (
+        courses.map((course) => (
+          <RecommendationCard
+            key={course.programId}
+            item={course}
+            onSelected={onSelected}
+          />
+        ))
+      )}
+    </section>
   );
 }
 
-const RecommendationCard = ({
-  item,
-  application,
-}: {
+type CardProps = {
   item: Recommendation;
-  application: Application;
-}) => {
-  const handleSelect = () => {
-    applicationsRepository
-      .updateProgram(application.id, {
-        programId: item.programId,
-        programName: item.programName,
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
+  onSelected: (recommendation: Recommendation) => void;
+};
+
+const RecommendationCard = ({ item, onSelected }: CardProps) => {
   return (
     <Badge
       content='1st Choice'
@@ -121,11 +69,8 @@ const RecommendationCard = ({
     >
       <Card
         isPressable
-        className={clsx([
-          item.programId == application.firstChoice?.programId &&
-            'border border-primary',
-        ])}
-        onPress={handleSelect}
+        onPress={() => onSelected(item)}
+        className='bg-default-100 border border-transparent hover:border hover:border-primary-500 '
       >
         <CardHeader className='flex gap-3'>
           <Button
@@ -159,18 +104,6 @@ function Loader() {
   return Array.from({ length: 4 }).map((_, i) => (
     <Skeleton key={i} className='w-full h-36 rounded-lg' />
   ));
-}
-
-function Status({ status }: { status: boolean }) {
-  return status ? (
-    <span className='bg-teal-500 rounded-full p-0.5'>
-      <IconCheck size={'1rem'} />
-    </span>
-  ) : (
-    <span className='bg-gray-500 rounded-full p-0.5'>
-      <IconQuestionMark size={'1rem'} />
-    </span>
-  );
 }
 
 function getColor(match: number): AvatarProps['color'] {

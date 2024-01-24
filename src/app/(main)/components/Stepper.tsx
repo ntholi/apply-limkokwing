@@ -14,16 +14,21 @@ export default function Stepper({ className }: Props) {
   const steps = [
     {
       step: 1,
+      name: 'Personal',
+      description: 'Personal details',
+    },
+    {
+      step: 2,
       name: 'Qualifications',
       description: 'Enter your qualifications',
     },
     {
-      step: 2,
+      step: 3,
       name: 'Course',
       description: 'Select course',
     },
-    { step: 3, name: 'Documents', description: 'Upload your documents' },
-    { step: 4, name: 'Review', description: 'Review your application' },
+    { step: 4, name: 'Documents', description: 'Upload your documents' },
+    { step: 5, name: 'Review', description: 'Review your application' },
   ];
   return (
     <section

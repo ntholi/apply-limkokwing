@@ -55,7 +55,7 @@ export default function ResultsForm({ certificate }: Props) {
       >
         Add
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center'>
         <ModalContent>
           {(onClose) => (
             <>

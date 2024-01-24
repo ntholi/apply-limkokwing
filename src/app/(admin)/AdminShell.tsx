@@ -152,14 +152,20 @@ function Navigation() {
           leftSection={<IconMailbox size='1.1rem' />}
           opened
         >
-          <NavLink
-            label='Applications'
-            component={Link}
-            active={pathname.startsWith('/admin/store-applications')}
-            href={'/admin/#'}
-            leftSection={<IconMessage size='1.1rem' />}
-            rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
-          />
+          {Faculties.map((faculty) => (
+            <NavLink
+              key={faculty.code}
+              label={faculty.code}
+              description={faculty.name.replace('Faculty of ', '')}
+              component={Link}
+              active={
+                pathname.startsWith(`/admin/applications`) &&
+                searchParams.get('filter') === `faculty,${faculty.code}`
+              }
+              href={`/admin/applications?filter=faculty,${faculty.code}`}
+              rightSection={<IconChevronRight size='0.8rem' stroke={1.5} />}
+            />
+          ))}
         </NavLink>
         <NavLink
           label='Certificates'

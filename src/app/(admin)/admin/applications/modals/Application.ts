@@ -1,7 +1,8 @@
 import { Resource } from '@/app/(admin)/admin-core/repository/repository';
 import { Results } from './Results';
+import { Timestamp } from 'firebase/firestore';
 
-type Status =
+export type ApplicationStatus =
   | 'incomplete'
   | 'submitted'
   | 'withdrawn'
@@ -17,16 +18,28 @@ export interface UploadDocument {
 export interface ProgramChoice {
   programId: string;
   programName: string;
+  faculty: string;
+}
+
+export interface UserDetails {
+  nationalId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export interface Application extends Resource {
-  status: Status;
+  status: ApplicationStatus;
+  faculty: string | null; // represents firstChoice faculty, will be changed to secondChoice if rejected
+  userDetails?: UserDetails | null;
   documents: UploadDocument[];
   results: Results[];
-  certificate?: {
+  certificate: {
     id: string;
     name: string;
-  };
-  firstChoice?: ProgramChoice | null;
-  secondChoice?: ProgramChoice | null;
+  } | null;
+  firstChoice: ProgramChoice | null;
+  secondChoice: ProgramChoice | null;
+  dateSubmitted: Timestamp | null;
 }

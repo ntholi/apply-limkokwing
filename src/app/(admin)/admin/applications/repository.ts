@@ -1,4 +1,14 @@
-import { doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+  FieldValue,
+  Timestamp,
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core';
 import {
   Application,
@@ -8,6 +18,7 @@ import {
 import { Results } from './modals/Results';
 import { db } from '@/lib/config/firebase';
 import { Certificate } from '../certificates/Certificate';
+import { ResourceCreate } from '../../admin-core/repository/repository';
 
 class ApplicationsRepository extends FirebaseRepository<Application> {
   constructor() {
@@ -27,12 +38,17 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
   }
 
   async createForUser(userId: string) {
-    await setDoc(doc(db, 'applications', userId), {
+    const data: ResourceCreate<Application> = {
       status: 'incomplete',
       results: [] as Results[],
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
+      certificate: null,
+      firstChoice: null,
+      secondChoice: null,
+      dateSubmitted: null,
+      faculty: null,
+      documents: [] as UploadDocument[],
+    };
+    await setDoc(doc(db, 'applications', userId), data);
   }
 
   async addResults(userId: string, results: Results) {
@@ -81,17 +97,28 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async updateProgram(id: string, program: ProgramChoice) {
+  async setFirstChoice(id: string, program: ProgramChoice) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
         ...application,
+        faculty: program.faculty,
         firstChoice: program,
       });
     }
   }
 
-  async removeFirstOption(id: string) {
+  async setSecondChoice(id: string, program: ProgramChoice) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        secondChoice: program,
+      });
+    }
+  }
+
+  async removeFirstChoice(id: string) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
@@ -101,7 +128,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
-  async removeSecondOption(id: string) {
+  async removeSecondChoice(id: string) {
     const application = await this.get(id);
     if (application) {
       await this.update(id, {
@@ -130,9 +157,24 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
   async updateStatus(id: string, status: Application['status']) {
     const application = await this.get(id);
     if (application) {
+      let dateSubmitted: FieldValue | null = application.dateSubmitted || null;
+      if (status === 'submitted' && !dateSubmitted) {
+        dateSubmitted = serverTimestamp();
+      }
       await this.update(id, {
         ...application,
+        dateSubmitted: dateSubmitted as Timestamp,
         status,
+      });
+    }
+  }
+
+  async updateUserDetails(id: string, userDetails: Application['userDetails']) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        userDetails,
       });
     }
   }

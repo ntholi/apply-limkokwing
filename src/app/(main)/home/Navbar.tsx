@@ -26,6 +26,10 @@ export default function Navbar() {
       name: 'Courses',
       href: '#',
     },
+    {
+      name: 'Apply',
+      href: '/apply',
+    },
   ];
 
   return (
