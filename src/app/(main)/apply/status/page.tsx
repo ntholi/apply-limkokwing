@@ -4,6 +4,7 @@ import React from 'react';
 import Container from '../../core/Container';
 import {
   Avatar,
+  Button,
   Card,
   CardBody,
   CardFooter,
@@ -36,10 +37,14 @@ export default function ApplicationStatusPage() {
   }
   return (
     <Container>
+      <h1 className='text-xl'>My Application</h1>
+      <Divider className='my-4' />
       <Card className='max-w-[400px] mt-4'>
         <CardHeader className='flex gap-3'>
-          <div className='flex flex-col'>
-            <p className='text-md'>Application Status</p>
+          <div className='flex flex-col w-full'>
+            <div className='flex justify-between'>
+              <p className='text-md'>Application Status</p>
+            </div>
             <p className='text-small text-default-500'>
               Status:{' '}
               <span
@@ -52,15 +57,35 @@ export default function ApplicationStatusPage() {
               </span>
             </p>
           </div>
+          <Button size='sm'>Update</Button>
         </CardHeader>
         <Divider />
-        <CardBody>
-          <p>Make beautiful websites regardless of your design experience.</p>
+        <CardBody className='gap-3'>
+          <InfoDisplay
+            label='Names'
+            value={`${application.userDetails?.firstName} ${application.userDetails?.lastName}`}
+          />
+
+          <InfoDisplay
+            label='First Choice'
+            value={application.firstChoice?.programName}
+          />
+          <InfoDisplay
+            label='Second Choice'
+            value={application.secondChoice?.programName}
+          />
         </CardBody>
-        <Divider />
-        <CardFooter></CardFooter>
       </Card>
     </Container>
+  );
+}
+
+function InfoDisplay({ label, value }: { label: string; value?: string }) {
+  return (
+    <div className='flex flex-col gap-1'>
+      <p className=''>{value || '(Empty)'}</p>
+      <label className='text-xs mt-0 text-default-500'>{label}</label>
+    </div>
   );
 }
 
