@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '@/lib/config/firebase';
-import { Input, Progress } from '@nextui-org/react';
+import { Card, CardBody, Input, Progress } from '@nextui-org/react';
 import { MdUpload } from 'react-icons/md';
+import { IconCloudUpload } from '@tabler/icons-react';
 
 type Props = {
   onCompleted: (url: string) => void;
@@ -72,24 +73,27 @@ export default function FileUploader(props: Props) {
   };
 
   return (
-    <div
-      className='flex flex-col gap-1'
-      onClick={() => {
-        if (inputRef.current) inputRef.current.click();
-      }}
-    >
-      <label className='ps-2 text-sm text-center mb-1'>{label}</label>
-      <div className='flex cursor-pointer flex-col items-center justify-center rounded-2xl border-1.5 border-dashed border-gray-700 h-48 w-56 p-2'>
-        <MdUpload className='text-4xl text-gray-700/60' />
-        <p className='rounded-full border border-gray-700/60 px-10 py-2 mt-1 text-xs'>
-          Upload
-        </p>
-        {inputRef.current?.files && inputRef.current?.files.length > 0 && (
-          <p className='mt-2 text-center text-xs text-gray-400'>
-            {inputRef.current?.files[0].name}
-          </p>
-        )}
-      </div>
+    <div className='flex flex-col gap-1'>
+      <label className='ps-2 text-sm text-center mb-1 text-default-500'>
+        {label}
+      </label>
+      <Card
+        className='h-48 w-56 p-2'
+        isPressable
+        onPress={() => {
+          if (inputRef.current) inputRef.current.click();
+        }}
+      >
+        <CardBody className='justify-center items-center gap-3'>
+          <IconCloudUpload size={'2rem'} />
+          <p className='text-sm'>Click Upload</p>
+          {inputRef.current?.files && inputRef.current?.files.length > 0 && (
+            <p className='mt-2 text-center text-xs text-gray-400'>
+              {inputRef.current?.files[0].name}
+            </p>
+          )}
+        </CardBody>
+      </Card>
       <input
         hidden
         ref={inputRef}
