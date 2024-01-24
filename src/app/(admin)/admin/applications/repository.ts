@@ -1,4 +1,11 @@
-import { doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+  FieldValue,
+  Timestamp,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core';
 import {
   Application,
@@ -34,6 +41,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       certificate: null,
       firstChoice: null,
       secondChoice: null,
+      dateSubmitted: null,
       documents: [] as UploadDocument[],
     };
     await setDoc(doc(db, 'applications', userId), data);
@@ -144,8 +152,13 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
   async updateStatus(id: string, status: Application['status']) {
     const application = await this.get(id);
     if (application) {
+      let dateSubmitted: FieldValue | null = application.dateSubmitted || null;
+      if (status === 'submitted' && !dateSubmitted) {
+        dateSubmitted = serverTimestamp();
+      }
       await this.update(id, {
         ...application,
+        dateSubmitted: dateSubmitted as Timestamp,
         status,
       });
     }

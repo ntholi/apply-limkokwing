@@ -1,5 +1,6 @@
 import { Resource } from '@/app/(admin)/admin-core/repository/repository';
 import { Results } from './Results';
+import { Timestamp } from 'firebase/firestore';
 
 type Status =
   | 'incomplete'
@@ -38,4 +39,5 @@ export interface Application extends Resource {
   } | null;
   firstChoice: ProgramChoice | null;
   secondChoice: ProgramChoice | null;
+  dateSubmitted: Timestamp | null;
 }
