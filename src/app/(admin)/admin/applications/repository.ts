@@ -150,6 +150,16 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       });
     }
   }
+
+  async updateUserDetails(id: string, userDetails: Application['userDetails']) {
+    const application = await this.get(id);
+    if (application) {
+      await this.update(id, {
+        ...application,
+        userDetails,
+      });
+    }
+  }
 }
 
 export const applicationsRepository = new ApplicationsRepository();

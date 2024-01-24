@@ -19,8 +19,17 @@ export interface ProgramChoice {
   programName: string;
 }
 
+export interface UserDetails {
+  nationalId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export interface Application extends Resource {
   status: Status;
+  userDetails?: UserDetails | null;
   documents: UploadDocument[];
   results: Results[];
   certificate: {
