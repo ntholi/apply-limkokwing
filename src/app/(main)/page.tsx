@@ -1,7 +1,8 @@
-import { Button } from '@nextui-org/button';
+'use client';
+
 import Container from './core/Container';
 import { GraduationCap } from 'lucide-react';
-import NextLink from 'next/link';
+import HomeButton from './home/HomeButton';
 
 export default function Home() {
   return (
@@ -16,17 +17,7 @@ export default function Home() {
       <h2 className='md:text-8xl text-center font-bold uppercase text-5xl'>
         Be The Most Successful
       </h2>
-      <nav>
-        <Button
-          color='primary'
-          className='mt-20 w-full sm:w-52'
-          radius='full'
-          as={NextLink}
-          href='/apply'
-        >
-          Apply Now
-        </Button>
-      </nav>
+      <HomeButton />
     </Container>
   );
 }
