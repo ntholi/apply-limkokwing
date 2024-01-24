@@ -1,23 +1,10 @@
 'use client';
-import React from 'react';
 
-import {
-  FieldView,
-  ResourcePage,
-  DetailsView,
-  CreateViewProps,
-  CreateView,
-  TextField,
-  EditViewProps,
-  EditView,
-  SelectField,
-} from '@/app/(admin)/admin-core';
-import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
-import { Divider, Tabs } from '@mantine/core';
-import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
-import NumberField from '../../admin-core/form/NumberField';
-import { applicationsRepository } from './repository';
+import { DetailsView, FieldView, ResourcePage } from '@/app/(admin)/admin-core';
+import { Card, Grid, GridCol, Stack } from '@mantine/core';
 import { Application } from './modals/Application';
+import { applicationsRepository } from './repository';
+import StatusUpdater from './StatusUpdater';
 
 export default function applicationPage() {
   return (
@@ -34,8 +21,43 @@ export default function applicationPage() {
 
 function applicationDetails({ item }: { item: Application }) {
   return (
-    <DetailsView>
-      <FieldView label='Name' value={item.userDetails?.firstName} />
-    </DetailsView>
+    <Grid p='lg'>
+      <GridCol span={{ base: 12, md: 5 }}>
+        <Card shadow='sm' padding='lg' radius='md' withBorder>
+          <Stack>
+            <FieldView
+              label='National Id'
+              value={item.userDetails?.nationalId || '(None)'}
+            />
+            <FieldView
+              label='Names'
+              value={`${item.userDetails?.firstName} ${item.userDetails?.lastName}`}
+            />
+            <FieldView label='Email' value={item.userDetails?.email} />
+            <FieldView
+              label='Phone'
+              value={item.userDetails?.phoneNumber || '(None)'}
+            />
+          </Stack>
+        </Card>
+      </GridCol>
+      <GridCol span={{ base: 12, md: 7 }}>
+        <Card shadow='sm' radius='md' withBorder>
+          <StatusUpdater application={item} />
+        </Card>
+        <Card shadow='sm' radius='md' withBorder mt={'md'}>
+          <Stack>
+            <FieldView
+              label='First Choice'
+              value={item.firstChoice?.programName || '(None)'}
+            />
+            <FieldView
+              label='Second Choice'
+              value={item.secondChoice?.programName || '(None)'}
+            />
+          </Stack>
+        </Card>
+      </GridCol>
+    </Grid>
   );
 }
