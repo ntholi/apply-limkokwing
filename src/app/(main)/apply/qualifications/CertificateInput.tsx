@@ -1,8 +1,8 @@
 'use client';
 import { Certificate } from '@/app/(admin)/admin/certificates/Certificate';
 import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
-import { Autocomplete, AutocompleteItem, Skeleton } from '@nextui-org/react';
-import React, { Key, useEffect } from 'react';
+import { Select, Skeleton, SelectItem } from '@nextui-org/react';
+import React, { useEffect } from 'react';
 import { useApplication } from '../ApplicationProvider';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 
@@ -23,14 +23,17 @@ export default function CertificateInput() {
     certificateRepository
       .getAll()
       .then((data) => {
-        setCertificates([...data, other]);
+        setCertificates([
+          ...data.sort((a, b) => a.name.localeCompare(b.name)),
+          other,
+        ]);
       })
       .finally(() => {
         setLoading(false);
       });
   }, [application?.certificate?.id]);
 
-  function handleSelectionChange(item: Key) {
+  function handleSelectionChange(item: string) {
     const certificate = certificates.find((c) => c.id === item);
     if (application && certificate) {
       applicationsRepository.updateCertificate(application?.id, certificate);
@@ -42,23 +45,22 @@ export default function CertificateInput() {
       {loading ? (
         <Skeleton className='w-full h-14 rounded-lg' />
       ) : (
-        <Autocomplete
+        <Select
           label='Highest Qualification'
           className='w-full'
-          selectedKey={application?.certificate?.id}
+          value={application?.certificate?.name}
+          onChange={(e) => handleSelectionChange(e.target.value)}
           variant='bordered'
-          onSelectionChange={handleSelectionChange}
-          defaultItems={certificates}
           description={
             !application?.certificate &&
             'Please select your highest qualification'
           }
           isLoading={loading}
         >
-          {(item) => (
-            <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
-          )}
-        </Autocomplete>
+          {certificates.map((item) => (
+            <SelectItem key={item.id}>{item.name}</SelectItem>
+          ))}
+        </Select>
       )}
     </>
   );

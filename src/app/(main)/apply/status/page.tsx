@@ -36,7 +36,7 @@ export default function ApplicationStatusPage() {
   }
   return (
     <Container>
-      <Card className='max-w-[400px]'>
+      <Card className='max-w-[400px] mt-4'>
         <CardHeader className='flex gap-3'>
           <div className='flex flex-col'>
             <p className='text-md'>Application Status</p>

@@ -10,9 +10,11 @@ export default function Home() {
       as='main'
       className='flex justify-center pt-10 flex-col items-center gap-3'
     >
-      <div className='text-sm text-center p-2 rounded-lg border border-foreground-500 flex gap-2 items-center'>
+      <div className='text-center p-2 rounded-lg border border-foreground-500 flex gap-2 items-center'>
         <GraduationCap />
-        <h1>Limkokwing University of Creative Technology</h1>
+        <h1 className='text-xs sm:text-sm'>
+          Limkokwing University of Creative Technology
+        </h1>
       </div>
       <h2 className='md:text-8xl text-center font-bold uppercase text-5xl'>
         Be The Most Successful
