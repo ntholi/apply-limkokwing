@@ -3,7 +3,7 @@ import {
   UserDetails,
 } from '@/app/(admin)/admin/applications/modals/Application';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
-import { Input } from '@nextui-org/react';
+import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
 
@@ -40,46 +40,47 @@ export default function UserDetailsInput({ user, application }: Props) {
 
   return (
     <>
-      <h1 className='text-lg'>Personal Details</h1>
-      <div className='flex flex-col gap-3 w-full mt-5'>
-        <Input
-          type='text'
-          variant='bordered'
-          label='Id/Passport'
-          value={nationalId}
-          onChange={(e) => setNationalId(e.target.value)}
-        />
-        <Input
-          type='text'
-          variant='bordered'
-          label='First Name'
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <Input
-          type='text'
-          variant='bordered'
-          label='Last Name'
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+      <Card className='w-full md:w-[40vw]'>
+        <CardBody className='flex flex-col gap-3 bg-black/90'>
+          <Input
+            type='text'
+            variant='bordered'
+            label='Id/Passport'
+            value={nationalId}
+            onChange={(e) => setNationalId(e.target.value)}
+          />
+          <Input
+            type='text'
+            variant='bordered'
+            label='First Name'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <Input
+            type='text'
+            variant='bordered'
+            label='Last Name'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
 
-        <Input
-          type='email'
-          variant='bordered'
-          label='Email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <Input
+            type='email'
+            variant='bordered'
+            label='Email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <Input
-          type='tel'
-          variant='bordered'
-          label='Phone Number'
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-      </div>
+          <Input
+            type='tel'
+            variant='bordered'
+            label='Phone Number'
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </CardBody>
+      </Card>
     </>
   );
 }

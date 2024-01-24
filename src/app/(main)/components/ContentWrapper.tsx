@@ -1,9 +1,14 @@
 import { Card, CardBody } from '@nextui-org/react';
 import { PropsWithChildren } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-export default function ContentWrapper({ children }: PropsWithChildren) {
+type Props = {
+  children: React.ReactNode;
+  className?: string;
+};
+export default function ContentWrapper({ children, className }: Props) {
   return (
-    <Card className='bg-black/40'>
+    <Card className={twMerge('bg-black/40', className)}>
       <CardBody className='items-center p-4 sm:p-8'>{children}</CardBody>
     </Card>
   );
