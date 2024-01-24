@@ -25,18 +25,6 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     super(`applications`);
   }
 
-  listen(callback: (resources: Application[]) => void): () => void {
-    const q = collection(db, this.collectionName);
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const resources: Application[] = [];
-      snapshot.forEach((doc) => {
-        resources.push({ ...doc.data(), id: doc.id } as Application);
-      });
-      callback(resources);
-    });
-    return unsubscribe;
-  }
-
   listenOrCreate(userId: string, callback: (application: Application) => void) {
     const docRef = doc(db, this.collectionName, userId);
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
@@ -57,6 +45,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
       firstChoice: null,
       secondChoice: null,
       dateSubmitted: null,
+      faculty: null,
       documents: [] as UploadDocument[],
     };
     await setDoc(doc(db, 'applications', userId), data);
@@ -113,6 +102,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     if (application) {
       await this.update(id, {
         ...application,
+        faculty: program.faculty,
         firstChoice: program,
       });
     }

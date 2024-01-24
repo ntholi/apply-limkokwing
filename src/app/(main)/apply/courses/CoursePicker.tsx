@@ -24,6 +24,7 @@ export default function CoursePicker({ application }: Props) {
       .setFirstChoice(application.id, {
         programId: item.programId,
         programName: item.programName,
+        faculty: item.faculty,
       })
       .catch((e) => {
         console.error(e);
@@ -35,6 +36,7 @@ export default function CoursePicker({ application }: Props) {
       .setSecondChoice(application.id, {
         programId: item.programId,
         programName: item.programName,
+        faculty: item.faculty,
       })
       .catch((e) => {
         console.error(e);

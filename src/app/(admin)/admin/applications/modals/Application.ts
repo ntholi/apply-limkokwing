@@ -18,6 +18,7 @@ export interface UploadDocument {
 export interface ProgramChoice {
   programId: string;
   programName: string;
+  faculty: string;
 }
 
 export interface UserDetails {
@@ -30,6 +31,7 @@ export interface UserDetails {
 
 export interface Application extends Resource {
   status: Status;
+  faculty: string | null; // represents firstChoice faculty, will be changed to secondChoice if rejected
   userDetails?: UserDetails | null;
   documents: UploadDocument[];
   results: Results[];
