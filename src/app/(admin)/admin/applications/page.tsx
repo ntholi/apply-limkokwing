@@ -17,82 +17,25 @@ import { Divider, Tabs } from '@mantine/core';
 import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
 import NumberField from '../../admin-core/form/NumberField';
 import { applicationsRepository } from './repository';
+import { Application } from './modals/Application';
 
 export default function applicationPage() {
   return (
     <ResourcePage
-      resourceLabel='applications'
+      resourceLabel='Applications'
       repository={applicationsRepository}
-      create={applicationCreate}
-      edit={applicationEdit}
       details={applicationDetails}
-      navLinkProps={(it) => ({ label: it.userDetails.name })}
+      navLinkProps={(it) => ({
+        label: `${it.userDetails?.firstName} ${it.userDetails?.lastName}`,
+      })}
     ></ResourcePage>
   );
 }
 
-function applicationDetails({ item }: { item: application }) {
+function applicationDetails({ item }: { item: Application }) {
   return (
-    <Tabs defaultValue='prerequisites'>
-      <Tabs.List>
-        <Tabs.Tab value='details' leftSection={<IconInfoCircle />}>
-          Details
-        </Tabs.Tab>
-        <Tabs.Tab value='prerequisites' leftSection={<IconTilde />}>
-          Prerequisites
-        </Tabs.Tab>
-      </Tabs.List>
-
-      <Tabs.Panel value='details'>
-        <DetailsView>
-          <FieldView label='Level' value={item.level} />
-          <FieldView label='Name' value={item.name} />
-          <FieldView label='Required Credits' value={item.requiredCredits} />
-          <FieldView label='Faculty' value={item.faculty} />
-        </DetailsView>
-      </Tabs.Panel>
-
-      <Tabs.Panel value='prerequisites'>
-        <DetailsView>
-          <CertificateView application={item} />
-          <Divider mt={'lg'} />
-          <PrerequisiteDetails />
-        </DetailsView>
-      </Tabs.Panel>
-    </Tabs>
-  );
-}
-
-function applicationCreate(props: CreateViewProps<application>) {
-  const [filter] = useQueryState('filter', parseAsArrayOf(parseAsString));
-  const faculty = (
-    filter && filter[0] == 'faculty' ? filter[1] : ''
-  ) as Faculty['code'];
-
-  const initialValues = {
-    level: '',
-    name: '',
-    faculty,
-    requiredCredits: 0,
-    prerequisites: [],
-  };
-
-  return (
-    <CreateView initialValues={initialValues} {...props}>
-      <SelectField name='level' options={levels} />
-      <TextField name='name' />
-      <NumberField name='requiredCredits' />
-      <TextField name='faculty' value={faculty} hidden />
-    </CreateView>
-  );
-}
-
-function applicationEdit(props: EditViewProps<application>) {
-  return (
-    <EditView {...props}>
-      <SelectField name='level' options={levels} />
-      <TextField name='name' />
-      <NumberField name='requiredCredits' />
-    </EditView>
+    <DetailsView>
+      <FieldView label='Name' value={item.userDetails?.firstName} />
+    </DetailsView>
   );
 }

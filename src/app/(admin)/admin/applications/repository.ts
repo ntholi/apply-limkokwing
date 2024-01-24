@@ -1,10 +1,13 @@
 import {
   FieldValue,
   Timestamp,
+  collection,
   doc,
   onSnapshot,
+  query,
   serverTimestamp,
   setDoc,
+  where,
 } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core';
 import {
@@ -20,6 +23,18 @@ import { ResourceCreate } from '../../admin-core/repository/repository';
 class ApplicationsRepository extends FirebaseRepository<Application> {
   constructor() {
     super(`applications`);
+  }
+
+  listen(callback: (resources: Application[]) => void): () => void {
+    const q = collection(db, this.collectionName);
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const resources: Application[] = [];
+      snapshot.forEach((doc) => {
+        resources.push({ ...doc.data(), id: doc.id } as Application);
+      });
+      callback(resources);
+    });
+    return unsubscribe;
   }
 
   listenOrCreate(userId: string, callback: (application: Application) => void) {
