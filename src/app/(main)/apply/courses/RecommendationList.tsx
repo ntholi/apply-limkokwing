@@ -14,6 +14,7 @@ import {
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import clsx from 'clsx';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
+import CourseFilter from '../../courses/ProgramFilter';
 
 type Props = {
   application: Application;
@@ -37,19 +38,22 @@ export default function RecommendationList({ application, onSelected }: Props) {
   }, [application]);
 
   return (
-    <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
-      {loading && courses.length === 0 ? (
-        <Loader />
-      ) : (
-        courses.map((course) => (
-          <RecommendationCard
-            key={course.programId}
-            item={course}
-            onSelected={onSelected}
-          />
-        ))
-      )}
-    </section>
+    <>
+      <CourseFilter />
+      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+        {loading && courses.length === 0 ? (
+          <Loader />
+        ) : (
+          courses.map((course) => (
+            <RecommendationCard
+              key={course.programId}
+              item={course}
+              onSelected={onSelected}
+            />
+          ))
+        )}
+      </section>
+    </>
   );
 }
 
