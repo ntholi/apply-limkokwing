@@ -24,7 +24,7 @@ export default function Navbar() {
     },
     {
       name: 'Courses',
-      href: '#',
+      href: '/courses',
     },
     {
       name: 'Apply',

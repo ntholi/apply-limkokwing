@@ -47,12 +47,14 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
     return unsubscribe;
   }
 
-  async getAll(limit = 10): Promise<T[]> {
-    const q = query(
-      collection(db, this.collectionName),
-      orderBy('createdAt', 'desc'),
-      limitQuery(limit)
-    );
+  async getAll(
+    limit = 10,
+    filter?: { field: string; value: any }
+  ): Promise<T[]> {
+    const ref = collection(db, this.collectionName);
+    const q = filter
+      ? query(ref, where(filter.field, '==', filter.value), limitQuery(limit))
+      : query(ref, limitQuery(limit));
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
     return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as T));
