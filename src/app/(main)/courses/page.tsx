@@ -19,7 +19,7 @@ export default function CoursesPage() {
     <Container>
       <h1 className='text-2xl font-semibold text-default-900'>Courses</h1>
       <Filter />
-      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-10'>
+      <section className='mt-10'>
         <Suspense fallback={<Loader />}>
           <CourseList />
         </Suspense>
@@ -62,9 +62,17 @@ function CourseList() {
       .then((programs) => setPrograms(programs));
   }, [faculty]);
 
-  return programs.map((program) => (
-    <CourseCard key={program.id} program={program} />
-  ));
+  return programs.length > 0 ? (
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+      {programs.map((program) => (
+        <CourseCard key={program.id} program={program} />
+      ))}
+    </div>
+  ) : (
+    <p className='mt-5 sm:mt-20 text-center text-zinc-400 text-sm'>
+      Nothing to see here
+    </p>
+  );
 }
 
 function CourseCard({ program }: { program: Program }) {
@@ -87,7 +95,11 @@ function CourseCard({ program }: { program: Program }) {
 }
 
 function Loader() {
-  return Array.from({ length: 4 }).map((_, i) => (
-    <Skeleton key={i} className='w-full h-36 rounded-lg' />
-  ));
+  return (
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Skeleton key={i} className='w-full h-36 rounded-lg' />
+      ))}
+    </div>
+  );
 }
