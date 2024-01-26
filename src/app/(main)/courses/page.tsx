@@ -13,45 +13,17 @@ import {
 import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import { useQueryState } from 'nuqs';
+import CourseFilter from './ProgramFilter';
 
 export default function CoursesPage() {
   return (
     <Container>
       <h1 className='text-2xl font-semibold text-default-900'>Courses</h1>
-      <Filter />
+      <CourseFilter />
       <section className='mt-10'>
         <CourseList />
       </section>
     </Container>
-  );
-}
-
-function Filter() {
-  const [selected, setSelected] = useQueryState('faculty');
-  return (
-    <nav className='flex justify-start md:justify-center W-100vw overflow-auto pb-2'>
-      <ul className='flex gap-3 mt-5'>
-        {Faculties.map((faculty) => (
-          <li key={faculty.code}>
-            <Button
-              onClick={() => {
-                if (selected === faculty.code) {
-                  setSelected(null);
-                } else {
-                  setSelected(faculty.code);
-                }
-              }}
-              variant={faculty.code === selected ? 'solid' : 'bordered'}
-              color={faculty.code === selected ? 'primary' : 'default'}
-              size='sm'
-              radius='full'
-            >
-              {faculty.tag}
-            </Button>
-          </li>
-        ))}
-      </ul>
-    </nav>
   );
 }
 
