@@ -15,6 +15,7 @@ import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import clsx from 'clsx';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import CourseFilter from '../../courses/ProgramFilter';
+import { useQueryState } from 'nuqs';
 
 type Props = {
   application: Application;
@@ -24,23 +25,31 @@ type Props = {
 export default function RecommendationList({ application, onSelected }: Props) {
   const [courses, setCourses] = React.useState<Recommendation[]>([]);
   const [loading, setLoading] = React.useState(false);
+  const [faculty] = useQueryState('faculty');
 
   useEffect(() => {
     setLoading(true);
     programRepository
       .getRecommendations(application)
       .then((data) => {
-        setCourses(data);
+        setCourses(
+          data.filter((it) => {
+            if (faculty) {
+              return it.faculty === faculty;
+            }
+            return true;
+          })
+        );
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [application]);
+  }, [application, faculty]);
 
   return (
     <>
       <CourseFilter />
-      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 pb-10'>
         {loading && courses.length === 0 ? (
           <Loader />
         ) : (
