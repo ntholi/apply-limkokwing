@@ -20,9 +20,7 @@ export default function CoursesPage() {
       <h1 className='text-2xl font-semibold text-default-900'>Courses</h1>
       <Filter />
       <section className='mt-10'>
-        <Suspense fallback={<Loader />}>
-          <CourseList />
-        </Suspense>
+        <CourseList />
       </section>
     </Container>
   );
@@ -54,13 +52,20 @@ function Filter() {
 function CourseList() {
   const [faculty] = useQueryState('faculty');
   const [programs, setPrograms] = React.useState<Program[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    setLoading(true);
     const filter = faculty ? { field: 'faculty', value: faculty } : undefined;
     programRepository
       .getAll(50, filter)
-      .then((programs) => setPrograms(programs));
+      .then((programs) => setPrograms(programs))
+      .finally(() => setLoading(false));
   }, [faculty]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return programs.length > 0 ? (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
