@@ -29,12 +29,18 @@ export default function CoursesPage() {
 function Filter() {
   const [selected, setSelected] = useQueryState('faculty');
   return (
-    <nav className='flex justify-center'>
+    <nav className='flex justify-start md:justify-center W-100vw overflow-auto pb-2'>
       <ul className='flex gap-3 mt-5'>
         {Faculties.map((faculty) => (
           <li key={faculty.code}>
             <Button
-              onClick={() => setSelected(faculty.code)}
+              onClick={() => {
+                if (selected === faculty.code) {
+                  setSelected(null);
+                } else {
+                  setSelected(faculty.code);
+                }
+              }}
               variant={faculty.code === selected ? 'solid' : 'bordered'}
               color={faculty.code === selected ? 'primary' : 'default'}
               size='sm'
