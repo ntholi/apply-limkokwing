@@ -3,6 +3,7 @@ import React, { Suspense } from 'react';
 import Container from '../core/Container';
 import { Program } from '@/app/(admin)/admin/programs/modal/program';
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -28,18 +29,21 @@ export default function CoursesPage() {
 }
 
 function Filter() {
-  const [faculty, setFaculty] = useQueryState('faculty');
+  const [selected, setSelected] = useQueryState('faculty');
   return (
-    <nav className=''>
+    <nav className='flex justify-center'>
       <ul className='flex gap-3 mt-5'>
         {Faculties.map((faculty) => (
           <li key={faculty.code}>
-            <button
-              className='text-default-500 hover:text-default-900'
-              onClick={() => setFaculty(faculty.code)}
+            <Button
+              onClick={() => setSelected(faculty.code)}
+              variant={faculty.code === selected ? 'solid' : 'bordered'}
+              color={faculty.code === selected ? 'primary' : 'default'}
+              size='sm'
+              radius='full'
             >
               {faculty.tag}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>
