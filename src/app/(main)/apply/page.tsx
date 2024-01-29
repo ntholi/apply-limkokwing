@@ -85,8 +85,8 @@ export default function StartPage() {
   return (
     <div className='pt-16 absolute top-0 bottom-0 left-0 right-0'>
       <Container>
-        <h1 className='text-2xl'>Application</h1>
-        <Stepper className='my-10' />
+        <h1 className='text-xl sm:text-2xl'>Application</h1>
+        <Stepper className='my-8 sm:my-10' />
         <div className='mt-5 flex flex-col gap-5'>
           <div className='pb-10'>{steps[step - 1]}</div>
           <div className='fixed bottom-0 left-0 right-0 backdrop-blur-sm bg-gradient-to-r from-black/10 border-t border-zinc-950 to-black'>
