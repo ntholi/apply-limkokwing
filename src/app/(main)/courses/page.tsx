@@ -74,6 +74,12 @@ function CourseCard({ program }: { program: Program }) {
       <Divider />
       <CardBody className='text-small'>
         <p>Minimum of {program.requiredCredits} credits required</p>
+        <p>
+          And must have a credit in:{' '}
+          <span className='text-zinc-400'>
+            {program.prerequisites.map((it) => `${it.courseName} `)}
+          </span>
+        </p>
       </CardBody>
     </Card>
   );
