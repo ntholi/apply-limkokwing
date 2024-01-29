@@ -105,9 +105,7 @@ const RecommendationCard = ({ item, onSelected }: CardProps) => {
           </div>
         </CardHeader>
         <Divider />
-        <CardBody className='text-small'>
-          <p>Make beautiful websites regardless of your design experience.</p>
-        </CardBody>
+        <CardBody className='text-small'>Recommended Course</CardBody>
       </Card>
     </Badge>
   );
