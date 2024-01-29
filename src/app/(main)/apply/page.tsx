@@ -14,14 +14,15 @@ import ContentWrapper from '../components/ContentWrapper';
 import { useRouter } from 'next/navigation';
 import CoursePicker from './courses/CoursePicker';
 import UserDetailsInput from './user/UserDetailsInput';
+import useCanProceed from '../components/useCanProceed';
 
 export default function StartPage() {
   const [isPending, startTransition] = React.useTransition();
   const [step, setStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const { user, status } = useSession();
-  const [canProceed, setCanProceed] = React.useState(true);
   const router = useRouter();
   const application = useApplication();
+  const { canProceed } = useCanProceed();
 
   function handleSubmit() {
     startTransition(async () => {
@@ -35,27 +36,6 @@ export default function StartPage() {
   if (status === 'unauthenticated') {
     router.push(`/auth/signin?redirect=apply`);
   }
-
-  useEffect(() => {
-    if (!application) return;
-    if (
-      step === 1 &&
-      application.userDetails?.firstName &&
-      application.userDetails?.lastName
-    ) {
-      setCanProceed(true);
-    } else if (step === 2 && application.results.length > 0) {
-      setCanProceed(true);
-    } else if (step === 3 && application.firstChoice) {
-      setCanProceed(true);
-    } else if (step === 4 && application.documents.length > 0) {
-      setCanProceed(true);
-    } else if (step === 5) {
-      setCanProceed(true);
-    } else {
-      setCanProceed(false);
-    }
-  }, [application, step]);
 
   if (!application || !user) {
     return (
