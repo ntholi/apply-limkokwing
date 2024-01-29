@@ -17,12 +17,14 @@ import { useApplication } from '../ApplicationProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { Application } from '@/app/(admin)/admin/applications/modals/Application';
+import Review from '../review/Review';
+import { Timer } from 'lucide-react';
+import { dateTime } from '@/lib/utils/format';
 
 export default function ApplicationStatusPage() {
   const application = useApplication();
   const router = useRouter();
   const { status } = useSession();
-  const pathname = usePathname();
 
   if (status === 'unauthenticated') {
     router.push(`/auth/signin?redirect=apply/status`);
@@ -38,44 +40,23 @@ export default function ApplicationStatusPage() {
   return (
     <Container>
       <h1 className='text-xl'>My Application</h1>
-      <Divider className='my-4' />
-      <Card className='max-w-[400px] mt-4'>
-        <CardHeader className='flex gap-3'>
-          <div className='flex flex-col w-full'>
-            <div className='flex justify-between'>
-              <p className='text-md'>Application Status</p>
-            </div>
-            <p className='text-small text-default-500'>
-              Status:{' '}
-              <span
-                className={clsx([
-                  `text-default-900 capitalize`,
-                  getStatusColor(application?.status),
-                ])}
-              >
-                {application?.status}
-              </span>
-            </p>
-          </div>
-          <Button size='sm'>Update</Button>
-        </CardHeader>
-        <Divider />
-        <CardBody className='gap-3'>
-          <InfoDisplay
-            label='Names'
-            value={`${application.userDetails?.firstName} ${application.userDetails?.lastName}`}
-          />
-
-          <InfoDisplay
-            label='First Choice'
-            value={application.firstChoice?.programName}
-          />
-          <InfoDisplay
-            label='Second Choice'
-            value={application.secondChoice?.programName}
-          />
-        </CardBody>
-      </Card>
+      <p className='text-xs mt-1 text-default-500 flex items-center'>
+        <Timer size={16} className='inline-block mr-1' />
+        <span>{dateTime(application.dateSubmitted)}</span>
+      </p>
+      <p className='text-small text-default-500'>
+        Status:{' '}
+        <span
+          className={clsx([
+            `text-default-900 capitalize`,
+            getStatusColor(application?.status),
+          ])}
+        >
+          {application?.status}
+        </span>
+      </p>
+      <Divider className='my-3' />
+      <Review />
     </Container>
   );
 }

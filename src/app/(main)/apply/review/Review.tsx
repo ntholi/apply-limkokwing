@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react';
 import { IconCheck } from '@tabler/icons-react';
 import ContentWrapper from '../../components/ContentWrapper';
+import PersonalDetails from './PersonalDetails';
 
 export default function Review() {
   const application = useApplication();
@@ -18,13 +19,16 @@ export default function Review() {
   return (
     <ContentWrapper>
       <Accordion>
-        <AccordionItem key='1' title='Qualifications'>
+        <AccordionItem key='1' title='Personal Details'>
+          <PersonalDetails application={application} />
+        </AccordionItem>
+        <AccordionItem key='2' title='Qualifications'>
           <h2 className='p-1 font-semibold'>
             {application?.certificate?.name}
           </h2>
           <ResultsTable application={application} />
         </AccordionItem>
-        <AccordionItem key='2' title='Courses'>
+        <AccordionItem key='3' title='Courses'>
           <div className='border rounded-lg p-4 border-default w-full sm:w-96 mb-3'>
             <div className='flex items-center gap-4'>
               <span>1</span>
@@ -45,7 +49,7 @@ export default function Review() {
             </div>
           </div>
         </AccordionItem>
-        <AccordionItem key='3' title='Documents'>
+        <AccordionItem key='4' title='Documents'>
           <ul className='flex flex-col gap-2'>
             {application.documents.map((doc) => (
               <li key={doc.name} className='flex gap-3 items-center'>
