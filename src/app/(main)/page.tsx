@@ -16,7 +16,7 @@ export default function Home() {
           Limkokwing University of Creative Technology
         </h1>
       </div>
-      <h2 className='md:text-8xl text-center font-bold uppercase text-5xl'>
+      <h2 className='md:text-8xl text-center font-bold uppercase text-5xl mt-[5vh] md:mt-0'>
         Be The Most Successful
       </h2>
       <HomeButton />
