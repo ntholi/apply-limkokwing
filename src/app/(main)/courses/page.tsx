@@ -1,21 +1,18 @@
 'use client';
-import React, { Suspense, useEffect, useState } from 'react';
-import Container from '../core/Container';
+import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { Program } from '@/app/(admin)/admin/programs/modal/program';
+import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
   Divider,
   Skeleton,
 } from '@nextui-org/react';
-import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
-import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import { useQueryState } from 'nuqs';
+import React from 'react';
+import Container from '../core/Container';
 import CourseFilter from './ProgramFilter';
-import { Certificate } from '@/app/(admin)/admin/certificates/Certificate';
-import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
 
 export default function CoursesPage() {
   return (
