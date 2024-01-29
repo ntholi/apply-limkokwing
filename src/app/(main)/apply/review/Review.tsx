@@ -61,6 +61,7 @@ type EditButtonProps = {
 };
 
 function EditButton({ href }: EditButtonProps) {
+  const top = href === '/apply?step=3' ? 'top-[40px]' : 'top-[60px]';
   return (
     <Button
       size='sm'
@@ -68,7 +69,7 @@ function EditButton({ href }: EditButtonProps) {
       as={Link}
       href={href}
       startContent={<Edit size={13} />}
-      className='absolute right-1 top-[60px]'
+      className={`absolute right-0 ${top}`}
     >
       Edit
     </Button>
