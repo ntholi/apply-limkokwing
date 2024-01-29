@@ -68,8 +68,8 @@ export default function StartPage() {
         <Stepper className='my-8 sm:my-10' />
         <div className='mt-5 flex flex-col gap-5'>
           <div className='pb-10'>{steps[step - 1]}</div>
-          <div className='fixed bottom-0 left-0 right-0 md:max-w-screen-lg md:container md:mx-auto md:px-4 md:-mb-2'>
-            <div className='md:px-6 backdrop-blur-sm bg-gradient-to-r md:rounded-2xl from-black/60 md:from-black/30 border border-zinc-950 to-black'>
+          <div className='fixed z-50 bottom-0 left-0 right-0 md:max-w-screen-lg md:container md:mx-auto md:px-4 md:-mb-2'>
+            <div className='md:px-6 backdrop-blur-sm bg-gradient-to-r md:rounded-2xl from-black/30 border border-zinc-950 to-black'>
               <nav className='flex justify-between max-w-screen-lg container mx-auto px-4 py-5'>
                 <Button
                   isDisabled={step === 1}
