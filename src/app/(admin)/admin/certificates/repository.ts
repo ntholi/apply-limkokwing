@@ -1,5 +1,7 @@
+import { collection, or, query, where } from 'firebase/firestore';
 import { FirebaseRepository } from '../../admin-core/repository';
 import { Certificate, GradingScheme } from './Certificate';
+import { db } from '@/lib/config/firebase';
 
 class CertificateRepository extends FirebaseRepository<Certificate> {
   constructor() {

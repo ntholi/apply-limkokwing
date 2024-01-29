@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Container from '../core/Container';
 import { Program } from '@/app/(admin)/admin/programs/modal/program';
 import {
@@ -14,6 +14,8 @@ import { Faculties } from '@/app/(admin)/admin/programs/modal/faculty';
 import { programRepository } from '@/app/(admin)/admin/programs/repository';
 import { useQueryState } from 'nuqs';
 import CourseFilter from './ProgramFilter';
+import { Certificate } from '@/app/(admin)/admin/certificates/Certificate';
+import { certificateRepository } from '@/app/(admin)/admin/certificates/repository';
 
 export default function CoursesPage() {
   return (
@@ -71,7 +73,7 @@ function CourseCard({ program }: { program: Program }) {
       </CardHeader>
       <Divider />
       <CardBody className='text-small'>
-        <p>Make beautiful websites regardless of your design experience.</p>
+        <p>Minimum of {program.requiredCredits} credits required</p>
       </CardBody>
     </Card>
   );

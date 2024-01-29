@@ -12,6 +12,7 @@ import {
   setDoc,
   where,
   limit as limitQuery,
+  Query,
 } from 'firebase/firestore';
 import { db } from '@/lib/config/firebase';
 import { Repository, Resource, ResourceCreate } from './repository';
@@ -115,6 +116,18 @@ export class FirebaseRepository<T extends Resource> implements Repository<T> {
       categories.push({ ...doc.data(), id: doc.id } as T);
     });
     return categories;
+  }
+
+  async getDocs(query: Query): Promise<T[]> {
+    const snapshot = await getDocs(query);
+    if (snapshot.empty) return [];
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as T));
+  }
+
+  async getDoc(query: Query): Promise<T | undefined> {
+    const snapshot = await getDocs(query);
+    if (snapshot.empty) return undefined;
+    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as T;
   }
 
   async getResource<R extends Resource>(
