@@ -1,7 +1,4 @@
-import {
-  Application,
-  UserDetails,
-} from '@/app/(admin)/admin/applications/modals/Application';
+import { Application } from '@/app/(admin)/admin/applications/modals/Application';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
