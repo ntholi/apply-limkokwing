@@ -15,6 +15,29 @@ import { Edit } from 'lucide-react';
 import Courses from './Courses';
 import Documents from './Documents';
 
+const items = [
+  {
+    name: 'Personal Details',
+    href: '/apply?step=1',
+    component: PersonalDetails,
+  },
+  {
+    name: 'Qualifications',
+    href: '/apply?step=2',
+    component: ResultsTable,
+  },
+  {
+    name: 'Courses',
+    href: '/apply?step=3',
+    component: Courses,
+  },
+  {
+    name: 'Documents',
+    href: '/apply?step=4',
+    component: Documents,
+  },
+];
+
 export default function Review() {
   const application = useApplication();
   if (!application) return null;
@@ -22,36 +45,32 @@ export default function Review() {
   return (
     <ContentWrapper>
       <Accordion>
-        <AccordionItem key='1' title='Personal Details'>
-          <PersonalDetails application={application} />
-        </AccordionItem>
-        <AccordionItem key='2' title='Qualifications'>
-          <ResultsTable application={application} />
-        </AccordionItem>
-        <AccordionItem key='3' title='Courses' className='relative'>
-          <Courses application={application} />
-        </AccordionItem>
-        <AccordionItem key='4' title='Documents'>
-          <Documents application={application} />
-        </AccordionItem>
+        {items.map((item) => (
+          <AccordionItem key={item.name} title={item.name} className='relative'>
+            <EditButton href={item.href} />
+            <item.component application={application} />
+          </AccordionItem>
+        ))}
       </Accordion>
     </ContentWrapper>
   );
 }
 
 type EditButtonProps = {
-  children: React.ReactNode;
+  href: string;
 };
-function EditButton({ children }: EditButtonProps) {
+
+function EditButton({ href }: EditButtonProps) {
   return (
     <Button
       size='sm'
       variant='light'
+      as={Link}
+      href={href}
       startContent={<Edit size={13} />}
-      className='absolute right-10 top-4'
-      radius='full'
+      className='absolute right-1 top-[60px]'
     >
-      {children}
+      Edit
     </Button>
   );
 }

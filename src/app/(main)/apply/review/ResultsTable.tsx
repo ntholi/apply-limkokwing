@@ -16,7 +16,9 @@ type Props = {
 export default function ResultsTable({ application }: Props) {
   return (
     <>
-      <h2 className='p-1 font-semibold'>{application?.certificate?.name}</h2>
+      <h2 className='pl-1 pb-1 font-semibold'>
+        {application?.certificate?.name}
+      </h2>
 
       <Table>
         <TableHeader>
