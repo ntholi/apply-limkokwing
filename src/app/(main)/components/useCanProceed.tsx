@@ -24,7 +24,7 @@ export default function useCanProceed() {
       setSteppable(4);
     }
     if (application.documents.length > 0) {
-      setSteppable(5);
+      setSteppable(6);
     }
     setCanProceed(step < steppable);
   }, [application, step, steppable]);
