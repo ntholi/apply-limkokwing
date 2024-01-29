@@ -83,38 +83,42 @@ export default function StartPage() {
   ];
 
   return (
-    <Container>
-      <h1 className='text-2xl'>Application</h1>
-      <Stepper className='my-10' />
-      <div className='mt-5 flex flex-col gap-5'>
-        {steps[step - 1]}
-        <nav className='flex justify-between'>
-          <Button
-            isDisabled={step === 1}
-            onClick={() => {
-              if (step > 1) {
-                setStep(step - 1);
-              }
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            color='primary'
-            isDisabled={!canProceed}
-            onClick={() => {
-              if (step < steps.length) {
-                setStep(step + 1);
-              } else {
-                handleSubmit();
-              }
-            }}
-            isLoading={isPending}
-          >
-            {step === steps.length ? 'Submit' : 'Next'}
-          </Button>
-        </nav>
-      </div>
-    </Container>
+    <div className='pt-16 absolute top-0 bottom-0 left-0 right-0'>
+      <Container>
+        <h1 className='text-2xl'>Application</h1>
+        <Stepper className='my-10' />
+        <div className='mt-5 flex flex-col gap-5'>
+          <div className='pb-10'>{steps[step - 1]}</div>
+          <div className='fixed bottom-0 left-0 right-0 backdrop-blur-sm bg-gradient-to-r from-black/10 border-t border-zinc-950 to-black'>
+            <nav className='flex justify-between max-w-screen-lg container mx-auto px-4 py-5'>
+              <Button
+                isDisabled={step === 1}
+                onClick={() => {
+                  if (step > 1) {
+                    setStep(step - 1);
+                  }
+                }}
+              >
+                Back
+              </Button>
+              <Button
+                color='primary'
+                isDisabled={!canProceed}
+                onClick={() => {
+                  if (step < steps.length) {
+                    setStep(step + 1);
+                  } else {
+                    handleSubmit();
+                  }
+                }}
+                isLoading={isPending}
+              >
+                {step === steps.length ? 'Submit' : 'Next'}
+              </Button>
+            </nav>
+          </div>
+        </div>
+      </Container>
+    </div>
   );
 }
