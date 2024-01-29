@@ -53,7 +53,6 @@ export default function StartPage() {
     } else if (step === 5) {
       setCanProceed(true);
     } else {
-      console.log('step', step, 'application', application);
       setCanProceed(false);
     }
   }, [application, step]);
