@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Container from '../core/Container';
 import { Button, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';

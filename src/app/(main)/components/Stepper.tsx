@@ -6,6 +6,8 @@ import clsx from 'clsx';
 import { Check } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import useIsMobile from '@/app/hooks/useIsMobile';
+import useCanProceed from './useCanProceed';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   className?: string;
@@ -76,6 +78,8 @@ type StepProps = {
 function Step({ step, name, description, showLine = false }: StepProps) {
   const [activeStep] = useQueryState('step', parseAsInteger.withDefault(1));
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+  const { steppable } = useCanProceed();
 
   return (
     <nav
@@ -92,6 +96,12 @@ function Step({ step, name, description, showLine = false }: StepProps) {
         variant={activeStep && step <= activeStep ? 'solid' : 'bordered'}
         color={activeStep && step <= activeStep ? 'primary' : 'default'}
         size='lg'
+        onClick={() => {
+          const canProceed = step <= steppable;
+          if (canProceed) {
+            router.push(`/apply?step=${step}`);
+          }
+        }}
       >
         {activeStep && step < activeStep ? <Check /> : step}
       </Button>
