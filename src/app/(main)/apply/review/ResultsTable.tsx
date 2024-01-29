@@ -15,19 +15,23 @@ type Props = {
 
 export default function ResultsTable({ application }: Props) {
   return (
-    <Table>
-      <TableHeader>
-        <TableColumn>Course</TableColumn>
-        <TableColumn>Grade</TableColumn>
-      </TableHeader>
-      <TableBody>
-        {application?.results.map((result) => (
-          <TableRow key={result.course}>
-            <TableCell>{result.course}</TableCell>
-            <TableCell>{result.grade.grade}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      <h2 className='p-1 font-semibold'>{application?.certificate?.name}</h2>
+
+      <Table>
+        <TableHeader>
+          <TableColumn>Course</TableColumn>
+          <TableColumn>Grade</TableColumn>
+        </TableHeader>
+        <TableBody>
+          {application?.results.map((result) => (
+            <TableRow key={result.course}>
+              <TableCell>{result.course}</TableCell>
+              <TableCell>{result.grade.grade}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 }

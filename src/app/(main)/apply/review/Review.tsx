@@ -11,6 +11,9 @@ import {
 import { IconCheck } from '@tabler/icons-react';
 import ContentWrapper from '../../components/ContentWrapper';
 import PersonalDetails from './PersonalDetails';
+import { Edit } from 'lucide-react';
+import Courses from './Courses';
+import Documents from './Documents';
 
 export default function Review() {
   const application = useApplication();
@@ -23,59 +26,32 @@ export default function Review() {
           <PersonalDetails application={application} />
         </AccordionItem>
         <AccordionItem key='2' title='Qualifications'>
-          <h2 className='p-1 font-semibold'>
-            {application?.certificate?.name}
-          </h2>
           <ResultsTable application={application} />
         </AccordionItem>
-        <AccordionItem key='3' title='Courses'>
-          <div className='border rounded-lg p-4 border-default w-full sm:w-96 mb-3'>
-            <div className='flex items-center gap-4'>
-              <span>1</span>
-              <div>
-                <h3 className=''>{application.firstChoice?.programName}</h3>
-                <p className='text-xs text-default-500'>First Choice</p>
-              </div>
-            </div>
-            <Divider className='my-3' />
-            <div className='flex items-center gap-4'>
-              <span>2</span>
-              <div>
-                <h3 className=''>
-                  {application.secondChoice?.programName || 'None'}
-                </h3>
-                <p className='text-xs text-default-500'>Second Choice</p>
-              </div>
-            </div>
-          </div>
+        <AccordionItem key='3' title='Courses' className='relative'>
+          <Courses application={application} />
         </AccordionItem>
         <AccordionItem key='4' title='Documents'>
-          <ul className='flex flex-col gap-2'>
-            {application.documents.map((doc) => (
-              <li key={doc.name} className='flex gap-3 items-center'>
-                <Button
-                  isIconOnly
-                  size='sm'
-                  radius='full'
-                  color='success'
-                  variant='bordered'
-                  className='border-1'
-                >
-                  <IconCheck size={'1rem'} />
-                </Button>
-                <Link
-                  href={doc.url}
-                  showAnchorIcon
-                  target='_blank'
-                  color='foreground'
-                >
-                  {doc.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <Documents application={application} />
         </AccordionItem>
       </Accordion>
     </ContentWrapper>
+  );
+}
+
+type EditButtonProps = {
+  children: React.ReactNode;
+};
+function EditButton({ children }: EditButtonProps) {
+  return (
+    <Button
+      size='sm'
+      variant='light'
+      startContent={<Edit size={13} />}
+      className='absolute right-10 top-4'
+      radius='full'
+    >
+      {children}
+    </Button>
   );
 }
