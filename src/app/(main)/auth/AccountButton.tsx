@@ -11,7 +11,7 @@ import { Skeleton } from '@nextui-org/skeleton';
 import React from 'react';
 import Link from 'next/link';
 import { useSession } from './SessionProvider';
-import { LogOut } from 'lucide-react';
+import { LogOut, File } from 'lucide-react';
 import { auth } from '@/lib/config/firebase';
 import { signOut } from 'firebase/auth';
 
@@ -34,7 +34,15 @@ export default function AccountButton() {
       <DropdownMenu aria-label='Profile Actions' variant='flat'>
         <DropdownSection title={user?.displayName || ''}>
           <DropdownItem
-            startContent={<LogOut />}
+            startContent={<File size={14} />}
+            as={Link}
+            href='/apply/status'
+            key='applicationStatus'
+          >
+            My Application
+          </DropdownItem>
+          <DropdownItem
+            startContent={<LogOut size={14} />}
             onClick={() => signOut(auth)}
             key='signOut'
           >
