@@ -27,6 +27,9 @@ export interface UserDetails {
   lastName?: string;
   email?: string;
   phoneNumber?: string;
+  country?: string;
+  city?: string;
+  address?: string;
 }
 
 export interface Application extends Resource {
