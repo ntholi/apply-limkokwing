@@ -8,26 +8,28 @@ export default function useCanProceed() {
   const [steppable, setSteppable] = React.useState(1);
   const application = useApplication();
 
+  const step1 =
+    application?.userDetails?.firstName && application.userDetails.lastName;
+  const step2 = application && application.results.length > 0;
+  const step3 = application && application.firstChoice;
+  const step4 = application && application.documents.length > 0;
+
   useEffect(() => {
-    if (!application) return;
     setSteppable(1);
-    if (
-      application.userDetails?.firstName &&
-      application.userDetails?.lastName
-    ) {
+    if (step1) {
       setSteppable(2);
     }
-    if (application.results.length > 0) {
+    if (step1 && step2) {
       setSteppable(3);
     }
-    if (application.firstChoice) {
+    if (step1 && step2 && step3) {
       setSteppable(4);
     }
-    if (application.documents.length > 0) {
+    if (step1 && step2 && step3 && step4) {
       setSteppable(6);
     }
     setCanProceed(step < steppable);
-  }, [application, step, steppable]);
+  }, [application, step, step1, step2, step3, step4, steppable]);
 
   return { steppable, canProceed };
 }
