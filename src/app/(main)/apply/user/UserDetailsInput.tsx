@@ -3,6 +3,8 @@ import { applicationsRepository } from '@/app/(admin)/admin/applications/reposit
 import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
+import LocationChooser from './LocationChooser';
+import { MapLocation } from './MapLocation';
 
 type Props = {
   application: Application;
@@ -15,6 +17,7 @@ export default function UserDetailsInput({ user, application }: Props) {
   const [lastName, setLastName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [phoneNumber, setPhoneNumber] = React.useState<string>('');
+  const [location, setLocation] = React.useState<MapLocation | null>(null);
 
   useEffect(() => {
     const { userDetails } = application;
@@ -76,6 +79,7 @@ export default function UserDetailsInput({ user, application }: Props) {
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
+          <LocationChooser location={location} setLocation={setLocation} />
         </CardBody>
       </Card>
     </>

@@ -37,7 +37,7 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     return unsubscribe;
   }
 
-  async createForUser(userId: string) {
+  private async createForUser(userId: string) {
     const data: ResourceCreate<Application> = {
       status: 'incomplete',
       results: [] as Results[],
