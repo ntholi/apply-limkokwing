@@ -5,6 +5,7 @@ import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
 import LocationChooser from './LocationChooser';
 import { MapLocation } from './MapLocation';
+import useCanProceed from '../../components/useCanProceed';
 
 type Props = {
   application: Application;
@@ -22,6 +23,7 @@ export default function UserDetailsInput({ user, application }: Props) {
   useEffect(() => {
     const { userDetails } = application;
     const [firstName, lastName] = extractName(user);
+    setNationalId(userDetails?.nationalId || '');
     setFirstName(userDetails?.firstName || firstName);
     setLastName(userDetails?.lastName || lastName);
     setEmail(userDetails?.email || user.email || '');
@@ -29,6 +31,10 @@ export default function UserDetailsInput({ user, application }: Props) {
   }, [user, application]);
 
   useEffect(() => {
+    if (nationalId.length < 5) return;
+    if (firstName.length < 2) return;
+    if (lastName.length < 2) return;
+
     applicationsRepository.updateUserDetails(application.id, {
       nationalId,
       firstName,

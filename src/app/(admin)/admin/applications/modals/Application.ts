@@ -22,11 +22,11 @@ export interface ProgramChoice {
 }
 
 export interface UserDetails {
-  nationalId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
+  nationalId?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
 }
 
 export interface Application extends Resource {
