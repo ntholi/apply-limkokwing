@@ -3,9 +3,9 @@ import { applicationsRepository } from '@/app/(admin)/admin/applications/reposit
 import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
-import LocationChooser from './LocationChooser';
+import LocationChooser from './useLocation';
 import { MapLocation } from './MapLocation';
-import useCanProceed from '../../components/useCanProceed';
+import useLocation from './useLocation';
 
 type Props = {
   application: Application;
@@ -13,12 +13,14 @@ type Props = {
 };
 
 export default function UserDetailsInput({ user, application }: Props) {
+  const location = useLocation();
   const [nationalId, setNationalId] = React.useState<string>('');
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [phoneNumber, setPhoneNumber] = React.useState<string>('');
-  const [location, setLocation] = React.useState<MapLocation | null>(null);
+  const [country, setCountry] = React.useState<string>('');
+  const [city, setCity] = React.useState<string>('');
 
   useEffect(() => {
     const { userDetails } = application;
@@ -28,7 +30,11 @@ export default function UserDetailsInput({ user, application }: Props) {
     setLastName(userDetails?.lastName || lastName);
     setEmail(userDetails?.email || user.email || '');
     setPhoneNumber(userDetails?.phoneNumber || user.phoneNumber || '');
-  }, [user, application]);
+    setCountry(userDetails?.country || location?.address?.country || '');
+    setCity(userDetails?.city || location?.address?.city || '');
+
+    console.log('location', location);
+  }, [user, application, location]);
 
   useEffect(() => {
     if (nationalId.length < 5) return;
@@ -41,8 +47,19 @@ export default function UserDetailsInput({ user, application }: Props) {
       lastName,
       email,
       phoneNumber,
+      city,
+      country,
     });
-  }, [nationalId, firstName, lastName, email, phoneNumber, application.id]);
+  }, [
+    nationalId,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    city,
+    country,
+    application.id,
+  ]);
 
   return (
     <>
@@ -55,21 +72,22 @@ export default function UserDetailsInput({ user, application }: Props) {
             value={nationalId}
             onChange={(e) => setNationalId(e.target.value)}
           />
-          <Input
-            type='text'
-            variant='bordered'
-            label='First Name'
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <Input
-            type='text'
-            variant='bordered'
-            label='Last Name'
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-
+          <div className='grid gap-3 sm:grid-cols-2'>
+            <Input
+              type='text'
+              variant='bordered'
+              label='First Name'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Last Name'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
           <Input
             type='email'
             variant='bordered'
@@ -85,7 +103,23 @@ export default function UserDetailsInput({ user, application }: Props) {
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
-          <LocationChooser location={location} setLocation={setLocation} />
+
+          <div className='grid gap-3 sm:grid-cols-2'>
+            <Input
+              type='text'
+              variant='bordered'
+              label='City/District'
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Country'
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            />
+          </div>
         </CardBody>
       </Card>
     </>
