@@ -32,7 +32,7 @@ export default function DocumentsUpload() {
         }
         onCompleted={(url) => {
           applicationsRepository.updateDocuments(application.id, {
-            name: `${application?.certificate?.name} Certificate`,
+            name: application?.certificate?.name || 'Certificate',
             url,
           });
         }}

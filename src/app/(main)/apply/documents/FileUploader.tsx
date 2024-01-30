@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '@/lib/config/firebase';
 import { Card, CardBody, Input, Progress } from '@nextui-org/react';
-import { MdUpload } from 'react-icons/md';
-import { IconCheck, IconCheckbox, IconCloudUpload } from '@tabler/icons-react';
-import { FaCheckCircle } from 'react-icons/fa';
+import { IconCloudUpload } from '@tabler/icons-react';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import React, { useEffect } from 'react';
+import { MdCheckCircle } from 'react-icons/md';
 
 type Props = {
   onCompleted: (url: string) => void;
@@ -67,6 +66,7 @@ export default function FileUploader(props: Props) {
           .finally(() => {
             setProgress(0);
             setShowProgress(false);
+            setFile(null);
           })
           .catch(console.error);
       }
@@ -88,17 +88,17 @@ export default function FileUploader(props: Props) {
         <CardBody className='justify-center items-center gap-3'>
           <IconCloudUpload size={'2rem'} />
           <p className='text-sm'>Click Upload</p>
-          {props.value ? (
-            <div className='text-success-500 flex text-xs gap-2 items-center'>
-              <FaCheckCircle /> <p>Uploaded</p>
-            </div>
-          ) : (
-            inputRef.current?.files &&
-            inputRef.current?.files.length > 0 && (
-              <p className='mt-2 text-center text-xs text-gray-400'>
-                {inputRef.current?.files[0].name}
-              </p>
-            )
+          {file && (
+            <p className='mt-2 text-center text-xs text-gray-400'>
+              {file.name}
+            </p>
+          )}
+          {props.value && (
+            <>
+              <div className='text-green-500 flex text-xs gap-1 items-center'>
+                <MdCheckCircle /> <p>Uploaded</p>
+              </div>
+            </>
           )}
         </CardBody>
       </Card>
