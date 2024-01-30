@@ -88,17 +88,18 @@ export default function FileUploader(props: Props) {
         <CardBody className='justify-center items-center gap-3'>
           <IconCloudUpload size={'2rem'} />
           <p className='text-sm'>Click Upload</p>
-          {file && (
+          {file ? (
             <p className='mt-2 text-center text-xs text-gray-400'>
               {file.name}
             </p>
-          )}
-          {props.value && (
-            <>
-              <div className='text-green-500 flex text-xs gap-1 items-center'>
-                <MdCheckCircle /> <p>Uploaded</p>
-              </div>
-            </>
+          ) : (
+            props.value && (
+              <>
+                <div className='text-green-500 flex text-xs gap-1 items-center'>
+                  <MdCheckCircle /> <p>Uploaded</p>
+                </div>
+              </>
+            )
           )}
         </CardBody>
       </Card>
