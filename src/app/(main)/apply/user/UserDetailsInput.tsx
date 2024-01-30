@@ -3,9 +3,8 @@ import { applicationsRepository } from '@/app/(admin)/admin/applications/reposit
 import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
-import LocationChooser from './useLocation';
-import { MapLocation } from './MapLocation';
 import useLocation from './useLocation';
+import CountryInput from './CountryInput';
 
 type Props = {
   application: Application;
@@ -32,14 +31,14 @@ export default function UserDetailsInput({ user, application }: Props) {
     setPhoneNumber(userDetails?.phoneNumber || user.phoneNumber || '');
     setCountry(userDetails?.country || location?.address?.country || '');
     setCity(userDetails?.city || location?.address?.city || '');
-
-    console.log('location', location);
   }, [user, application, location]);
 
   useEffect(() => {
     if (nationalId.length < 5) return;
     if (firstName.length < 2) return;
     if (lastName.length < 2) return;
+
+    console.log(`updating user ${country}`);
 
     applicationsRepository.updateUserDetails(application.id, {
       nationalId,
@@ -112,12 +111,11 @@ export default function UserDetailsInput({ user, application }: Props) {
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
-            <Input
-              type='text'
-              variant='bordered'
-              label='Country'
+            <CountryInput
+              // variant='bordered'
+              // label='Country'
               value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              onChange={(value) => setCountry(value)}
             />
           </div>
         </CardBody>
