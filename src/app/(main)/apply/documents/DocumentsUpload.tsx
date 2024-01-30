@@ -14,6 +14,7 @@ export default function DocumentsUpload() {
       <FileUploader
         label={'ID/Birth Certificate'}
         filePath={`${application.id}/id`}
+        value={application?.documents.findLast((d) => d.name === 'ID')?.url}
         onCompleted={(url) => {
           applicationsRepository.updateDocuments(application.id, {
             name: 'ID',
@@ -23,7 +24,12 @@ export default function DocumentsUpload() {
       />
       <FileUploader
         label={`${application?.certificate?.name} Certificate`}
-        filePath={`${application.id}/id`}
+        filePath={`${application.id}/certificate`}
+        value={
+          application?.documents.findLast(
+            (d) => d.name === application?.certificate?.name
+          )?.url
+        }
         onCompleted={(url) => {
           applicationsRepository.updateDocuments(application.id, {
             name: `${application?.certificate?.name} Certificate`,
