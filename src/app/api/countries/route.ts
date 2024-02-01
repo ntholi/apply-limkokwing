@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ip3country from 'ip3country';
+import requestIp from 'request-ip';
+import { NextApiRequest } from 'next';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const ip = searchParams.get('ip');
-  if (!ip) {
-    throw new Error('Missing IP');
+export async function GET(req: NextApiRequest) {
+  let ipAddress = req.headers['x-real-ip'] as string;
+
+  const forwardedFor = req.headers['x-forwarded-for'] as string;
+  if (!ipAddress && forwardedFor) {
+    ipAddress = forwardedFor?.split(',').at(0) ?? 'Unknown';
   }
-  ip3country.init();
-  const geo = ip3country.lookupStr('123.45.67.8');
-  return NextResponse.json(geo);
+
+  // ip3country.init();
+  // const country = ip3country.lookupStr(ip);
+  return NextResponse.json({ ipAddress });
 }
