@@ -1,5 +1,5 @@
 import { AutocompleteProps, Input, InputProps } from '@nextui-org/react';
-import React, { Key } from 'react';
+import React, { Key, useEffect } from 'react';
 import { TCountryCode, continents, countries, languages } from 'countries-list';
 import ReactCountryFlag from 'react-country-flag';
 import {
@@ -13,6 +13,7 @@ import {
   getCountryDataList,
   getEmojiFlag,
 } from 'countries-list';
+import useLocation from './useLocation';
 
 type Props = {
   value: string;
@@ -36,13 +37,13 @@ export default function CountryInput({ value, onChange, ...rest }: Props) {
       >
         {(item) => (
           <AutocompleteItem key={item.name}>
-            {/* <span className='flex items-center gap-2'>
+            <span className='flex items-center gap-2'>
               <ReactCountryFlag
                 countryCode={getCountryCode(item.name).toString()}
                 svg
-              /> */}
-            {item.name}
-            {/* </span> */}
+              />
+              {item.name}
+            </span>
           </AutocompleteItem>
         )}
       </Autocomplete>
