@@ -81,6 +81,16 @@ class ApplicationsRepository extends FirebaseRepository<Application> {
     }
   }
 
+  async clearResults(userId: string) {
+    const application = await this.get(userId);
+    if (application) {
+      await this.update(userId, {
+        ...application,
+        results: [],
+      });
+    }
+  }
+
   async updateCertificate(userId: string, certificate: Certificate) {
     const application = await this.get(userId);
     if (!application) {

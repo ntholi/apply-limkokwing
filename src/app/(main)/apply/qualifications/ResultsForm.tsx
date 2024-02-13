@@ -108,7 +108,6 @@ export default function ResultsForm({ certificate }: Props) {
                   onPress={handleSubmit}
                   isDisabled={!grade}
                   isLoading={isPending}
-                  onClick={handleSubmit}
                 >
                   Add
                 </Button>

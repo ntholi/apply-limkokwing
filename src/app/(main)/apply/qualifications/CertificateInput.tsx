@@ -33,10 +33,13 @@ export default function CertificateInput() {
       });
   }, [application?.certificate?.id]);
 
-  function handleSelectionChange(item: string) {
+  async function handleSelectionChange(item: string) {
     const certificate = certificates.find((c) => c.id === item);
     if (application && certificate) {
-      applicationsRepository.updateCertificate(application?.id, certificate);
+      if (application.certificate?.id !== certificate.id) {
+        await applicationsRepository.clearResults(application?.id);
+        applicationsRepository.updateCertificate(application?.id, certificate);
+      }
     }
   }
 
@@ -49,6 +52,7 @@ export default function CertificateInput() {
           label='Highest Qualification'
           className='w-full'
           value={application?.certificate?.name}
+          defaultSelectedKeys={[application?.certificate?.id || '']}
           onChange={(e) => handleSelectionChange(e.target.value)}
           variant='bordered'
           description={
