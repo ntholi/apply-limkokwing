@@ -1,128 +1,124 @@
-import { Application } from '@/app/(admin)/admin/applications/modals/Application';
+import {
+  Application,
+  UserDetails,
+} from '@/app/(admin)/admin/applications/modals/Application';
 import { applicationsRepository } from '@/app/(admin)/admin/applications/repository';
 import { Card, CardBody, Input } from '@nextui-org/react';
 import { User } from 'firebase/auth';
-import React, { useEffect } from 'react';
+import React, { useImperativeHandle } from 'react';
 import useLocation from './useLocation';
-import CountryInput from './CountryInput';
+import { useForm } from 'react-hook-form';
 
 type Props = {
   application: Application;
   user: User;
 };
 
-export default function UserDetailsInput({ user, application }: Props) {
-  const location = useLocation();
-  const [nationalId, setNationalId] = React.useState<string>('');
-  const [firstName, setFirstName] = React.useState<string>('');
-  const [lastName, setLastName] = React.useState<string>('');
-  const [email, setEmail] = React.useState<string>('');
-  const [phoneNumber, setPhoneNumber] = React.useState<string>('');
-  const [country, setCountry] = React.useState<string>('');
-  const [city, setCity] = React.useState<string>('');
+export type UserDetailsHandle = {
+  onSubmit: () => boolean;
+};
 
-  useEffect(() => {
-    console.log('userDetails', application.userDetails);
-    console.log('location', location);
-    const { userDetails } = application;
-    const [firstName, lastName] = extractName(user);
-    setNationalId(userDetails?.nationalId || '');
-    setFirstName(userDetails?.firstName || firstName);
-    setLastName(userDetails?.lastName || lastName);
-    setEmail(userDetails?.email || user.email || '');
-    setPhoneNumber(userDetails?.phoneNumber || user.phoneNumber || '');
-    setCountry(userDetails?.country || location?.address?.country || '');
-    setCity(userDetails?.city || location?.address?.city || '');
-  }, [user, application, location]);
+const UserDetailsInput = React.forwardRef<UserDetailsHandle, Props>(
+  (props, ref) => {
+    const { application } = props;
+    const location = useLocation();
+    const {
+      register,
+      handleSubmit,
+      getValues,
+      formState: { errors, isValid },
+    } = useForm<UserDetails>();
 
-  useEffect(() => {
-    if (nationalId.length < 5) return;
-    if (firstName.length < 2) return;
-    if (lastName.length < 2) return;
+    useImperativeHandle(ref, () => ({
+      onSubmit() {
+        handleSubmit(async (data) => {
+          await applicationsRepository.updateUserDetails(application.id, data);
+        })();
+        return isValid;
+      },
+    }));
 
-    applicationsRepository.updateUserDetails(application.id, {
-      nationalId,
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      city,
-      country,
-    });
-  }, [
-    nationalId,
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    city,
-    country,
-    application.id,
-  ]);
-
-  return (
-    <>
-      <Card className='w-full md:w-[40vw]'>
-        <CardBody className='flex flex-col gap-3 bg-black/90'>
-          <Input
-            type='text'
-            variant='bordered'
-            label='Id/Passport'
-            value={nationalId}
-            onChange={(e) => setNationalId(e.target.value)}
-          />
-          <div className='grid gap-3 sm:grid-cols-2'>
+    return (
+      <div>
+        <Card className='w-full md:w-[40vw]'>
+          <CardBody className='flex flex-col gap-3 bg-black/90'>
             <Input
               type='text'
               variant='bordered'
-              label='First Name'
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              label='Id/Passport'
+              {...register('nationalId', {
+                required: {
+                  message: 'Required',
+                  value: true,
+                },
+                minLength: {
+                  message: 'Min length 6',
+                  value: 6,
+                },
+              })}
+              errorMessage={errors.nationalId?.message}
             />
+            <div className='grid gap-3 sm:grid-cols-2'>
+              <Input
+                type='text'
+                variant='bordered'
+                label='First Name'
+                {...register('firstName', {
+                  required: {
+                    value: true,
+                    message: 'Required',
+                  },
+                })}
+                errorMessage={errors.firstName?.message}
+              />
+              <Input
+                type='text'
+                variant='bordered'
+                label='Last Name'
+                {...register('lastName', {
+                  required: {
+                    value: true,
+                    message: 'Required',
+                  },
+                })}
+                errorMessage={errors.lastName?.message}
+              />
+            </div>
             <Input
-              type='text'
+              type='email'
               variant='bordered'
-              label='Last Name'
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              label='Email'
+              {...register('email')}
             />
-          </div>
-          <Input
-            type='email'
-            variant='bordered'
-            label='Email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
 
-          <Input
-            type='tel'
-            variant='bordered'
-            label='Phone Number'
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-
-          <div className='grid gap-3 sm:grid-cols-2'>
             <Input
-              type='text'
+              type='tel'
               variant='bordered'
-              label='City/District'
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              label='Phone Number'
+              {...register('phoneNumber')}
             />
-            <CountryInput
-              // variant='bordered'
-              // label='Country'
-              value={country}
-              onChange={(value) => setCountry(value)}
-            />
-          </div>
-        </CardBody>
-      </Card>
-    </>
-  );
-}
+
+            <div className='grid gap-3 sm:grid-cols-2'>
+              <Input
+                type='text'
+                variant='bordered'
+                label='City/District'
+                {...register('city')}
+              />
+              {/* <CountryInput
+                // variant='bordered'
+                // label='Country'
+                value={country}
+                onChange={(value) => setCountry(value)}
+              /> */}
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+);
+UserDetailsInput.displayName = 'UserDetailsInput';
 
 // returns firstName and lastName of user '' if not found in an array
 function extractName(user: User | null) {
@@ -133,3 +129,5 @@ function extractName(user: User | null) {
   const lastName = name[1];
   return [firstName, lastName];
 }
+
+export default UserDetailsInput;

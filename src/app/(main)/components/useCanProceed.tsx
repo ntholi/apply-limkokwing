@@ -8,20 +8,7 @@ export default function useCanProceed() {
   const [steppable, setSteppable] = React.useState(1);
   const application = useApplication();
 
-  const step1 = (() => {
-    if (!application) return false;
-    const { userDetails } = application;
-    if (!userDetails) return false;
-    const { nationalId, firstName, lastName } = userDetails;
-    return (
-      nationalId &&
-      nationalId.length >= 5 &&
-      firstName &&
-      firstName.length >= 2 &&
-      lastName &&
-      lastName.length >= 2
-    );
-  })();
+  const step1 = true;
   const step2 = application && application.results.length > 0;
   const step3 = application && application.firstChoice;
   const step4 = application && application.documents.length > 0;

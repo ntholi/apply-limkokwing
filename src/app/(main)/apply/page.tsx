@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { RefObject } from 'react';
 import Container from '../core/Container';
 import { Button, Spinner } from '@nextui-org/react';
 import Stepper from '../components/Stepper';
@@ -13,8 +13,8 @@ import Review from './review/Review';
 import ContentWrapper from '../components/ContentWrapper';
 import { useRouter } from 'next/navigation';
 import CoursePicker from './courses/CoursePicker';
-import UserDetailsInput from './user/UserDetailsInput';
 import useCanProceed from '../components/useCanProceed';
+import UserDetailsInput, { UserDetailsHandle } from './user/UserDetailsInput';
 
 export default function StartPage() {
   const [isPending, startTransition] = React.useTransition();
@@ -23,6 +23,7 @@ export default function StartPage() {
   const router = useRouter();
   const application = useApplication();
   const { canProceed } = useCanProceed();
+  const userDetailsRef = React.useRef<UserDetailsHandle>(null);
 
   function handleSubmit() {
     startTransition(async () => {
@@ -47,7 +48,11 @@ export default function StartPage() {
 
   const steps = [
     <ContentWrapper key={1}>
-      <UserDetailsInput user={user} application={application} />
+      <UserDetailsInput
+        user={user}
+        application={application}
+        ref={userDetailsRef}
+      />
     </ContentWrapper>,
     <ContentWrapper key={2}>
       <Qualifications />
@@ -85,6 +90,11 @@ export default function StartPage() {
                   color='primary'
                   isDisabled={!canProceed}
                   onClick={() => {
+                    if (step === 1) {
+                      if (!userDetailsRef.current?.onSubmit()) {
+                        return;
+                      }
+                    }
                     if (step < steps.length) {
                       setStep(step + 1);
                     } else {
