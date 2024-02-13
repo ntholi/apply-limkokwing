@@ -8,6 +8,7 @@ import { User } from 'firebase/auth';
 import React, { useImperativeHandle } from 'react';
 import useLocation from './useLocation';
 import { useForm } from 'react-hook-form';
+import CountryInput from './CountryInput';
 
 type Props = {
   application: Application;
@@ -26,6 +27,7 @@ const UserDetailsInput = React.forwardRef<UserDetailsHandle, Props>(
       register,
       handleSubmit,
       getValues,
+      setValue,
       formState: { errors, isValid },
     } = useForm<UserDetails>();
 
@@ -105,12 +107,11 @@ const UserDetailsInput = React.forwardRef<UserDetailsHandle, Props>(
                 label='City/District'
                 {...register('city')}
               />
-              {/* <CountryInput
-                // variant='bordered'
-                // label='Country'
-                value={country}
-                onChange={(value) => setCountry(value)}
-              /> */}
+              <CountryInput
+                variant='bordered'
+                value={getValues('country')}
+                onChange={(value) => setValue('country', value)}
+              />
             </div>
           </CardBody>
         </Card>

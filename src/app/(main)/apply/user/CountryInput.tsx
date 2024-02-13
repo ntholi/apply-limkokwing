@@ -16,8 +16,9 @@ import {
 import useLocation from './useLocation';
 
 type Props = {
-  value: string;
+  value: string | undefined;
   onChange: (value: string) => void;
+  variant: InputProps['variant'];
 };
 
 export default function CountryInput({ value, onChange, ...rest }: Props) {
@@ -34,16 +35,18 @@ export default function CountryInput({ value, onChange, ...rest }: Props) {
         value={value}
         onSelectionChange={(key) => onChange(key.toString())}
         selectedKey={value}
+        {...rest}
       >
         {(item) => (
           <AutocompleteItem key={item.name}>
-            <span className='flex items-center gap-2'>
+            {/* <span className='flex items-center gap-2'>
               <ReactCountryFlag
                 countryCode={getCountryCode(item.name).toString()}
                 svg
               />
               {item.name}
-            </span>
+            </span> */}
+            {item.name}
           </AutocompleteItem>
         )}
       </Autocomplete>
