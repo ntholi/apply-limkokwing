@@ -4,12 +4,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyD1jnjMWlDFoGgit87l-QPARttFiWe8b-M',
-  authDomain: 'limko-apply-online.firebaseapp.com',
-  projectId: 'limko-apply-online',
-  storageBucket: 'limko-apply-online.appspot.com',
-  messagingSenderId: '75244047949',
-  appId: '1:75244047949:web:0b045f29b2da63fd4c1604',
+  apiKey: 'AIzaSyDAEP6RerUqS8DHqGef9uQa875RCXap4-o',
+  authDomain: 'gotolimkokwing.firebaseapp.com',
+  projectId: 'gotolimkokwing',
+  storageBucket: 'gotolimkokwing.appspot.com',
+  messagingSenderId: '386915381170',
+  appId: '1:386915381170:web:32f775f6687bbaaaf97eab',
 };
 
 const app = initializeApp(firebaseConfig);
