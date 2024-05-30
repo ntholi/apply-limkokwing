@@ -7,7 +7,7 @@ import Navbar from './home/Navbar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Apply Online',
+  title: 'Goto Limkokwing',
   description: 'Limkokwing Lesotho Online Application',
 };
 
