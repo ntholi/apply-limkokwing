@@ -1,15 +1,14 @@
 export const Faculties = [
-  { code: 'FAID', name: 'Faculty of Architecture and Interior Design' },
-  { code: 'FBS', name: 'Faculty of Business and Globalisation	Programs' },
-  { code: 'FCO', name: 'Faculty of Communication and Media	Programs' },
+  { code: 'FABE', name: 'Faculty of Architecture and Interior Design' },
+  { code: 'FBMG', name: 'Faculty of Business and Globalisation	Programs' },
+  { code: 'FCMB', name: 'Faculty of Communication, Media & Broadcasting' },
   {
     code: 'FCTH',
     name: 'Faculty of Creativity in Tourism & Hospitality	Programs',
   },
-  { code: 'FDSI', name: 'Faculty of Design and Innovation	Programs' },
-  { code: 'FFLD', name: 'Faculty of Fashion and Lifestyle Design	Programs' },
+  { code: 'FDI', name: 'Faculty of Design and Innovation	Programs' },
   {
-    code: 'FINT',
+    code: 'FICT',
     name: 'Faculty of Information & Communication Technology	Programs',
   },
 ] as const;
