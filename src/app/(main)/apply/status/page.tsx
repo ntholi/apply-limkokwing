@@ -10,6 +10,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Link,
   Spinner,
 } from '@nextui-org/react';
 import { useSession } from '../../auth/SessionProvider';
@@ -57,7 +58,9 @@ export default function ApplicationStatusPage() {
               </span>
             </p>
           </div>
-          <Button size='sm'>Update</Button>
+          <Button size='sm' as={Link} href='/apply'>
+            Update
+          </Button>
         </CardHeader>
         <Divider />
         <CardBody className='gap-3'>
