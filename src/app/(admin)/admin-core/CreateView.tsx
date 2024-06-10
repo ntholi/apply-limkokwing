@@ -1,4 +1,4 @@
-import { Box } from '@mantine/core';
+import { Box, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import React, { PropsWithChildren } from 'react';
 import { ZodObject, ZodTypeAny } from 'zod';
@@ -33,14 +33,16 @@ export default function CreateView<T extends Resource>(
 
   return (
     <Box p='xl' component='form' onSubmit={form.onSubmit(handleSubmit)}>
-      {React.Children.map(children, (child: React.ReactNode) => {
-        if (!React.isValidElement(child)) return child;
-        return React.cloneElement(child as React.ReactElement, {
-          ...child.props,
-          ...form.getInputProps(child.props.name),
-          repository,
-        });
-      })}
+      <Stack gap={'xs'}>
+        {React.Children.map(children, (child: React.ReactNode) => {
+          if (!React.isValidElement(child)) return child;
+          return React.cloneElement(child as React.ReactElement, {
+            ...child.props,
+            ...form.getInputProps(child.props.name),
+            repository,
+          });
+        })}
+      </Stack>
       <SubmitButton>Create</SubmitButton>
     </Box>
   );
