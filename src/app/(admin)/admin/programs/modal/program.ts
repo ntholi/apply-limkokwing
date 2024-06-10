@@ -12,7 +12,10 @@ export interface Prerequisite extends Resource {
 export interface Program extends Resource {
   level: string;
   name: string;
-  requiredCredits: number;
+  requirements: {
+    credits: number;
+    passes: number;
+  };
   faculty: Faculty['code'];
   prerequisites: Prerequisite[];
 }

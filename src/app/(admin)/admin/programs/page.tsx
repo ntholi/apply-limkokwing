@@ -17,7 +17,7 @@ import { Program } from './modal/program';
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs';
 import { Faculty } from './modal/faculty';
 import CertificateView from './prerequisite/CertificateView';
-import { Divider, Tabs } from '@mantine/core';
+import { Divider, Group, Tabs } from '@mantine/core';
 import { IconInfoCircle, IconTilde } from '@tabler/icons-react';
 import PrerequisiteDetails from './prerequisite/PrerequisiteDetails';
 import NumberField from '../../admin-core/form/NumberField';
@@ -62,7 +62,16 @@ function ProgramDetails({ item }: { item: Program }) {
         <DetailsView>
           <FieldView label='Level' value={item.level} />
           <FieldView label='Name' value={item.name} />
-          <FieldView label='Required Credits' value={item.requiredCredits} />
+          <Group>
+            <FieldView
+              label='Required Credits'
+              value={item.requirements.credits}
+            />
+            <FieldView
+              label='Required Passes'
+              value={item.requirements.passes}
+            />
+          </Group>
           <FieldView label='Faculty' value={item.faculty} />
         </DetailsView>
       </Tabs.Panel>
@@ -88,7 +97,7 @@ function ProgramCreate(props: CreateViewProps<Program>) {
     level: '',
     name: '',
     faculty,
-    requiredCredits: 0,
+    requirements: { credits: 0, passes: 0 },
     prerequisites: [],
   };
 

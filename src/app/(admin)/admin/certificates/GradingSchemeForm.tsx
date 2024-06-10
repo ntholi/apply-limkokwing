@@ -1,8 +1,7 @@
-import { Button, Flex, Group, TextInput } from '@mantine/core';
+import { Button, Group, TextInput } from '@mantine/core';
 import React from 'react';
-import { certificateRepository } from './repository';
-import PassingGrade from './PassingGrade';
 import { Certificate } from './Certificate';
+import { certificateRepository } from './repository';
 
 type Props = {
   certificate: Certificate;
@@ -26,8 +25,10 @@ export default function GradingSchemeForm({ certificate }: Props) {
     <form onSubmit={handleSubmit}>
       <Group align='center'>
         <TextInput
+          size='sm'
           placeholder='Grade'
           value={grade}
+          w={100}
           onChange={(event) => setGrade(event.currentTarget.value)}
         />
         <Button type='submit' loading={isPending}>
