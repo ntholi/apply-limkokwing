@@ -17,7 +17,8 @@ export default function CertificateInput() {
       gradingSchemes: [],
       id: '-1',
       name: 'Other',
-      passingGrade: null,
+      creditGrade: null,
+      passGrade: null,
     } as Certificate;
 
     certificateRepository

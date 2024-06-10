@@ -91,10 +91,22 @@ class ProgramRepository extends FirebaseRepository<Program> {
       return [];
     }
     const cert = await certificateRepository.get(application.certificate.id);
+    if (!cert) {
+      throw new Error('Certificate not found');
+    }
+    const credit = cert.creditGrade?.level || 3;
+    const passe = cert.passGrade?.level || 6;
     const credits = application.results.filter(
-      (it) => it.grade.level <= (cert?.passingGrade?.level || 3)
+      (it) => it.grade.level <= credit
     );
-    const withMatchingCredits = await this.getWithMinCredits(credits.length);
+    const passes = application.results.filter(
+      (it) => it.grade.level > credit && it.grade.level <= passe
+    );
+
+    const withMatchingCredits = await this.getWithMinCredits(
+      credits.length,
+      passes.length
+    );
     const programs = withMatchingCredits.filter((it) => {
       const prerequisites = it.prerequisites || [];
       return prerequisites
@@ -129,7 +141,7 @@ function getScore(
 ) {
   const credits = results
     .sort((a, b) => a.grade.level - b.grade.level)
-    .slice(0, program.requiredCredits)
+    .slice(0, program.requirements.credits)
     .reduce((acc, curr) => acc + curr.grade.level, 0);
 
   const countPrerequisites = results.filter((it) => {
@@ -142,14 +154,14 @@ function getScore(
   });
 
   const score = credits * 2 - countPrerequisites.length;
-  const maxScore = program.requiredCredits * 2;
+  const maxScore = program.requirements.credits * 2;
   const percentage = Math.round((maxScore / score) * 100);
 
   console.log(
     `Prerequisites: ${
       countPrerequisites.length
     }, Obtained credits ${credits}(${score}), Required Credits: ${
-      program.requiredCredits
+      program.requirements.credits
     }(${maxScore}) = ${Math.round((maxScore / score) * 100)}%`
   );
 
