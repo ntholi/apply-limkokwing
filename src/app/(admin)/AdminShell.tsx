@@ -1,50 +1,34 @@
 'use client';
-import { useDisclosure } from '@mantine/hooks';
+import { auth } from '@/lib/config/firebase';
 import {
-  ActionIcon,
   AppShell,
   Avatar,
   Burger,
   Divider,
   Flex,
   Group,
-  Indicator,
   LoadingOverlay,
   NavLink,
   ScrollArea,
   useComputedColorScheme,
-  useMantineColorScheme,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 import {
-  IconBike,
-  IconBuildingStore,
   IconChevronRight,
   IconFileDescription,
-  IconGauge,
   IconLogout2,
   IconMailbox,
-  IconMessage,
-  IconMoon,
   IconSchool,
-  IconSettings,
-  IconShoppingBag,
-  IconSpeakerphone,
-  IconSun,
-  IconTruckDelivery,
-  IconUsers,
-  IconWallpaper,
 } from '@tabler/icons-react';
-import Link from 'next/link';
-import { PropsWithChildren } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import AccessDenied from './core/AccessDenied';
-import { modals } from '@mantine/modals';
-import Logo from './core/Logo';
-import { useSession } from '../(main)/auth/SessionProvider';
-import { auth } from '@/lib/config/firebase';
 import { signOut } from 'firebase/auth';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { PropsWithChildren } from 'react';
+import { useSession } from '../(main)/auth/SessionProvider';
 import { Faculties } from './admin/programs/modal/faculty';
-import { useSearchParams } from 'next/navigation';
+import AccessDenied from './core/AccessDenied';
+import Logo from './core/Logo';
 
 export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
