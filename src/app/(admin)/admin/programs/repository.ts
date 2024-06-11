@@ -72,12 +72,11 @@ class ProgramRepository extends FirebaseRepository<Program> {
   }
 
   async getWithMinCredits(credits: number, passes: number) {
+    passes += credits;
     const q = query(
       collection(db, this.collectionName),
-      and(
-        where('requirements.credits', '<=', credits),
-        where('requirements.passes', '<=', passes)
-      )
+      where('requirements.credits', '<=', credits),
+      where('requirements.passes', '<=', passes)
     );
     const snapshot = await getDocs(q);
     if (snapshot.empty) return [];
