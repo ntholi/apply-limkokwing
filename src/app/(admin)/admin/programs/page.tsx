@@ -105,7 +105,8 @@ function ProgramCreate(props: CreateViewProps<Program>) {
     <CreateView initialValues={initialValues} {...props}>
       <SelectField name='level' options={levels} />
       <TextField name='name' />
-      <NumberField name='requiredCredits' />
+      <NumberField label='Required Credits' name='requirements.credits' />
+      <NumberField label='Required Passes' name='requirements.passes' />
       <TextField name='faculty' value={faculty} hidden />
     </CreateView>
   );
@@ -116,7 +117,8 @@ function ProgramEdit(props: EditViewProps<Program>) {
     <EditView {...props}>
       <SelectField name='level' options={levels} />
       <TextField name='name' />
-      <NumberField name='requiredCredits' />
+      <NumberField label='Required Credits' name='requirements.credits' />
+      <NumberField label='Required Passes' name='requirements.passes' />
     </EditView>
   );
 }
