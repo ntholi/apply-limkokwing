@@ -64,7 +64,7 @@ export default function ResultsForm({ certificate }: Props) {
               </ModalHeader>
               <ModalBody>
                 <Autocomplete
-                  label='Course'
+                  label='Subject'
                   defaultItems={certificate.courses
                     .sort((a, b) => a.localeCompare(b))
                     .map((course) => ({
