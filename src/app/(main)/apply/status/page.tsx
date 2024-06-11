@@ -58,7 +58,11 @@ export default function ApplicationStatusPage() {
               </span>
             </p>
           </div>
-          <Button size='sm' as={Link} href='/apply'>
+          <Button
+            color={application?.status === 'incomplete' ? 'primary' : 'default'}
+            as={Link}
+            href='/apply'
+          >
             Update
           </Button>
         </CardHeader>
