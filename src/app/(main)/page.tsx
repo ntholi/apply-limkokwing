@@ -7,10 +7,15 @@ export default function Home() {
   return (
     <Container
       as='main'
-      className='flex justify-center mt-4 flex-col items-center gap-3'
+      className='flex justify-center flex-col items-center gap-3'
     >
       <div className='text-center p-3 rounded bg-zinc-900 border border-zinc-700 flex gap-2 items-center'>
-        <h1 className='text-xs sm:text-sm'>
+        <img
+          src='/images/logo-transparent.png'
+          className='w-56 h-auto hidden sm:block'
+          alt='Logo'
+        />
+        <h1 className='text-xs sm:hidden'>
           Limkokwing University of Creative Technology
         </h1>
       </div>

@@ -25,7 +25,7 @@ function Container({ children, as, width = 'lg', ...props }: Props) {
         {
           ...props,
           className: twMerge(
-            'container mx-auto px-4 py-8 sm:py-12',
+            'container mx-auto px-4 py-8',
             widthMap[width],
             props.className
           ),
