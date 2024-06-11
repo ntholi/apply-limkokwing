@@ -42,7 +42,7 @@ export default function ProgramPage() {
       edit={ProgramEdit}
       details={ProgramDetails}
       navLinkProps={(it) => ({ label: it.name })}
-    ></ResourcePage>
+    />
   );
 }
 
