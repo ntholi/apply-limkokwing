@@ -111,7 +111,7 @@ export default function StartPage() {
             }}
             isLoading={isPending}
           >
-            {step === steps.length ? 'Submit' : 'Next'}
+            {step === steps.length ? 'Submit' : 'Save & Continue'}
           </Button>
         </nav>
       </div>
