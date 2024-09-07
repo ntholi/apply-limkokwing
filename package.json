@@ -5,7 +5,7 @@
   "scripts": {
     "start:server": "pnpm --filter server dev",
     "start:client": "pnpm --filter client dev",
-    "dev": "pnpm run --parallel start:server start:client"
+    "dev": "pnpm run --parallel dev"
   },
   "keywords": [],
   "author": "Ntholi Nkhatho",
