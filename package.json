@@ -1,0 +1,13 @@
+{
+  "name": "apply-limkokwing",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start:server": "pnpm --filter server dev",
+    "start:client": "pnpm --filter client dev",
+    "dev": "pnpm run --parallel start:server start:client"
+  },
+  "keywords": [],
+  "author": "Ntholi Nkhatho",
+  "license": "ISC"
+}
