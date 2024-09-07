@@ -1,7 +1,0 @@
-env:
-  - variable: PROJECT_ID
-    secret: project_id
-  - variable: CLIENT_EMAIL
-    secret: client_email
-  - variable: PRIVATE_KEY
-    secret: private_key
