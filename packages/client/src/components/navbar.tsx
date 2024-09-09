@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import Logo from './Logo';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,12 +33,12 @@ export default function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             className='text-foreground focus:outline-none'
           >
-            <Menu className='h-6 w-6' />
+            {isOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
           </button>
         </div>
       </div>
       {isOpen && (
-        <div className='md:hidden'>
+        <div className='md:hidden backdrop-blur-md bg-background/30 z-50 absolute top-12 left-0 w-full h-full'>
           <div className='px-2 pt-2 pb-3 space-y-1'>
             <Link to='/' className='block hover:text-foreground/60'>
               Home
