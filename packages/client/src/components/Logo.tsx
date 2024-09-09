@@ -1,4 +1,4 @@
-import { useTheme } from '@/components/theme-provider';
+import { useTheme } from '@/components/theme/theme-provider';
 import logoWhite from '../assets/logo-white.png';
 import logoDark from '../assets/logo-black.png';
 
