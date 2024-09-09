@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import Logo from './Logo';
+import { Menu } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,43 +31,25 @@ export default function Navbar() {
         <div className='md:hidden'>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className='text-white focus:outline-none'
+            className='text-foreground focus:outline-none'
           >
-            <svg
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M4 6h16M4 12h16M4 18h16'
-              />
-            </svg>
+            <Menu className='h-6 w-6' />
           </button>
         </div>
       </div>
       {isOpen && (
         <div className='md:hidden'>
           <div className='px-2 pt-2 pb-3 space-y-1'>
-            <Link to='/' className='block text-white hover:text-gray-300'>
+            <Link to='/' className='block hover:text-foreground/60'>
               Home
             </Link>
-            <Link
-              to='/courses'
-              className='block text-white hover:text-gray-300'
-            >
+            <Link to='/courses' className='block hover:text-foreground/60'>
               Courses
             </Link>
-            <Link to='/apply' className='block text-white hover:text-gray-300'>
+            <Link to='/apply' className='block hover:text-foreground/60'>
               Apply
             </Link>
-            <Link
-              to='/account'
-              className='block text-white hover:text-gray-300'
-            >
+            <Link to='/account' className='block hover:text-foreground/60'>
               Account
             </Link>
           </div>
