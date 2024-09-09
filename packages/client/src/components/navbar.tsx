@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className='p-4'>
+    <nav className='p-4 border-b'>
       <div className='container mx-auto flex justify-between items-center'>
         <div className='flex items-center'>
           <Logo className='h-8 w-auto mr-4' />
