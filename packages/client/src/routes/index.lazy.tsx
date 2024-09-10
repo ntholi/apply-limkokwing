@@ -1,3 +1,4 @@
+import Body from '@/components/base/Body';
 import { ModeToggle } from '@/components/theme/mode-toggle';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
@@ -7,10 +8,10 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
   return (
-    <div className='p-2'>
+    <Body>
       <h3>
         <ModeToggle />
       </h3>
-    </div>
+    </Body>
   );
 }
