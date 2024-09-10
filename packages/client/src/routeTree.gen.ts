@@ -23,6 +23,10 @@ const MainCoursesLazyImport = createFileRoute('/_main/courses')()
 const MainApplyLazyImport = createFileRoute('/_main/apply')()
 const MainAccountLazyImport = createFileRoute('/_main/account')()
 const AdminAdminIndexLazyImport = createFileRoute('/_admin/admin/')()
+const AdminAdminCoursesLazyImport = createFileRoute('/_admin/admin/courses')()
+const AdminAdminApplicationsLazyImport = createFileRoute(
+  '/_admin/admin/applications',
+)()
 
 // Create/Update Routes
 
@@ -61,6 +65,22 @@ const AdminAdminIndexLazyRoute = AdminAdminIndexLazyImport.update({
   getParentRoute: () => AdminRoute,
 } as any).lazy(() =>
   import('./routes/_admin/admin/index.lazy').then((d) => d.Route),
+)
+
+const AdminAdminCoursesLazyRoute = AdminAdminCoursesLazyImport.update({
+  path: '/admin/courses',
+  getParentRoute: () => AdminRoute,
+} as any).lazy(() =>
+  import('./routes/_admin/admin/courses.lazy').then((d) => d.Route),
+)
+
+const AdminAdminApplicationsLazyRoute = AdminAdminApplicationsLazyImport.update(
+  {
+    path: '/admin/applications',
+    getParentRoute: () => AdminRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/_admin/admin/applications.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -109,6 +129,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexLazyImport
       parentRoute: typeof MainImport
     }
+    '/_admin/admin/applications': {
+      id: '/_admin/admin/applications'
+      path: '/admin/applications'
+      fullPath: '/admin/applications'
+      preLoaderRoute: typeof AdminAdminApplicationsLazyImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/admin/courses': {
+      id: '/_admin/admin/courses'
+      path: '/admin/courses'
+      fullPath: '/admin/courses'
+      preLoaderRoute: typeof AdminAdminCoursesLazyImport
+      parentRoute: typeof AdminImport
+    }
     '/_admin/admin/': {
       id: '/_admin/admin/'
       path: '/admin'
@@ -122,10 +156,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AdminRouteChildren {
+  AdminAdminApplicationsLazyRoute: typeof AdminAdminApplicationsLazyRoute
+  AdminAdminCoursesLazyRoute: typeof AdminAdminCoursesLazyRoute
   AdminAdminIndexLazyRoute: typeof AdminAdminIndexLazyRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminApplicationsLazyRoute: AdminAdminApplicationsLazyRoute,
+  AdminAdminCoursesLazyRoute: AdminAdminCoursesLazyRoute,
   AdminAdminIndexLazyRoute: AdminAdminIndexLazyRoute,
 }
 
@@ -153,6 +191,8 @@ export interface FileRoutesByFullPath {
   '/apply': typeof MainApplyLazyRoute
   '/courses': typeof MainCoursesLazyRoute
   '/': typeof MainIndexLazyRoute
+  '/admin/applications': typeof AdminAdminApplicationsLazyRoute
+  '/admin/courses': typeof AdminAdminCoursesLazyRoute
   '/admin': typeof AdminAdminIndexLazyRoute
 }
 
@@ -162,6 +202,8 @@ export interface FileRoutesByTo {
   '/apply': typeof MainApplyLazyRoute
   '/courses': typeof MainCoursesLazyRoute
   '/': typeof MainIndexLazyRoute
+  '/admin/applications': typeof AdminAdminApplicationsLazyRoute
+  '/admin/courses': typeof AdminAdminCoursesLazyRoute
   '/admin': typeof AdminAdminIndexLazyRoute
 }
 
@@ -173,14 +215,32 @@ export interface FileRoutesById {
   '/_main/apply': typeof MainApplyLazyRoute
   '/_main/courses': typeof MainCoursesLazyRoute
   '/_main/': typeof MainIndexLazyRoute
+  '/_admin/admin/applications': typeof AdminAdminApplicationsLazyRoute
+  '/_admin/admin/courses': typeof AdminAdminCoursesLazyRoute
   '/_admin/admin/': typeof AdminAdminIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/account' | '/apply' | '/courses' | '/' | '/admin'
+  fullPaths:
+    | ''
+    | '/account'
+    | '/apply'
+    | '/courses'
+    | '/'
+    | '/admin/applications'
+    | '/admin/courses'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/account' | '/apply' | '/courses' | '/' | '/admin'
+  to:
+    | ''
+    | '/account'
+    | '/apply'
+    | '/courses'
+    | '/'
+    | '/admin/applications'
+    | '/admin/courses'
+    | '/admin'
   id:
     | '__root__'
     | '/_admin'
@@ -189,6 +249,8 @@ export interface FileRouteTypes {
     | '/_main/apply'
     | '/_main/courses'
     | '/_main/'
+    | '/_admin/admin/applications'
+    | '/_admin/admin/courses'
     | '/_admin/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -222,6 +284,8 @@ export const routeTree = rootRoute
     "/_admin": {
       "filePath": "_admin.tsx",
       "children": [
+        "/_admin/admin/applications",
+        "/_admin/admin/courses",
         "/_admin/admin/"
       ]
     },
@@ -249,6 +313,14 @@ export const routeTree = rootRoute
     "/_main/": {
       "filePath": "_main/index.lazy.tsx",
       "parent": "/_main"
+    },
+    "/_admin/admin/applications": {
+      "filePath": "_admin/admin/applications.lazy.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/admin/courses": {
+      "filePath": "_admin/admin/courses.lazy.tsx",
+      "parent": "/_admin"
     },
     "/_admin/admin/": {
       "filePath": "_admin/admin/index.lazy.tsx",
