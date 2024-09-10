@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import Logo from './Logo';
 import { Menu, X } from 'lucide-react';
-import Container from './ui/container';
+import Container from '../ui/container';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
