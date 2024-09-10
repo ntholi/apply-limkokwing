@@ -8,11 +8,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className='p-4 border-b'>
-      <Container width='lg' className='flex justify-between items-center'>
+    <nav className='border-b p-2'>
+      <Container width='lg' className='flex items-center justify-between'>
         <div className='flex items-center'>
-          <Logo className='h-10 w-auto mr-4' />
-          <div className='hidden md:flex space-x-4'>
+          <Logo className='mr-4 h-14 w-auto' />
+          <div className='hidden space-x-4 md:flex'>
             <Link to='/' className='hover:text-foreground/60'>
               Home
             </Link>
@@ -39,26 +39,26 @@ export default function Navbar() {
         </div>
       </Container>
       {isOpen && (
-        <div className='md:hidden backdrop-blur-md bg-background/30 z-50 absolute top-20 left-0 w-full h-full'>
-          <div className='px-2 pt-2 pb-3 space-y-3'>
-            <Link to='/' className='block hover:text-foreground/60 text-lg'>
+        <div className='absolute left-0 top-20 z-50 h-full w-full bg-background/30 backdrop-blur-md md:hidden'>
+          <div className='space-y-3 px-2 pb-3 pt-2'>
+            <Link to='/' className='block text-lg hover:text-foreground/60'>
               Home
             </Link>
             <Link
               to='/courses'
-              className='block hover:text-foreground/60 text-lg'
+              className='block text-lg hover:text-foreground/60'
             >
               Courses
             </Link>
             <Link
               to='/apply'
-              className='block hover:text-foreground/60 text-lg'
+              className='block text-lg hover:text-foreground/60'
             >
               Apply
             </Link>
             <Link
               to='/account'
-              className='block hover:text-foreground/60 text-lg'
+              className='block text-lg hover:text-foreground/60'
             >
               Account
             </Link>
