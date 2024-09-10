@@ -39,18 +39,27 @@ export default function Navbar() {
         </div>
       </Container>
       {isOpen && (
-        <div className='md:hidden backdrop-blur-md bg-background/30 z-50 absolute top-12 left-0 w-full h-full'>
-          <div className='px-2 pt-2 pb-3 space-y-1'>
-            <Link to='/' className='block hover:text-foreground/60'>
+        <div className='md:hidden backdrop-blur-md bg-background/30 z-50 absolute top-20 left-0 w-full h-full'>
+          <div className='px-2 pt-2 pb-3 space-y-3'>
+            <Link to='/' className='block hover:text-foreground/60 text-lg'>
               Home
             </Link>
-            <Link to='/courses' className='block hover:text-foreground/60'>
+            <Link
+              to='/courses'
+              className='block hover:text-foreground/60 text-lg'
+            >
               Courses
             </Link>
-            <Link to='/apply' className='block hover:text-foreground/60'>
+            <Link
+              to='/apply'
+              className='block hover:text-foreground/60 text-lg'
+            >
               Apply
             </Link>
-            <Link to='/account' className='block hover:text-foreground/60'>
+            <Link
+              to='/account'
+              className='block hover:text-foreground/60 text-lg'
+            >
               Account
             </Link>
           </div>
