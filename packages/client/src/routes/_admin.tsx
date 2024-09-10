@@ -28,6 +28,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Logo from '@/components/base/Logo';
+import { ModeToggle } from '@/components/theme/mode-toggle';
 
 export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
@@ -200,6 +201,9 @@ function AdminLayout() {
             <Outlet />
           </div>
         </main>
+      </div>
+      <div className='fixed bottom-0 right-0 p-6 lg:p-8'>
+        <ModeToggle />
       </div>
     </div>
   );
