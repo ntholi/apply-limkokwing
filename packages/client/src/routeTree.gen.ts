@@ -13,116 +13,194 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as MainImport } from './routes/_main'
+import { Route as AdminImport } from './routes/_admin'
 
 // Create Virtual Routes
 
-const CoursesLazyImport = createFileRoute('/courses')()
-const ApplyLazyImport = createFileRoute('/apply')()
-const AccountLazyImport = createFileRoute('/account')()
-const IndexLazyImport = createFileRoute('/')()
+const MainIndexLazyImport = createFileRoute('/_main/')()
+const MainCoursesLazyImport = createFileRoute('/_main/courses')()
+const MainApplyLazyImport = createFileRoute('/_main/apply')()
+const MainAccountLazyImport = createFileRoute('/_main/account')()
+const AdminAdminIndexLazyImport = createFileRoute('/_admin/admin/')()
 
 // Create/Update Routes
 
-const CoursesLazyRoute = CoursesLazyImport.update({
-  path: '/courses',
+const MainRoute = MainImport.update({
+  id: '/_main',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/courses.lazy').then((d) => d.Route))
+} as any)
 
-const ApplyLazyRoute = ApplyLazyImport.update({
-  path: '/apply',
+const AdminRoute = AdminImport.update({
+  id: '/_admin',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/apply.lazy').then((d) => d.Route))
+} as any)
 
-const AccountLazyRoute = AccountLazyImport.update({
-  path: '/account',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/account.lazy').then((d) => d.Route))
-
-const IndexLazyRoute = IndexLazyImport.update({
+const MainIndexLazyRoute = MainIndexLazyImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/index.lazy').then((d) => d.Route))
+
+const MainCoursesLazyRoute = MainCoursesLazyImport.update({
+  path: '/courses',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/courses.lazy').then((d) => d.Route))
+
+const MainApplyLazyRoute = MainApplyLazyImport.update({
+  path: '/apply',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/apply.lazy').then((d) => d.Route))
+
+const MainAccountLazyRoute = MainAccountLazyImport.update({
+  path: '/account',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/account.lazy').then((d) => d.Route))
+
+const AdminAdminIndexLazyRoute = AdminAdminIndexLazyImport.update({
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
+} as any).lazy(() =>
+  import('./routes/_admin/admin/index.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
-    '/account': {
-      id: '/account'
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainImport
+      parentRoute: typeof rootRoute
+    }
+    '/_main/account': {
+      id: '/_main/account'
       path: '/account'
       fullPath: '/account'
-      preLoaderRoute: typeof AccountLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MainAccountLazyImport
+      parentRoute: typeof MainImport
     }
-    '/apply': {
-      id: '/apply'
+    '/_main/apply': {
+      id: '/_main/apply'
       path: '/apply'
       fullPath: '/apply'
-      preLoaderRoute: typeof ApplyLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MainApplyLazyImport
+      parentRoute: typeof MainImport
     }
-    '/courses': {
-      id: '/courses'
+    '/_main/courses': {
+      id: '/_main/courses'
       path: '/courses'
       fullPath: '/courses'
-      preLoaderRoute: typeof CoursesLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MainCoursesLazyImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/': {
+      id: '/_main/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof MainIndexLazyImport
+      parentRoute: typeof MainImport
+    }
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAdminIndexLazyImport
+      parentRoute: typeof AdminImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AdminRouteChildren {
+  AdminAdminIndexLazyRoute: typeof AdminAdminIndexLazyRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminIndexLazyRoute: AdminAdminIndexLazyRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface MainRouteChildren {
+  MainAccountLazyRoute: typeof MainAccountLazyRoute
+  MainApplyLazyRoute: typeof MainApplyLazyRoute
+  MainCoursesLazyRoute: typeof MainCoursesLazyRoute
+  MainIndexLazyRoute: typeof MainIndexLazyRoute
+}
+
+const MainRouteChildren: MainRouteChildren = {
+  MainAccountLazyRoute: MainAccountLazyRoute,
+  MainApplyLazyRoute: MainApplyLazyRoute,
+  MainCoursesLazyRoute: MainCoursesLazyRoute,
+  MainIndexLazyRoute: MainIndexLazyRoute,
+}
+
+const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
-  '/account': typeof AccountLazyRoute
-  '/apply': typeof ApplyLazyRoute
-  '/courses': typeof CoursesLazyRoute
+  '': typeof MainRouteWithChildren
+  '/account': typeof MainAccountLazyRoute
+  '/apply': typeof MainApplyLazyRoute
+  '/courses': typeof MainCoursesLazyRoute
+  '/': typeof MainIndexLazyRoute
+  '/admin': typeof AdminAdminIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
-  '/account': typeof AccountLazyRoute
-  '/apply': typeof ApplyLazyRoute
-  '/courses': typeof CoursesLazyRoute
+  '': typeof AdminRouteWithChildren
+  '/account': typeof MainAccountLazyRoute
+  '/apply': typeof MainApplyLazyRoute
+  '/courses': typeof MainCoursesLazyRoute
+  '/': typeof MainIndexLazyRoute
+  '/admin': typeof AdminAdminIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
-  '/account': typeof AccountLazyRoute
-  '/apply': typeof ApplyLazyRoute
-  '/courses': typeof CoursesLazyRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/_main': typeof MainRouteWithChildren
+  '/_main/account': typeof MainAccountLazyRoute
+  '/_main/apply': typeof MainApplyLazyRoute
+  '/_main/courses': typeof MainCoursesLazyRoute
+  '/_main/': typeof MainIndexLazyRoute
+  '/_admin/admin/': typeof AdminAdminIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/account' | '/apply' | '/courses'
+  fullPaths: '' | '/account' | '/apply' | '/courses' | '/' | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/account' | '/apply' | '/courses'
-  id: '__root__' | '/' | '/account' | '/apply' | '/courses'
+  to: '' | '/account' | '/apply' | '/courses' | '/' | '/admin'
+  id:
+    | '__root__'
+    | '/_admin'
+    | '/_main'
+    | '/_main/account'
+    | '/_main/apply'
+    | '/_main/courses'
+    | '/_main/'
+    | '/_admin/admin/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
-  AccountLazyRoute: typeof AccountLazyRoute
-  ApplyLazyRoute: typeof ApplyLazyRoute
-  CoursesLazyRoute: typeof CoursesLazyRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  MainRoute: typeof MainRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
-  AccountLazyRoute: AccountLazyRoute,
-  ApplyLazyRoute: ApplyLazyRoute,
-  CoursesLazyRoute: CoursesLazyRoute,
+  AdminRoute: AdminRouteWithChildren,
+  MainRoute: MainRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -137,23 +215,44 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/account",
-        "/apply",
-        "/courses"
+        "/_admin",
+        "/_main"
       ]
     },
-    "/": {
-      "filePath": "index.lazy.tsx"
+    "/_admin": {
+      "filePath": "_admin.tsx",
+      "children": [
+        "/_admin/admin/"
+      ]
     },
-    "/account": {
-      "filePath": "account.lazy.tsx"
+    "/_main": {
+      "filePath": "_main.tsx",
+      "children": [
+        "/_main/account",
+        "/_main/apply",
+        "/_main/courses",
+        "/_main/"
+      ]
     },
-    "/apply": {
-      "filePath": "apply.lazy.tsx"
+    "/_main/account": {
+      "filePath": "_main/account.lazy.tsx",
+      "parent": "/_main"
     },
-    "/courses": {
-      "filePath": "courses.lazy.tsx"
+    "/_main/apply": {
+      "filePath": "_main/apply.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/courses": {
+      "filePath": "_main/courses.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/": {
+      "filePath": "_main/index.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_admin/admin/": {
+      "filePath": "_admin/admin/index.lazy.tsx",
+      "parent": "/_admin"
     }
   }
 }

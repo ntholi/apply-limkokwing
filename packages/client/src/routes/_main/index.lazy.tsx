@@ -1,14 +1,13 @@
-import Body from '@/components/base/Body';
 import { Button } from '@/components/ui/button';
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
-export const Route = createLazyFileRoute('/')({
+export const Route = createLazyFileRoute('/_main/')({
   component: Index,
 });
 
 function Index() {
   return (
-    <Body className='mt-12 flex flex-col items-center gap-12'>
+    <div className='mt-12 flex flex-col items-center gap-12'>
       <h1 className='w-full rounded-sm border px-2 py-3 text-center text-sm md:w-[25%]'>
         Limkokwing University of Creative Technology
       </h1>
@@ -18,6 +17,6 @@ function Index() {
       <Button className='w-full md:w-[25%]' asChild>
         <Link to={'/apply'}>Apply Now</Link>
       </Button>
-    </Body>
+    </div>
   );
 }
