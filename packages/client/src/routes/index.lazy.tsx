@@ -8,11 +8,11 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
   return (
-    <Body className='flex flex-col items-center mt-12 gap-12'>
-      <h1 className='text-sm border py-3 px-2 rounded-sm md:w-[25%] text-center w-full'>
+    <Body className='mt-12 flex flex-col items-center gap-12'>
+      <h1 className='w-full rounded-sm border px-2 py-3 text-center text-sm md:w-[25%]'>
         Limkokwing University of Creative Technology
       </h1>
-      <p className='text-5xl sm:text-6xl md:text-8xl font-bold md:w-1/2 text-center'>
+      <p className='text-center text-5xl font-bold sm:text-6xl md:w-1/2 md:text-8xl'>
         Be The Most Successful
       </p>
       <Button className='w-full md:w-[25%]' asChild>
