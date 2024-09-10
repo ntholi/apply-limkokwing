@@ -11,7 +11,7 @@ function Index() {
       <h1 className='w-full rounded-sm border px-2 py-3 text-center text-sm md:w-[25%]'>
         Limkokwing University of Creative Technology
       </h1>
-      <p className='text-center text-5xl font-bold sm:text-6xl md:w-1/2 md:text-8xl'>
+      <p className='text-center text-5xl font-bold uppercase sm:text-6xl md:w-1/2 md:text-8xl'>
         Be The Most Successful
       </p>
       <Button className='w-full md:w-[25%]' asChild>
