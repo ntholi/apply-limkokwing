@@ -12,7 +12,6 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   name: text('name'),
   email: text('email'),
-  password: text('password'),
   role: text('role').$type<'user' | 'admin'>().default('user'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at'),
