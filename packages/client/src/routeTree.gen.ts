@@ -19,6 +19,7 @@ import { Route as AdminImport } from './routes/_admin'
 // Create Virtual Routes
 
 const MainIndexLazyImport = createFileRoute('/_main/')()
+const MainLoginLazyImport = createFileRoute('/_main/login')()
 const MainCoursesLazyImport = createFileRoute('/_main/courses')()
 const MainApplyLazyImport = createFileRoute('/_main/apply')()
 const MainAccountLazyImport = createFileRoute('/_main/account')()
@@ -44,6 +45,11 @@ const MainIndexLazyRoute = MainIndexLazyImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any).lazy(() => import('./routes/_main/index.lazy').then((d) => d.Route))
+
+const MainLoginLazyRoute = MainLoginLazyImport.update({
+  path: '/login',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/login.lazy').then((d) => d.Route))
 
 const MainCoursesLazyRoute = MainCoursesLazyImport.update({
   path: '/courses',
@@ -122,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCoursesLazyImport
       parentRoute: typeof MainImport
     }
+    '/_main/login': {
+      id: '/_main/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof MainLoginLazyImport
+      parentRoute: typeof MainImport
+    }
     '/_main/': {
       id: '/_main/'
       path: '/'
@@ -173,6 +186,7 @@ interface MainRouteChildren {
   MainAccountLazyRoute: typeof MainAccountLazyRoute
   MainApplyLazyRoute: typeof MainApplyLazyRoute
   MainCoursesLazyRoute: typeof MainCoursesLazyRoute
+  MainLoginLazyRoute: typeof MainLoginLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
 
@@ -180,6 +194,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainAccountLazyRoute: MainAccountLazyRoute,
   MainApplyLazyRoute: MainApplyLazyRoute,
   MainCoursesLazyRoute: MainCoursesLazyRoute,
+  MainLoginLazyRoute: MainLoginLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
 }
 
@@ -190,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof MainAccountLazyRoute
   '/apply': typeof MainApplyLazyRoute
   '/courses': typeof MainCoursesLazyRoute
+  '/login': typeof MainLoginLazyRoute
   '/': typeof MainIndexLazyRoute
   '/admin/applications': typeof AdminAdminApplicationsLazyRoute
   '/admin/courses': typeof AdminAdminCoursesLazyRoute
@@ -201,6 +217,7 @@ export interface FileRoutesByTo {
   '/account': typeof MainAccountLazyRoute
   '/apply': typeof MainApplyLazyRoute
   '/courses': typeof MainCoursesLazyRoute
+  '/login': typeof MainLoginLazyRoute
   '/': typeof MainIndexLazyRoute
   '/admin/applications': typeof AdminAdminApplicationsLazyRoute
   '/admin/courses': typeof AdminAdminCoursesLazyRoute
@@ -214,6 +231,7 @@ export interface FileRoutesById {
   '/_main/account': typeof MainAccountLazyRoute
   '/_main/apply': typeof MainApplyLazyRoute
   '/_main/courses': typeof MainCoursesLazyRoute
+  '/_main/login': typeof MainLoginLazyRoute
   '/_main/': typeof MainIndexLazyRoute
   '/_admin/admin/applications': typeof AdminAdminApplicationsLazyRoute
   '/_admin/admin/courses': typeof AdminAdminCoursesLazyRoute
@@ -227,6 +245,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/apply'
     | '/courses'
+    | '/login'
     | '/'
     | '/admin/applications'
     | '/admin/courses'
@@ -237,6 +256,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/apply'
     | '/courses'
+    | '/login'
     | '/'
     | '/admin/applications'
     | '/admin/courses'
@@ -248,6 +268,7 @@ export interface FileRouteTypes {
     | '/_main/account'
     | '/_main/apply'
     | '/_main/courses'
+    | '/_main/login'
     | '/_main/'
     | '/_admin/admin/applications'
     | '/_admin/admin/courses'
@@ -295,6 +316,7 @@ export const routeTree = rootRoute
         "/_main/account",
         "/_main/apply",
         "/_main/courses",
+        "/_main/login",
         "/_main/"
       ]
     },
@@ -308,6 +330,10 @@ export const routeTree = rootRoute
     },
     "/_main/courses": {
       "filePath": "_main/courses.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/login": {
+      "filePath": "_main/login.lazy.tsx",
       "parent": "/_main"
     },
     "/_main/": {
