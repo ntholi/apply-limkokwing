@@ -4,7 +4,7 @@ import { SessionProvider } from '@hono/auth-js/react';
 
 export const Route = createRootRoute({
   component: () => (
-    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+    <ThemeProvider defaultTheme='dark' storageKey='limkokwing-ui-theme'>
       <SessionProvider>
         <Outlet />
       </SessionProvider>
