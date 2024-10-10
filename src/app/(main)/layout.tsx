@@ -5,8 +5,9 @@ import '@mantine/notifications/styles.css';
 
 import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
-import './globals.css';
-import Providers from './providers';
+import '../globals.css';
+import Providers from '../providers';
+import Navigation from './base/Navigation';
 
 export const metadata: Metadata = {
   title: 'Apply Limkokwing',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     'Online Application for Limkokwing University of Creative Technology, Lesotho',
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,7 +26,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navigation />
+          {children}
+        </Providers>
       </body>
     </html>
   );
