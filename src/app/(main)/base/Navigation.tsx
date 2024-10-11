@@ -1,44 +1,31 @@
 'use client';
 
-import {
-  HoverCard,
-  Group,
-  Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
-  Divider,
-  Center,
-  Box,
-  Burger,
-  Drawer,
-  Collapse,
-  ScrollArea,
-  rem,
-  useMantineTheme,
-  Flex,
-  Image,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import logo from '/public/logo.png';
+import { Button, Divider, Flex, Group, Image } from '@mantine/core';
 import NextImage from 'next/image';
+import Link from 'next/link';
+import logo from '/public/logo.png';
 
 export default function Navigation() {
   return (
     <>
       <Flex px={'md'} py={'xs'} justify={'space-between'}>
-        <Image component={NextImage} src={logo} alt='logo' h={45} />
         <Group>
+          <Link href='/'>
+            <Image component={NextImage} src={logo} alt='logo' h={45} />
+          </Link>
+          <Button variant='subtle' color='gray' hiddenFrom='sm'>
+            Courses
+          </Button>
+        </Group>
+        <Group visibleFrom='sm'>
           <Button variant='subtle' color='gray'>
             Home
           </Button>
           <Button variant='subtle' color='gray'>
-            Apply
+            Courses
           </Button>
           <Button variant='subtle' color='gray'>
-            Courses
+            Apply
           </Button>
         </Group>
         <Group>

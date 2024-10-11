@@ -1,14 +1,20 @@
-import styles from './page.module.css';
-import { Box, Button, Container, Title, Image, Stack } from '@mantine/core';
+import { Button, Container, Image, Stack, Title } from '@mantine/core';
 import NextImage from 'next/image';
+import styles from './page.module.css';
 import logo from '/public/logo.png';
 export default function Home() {
   return (
     <Container className={styles.page}>
       <Stack align='center' mt={70}>
-        <Image component={NextImage} src={logo} alt='logo' h={'auto'} w={300} />
+        <Image
+          component={NextImage}
+          src={logo}
+          alt='logo'
+          h={'auto'}
+          w={{ base: 250, sm: 300 }}
+        />
         <Title
-          size={'5rem'}
+          className={styles.title}
           w={{
             base: '100%',
             sm: '60%',
@@ -19,7 +25,12 @@ export default function Home() {
         >
           Be the most successful
         </Title>
-        <Button variant='white' color='gray' w={{ base: '100%', sm: 250 }}>
+        <Button
+          variant='white'
+          color='gray'
+          mt={'xl'}
+          w={{ base: '100%', sm: 250 }}
+        >
           Apply Now
         </Button>
       </Stack>
