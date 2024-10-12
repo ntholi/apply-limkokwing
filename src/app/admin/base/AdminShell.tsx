@@ -8,14 +8,17 @@ import {
   LoadingOverlay,
   Modal,
   Text,
+  Image,
   useComputedColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 import { useRouter } from 'next/navigation';
-import Logo from './Logo';
 import Navigation from './Navigation';
+import Link from 'next/link';
+import NextImage from 'next/image';
+import logo from '/public/logo.png';
 
 export default function AdminShell({ children }: PropsWithChildren) {
   const [opened, { toggle }] = useDisclosure();
@@ -32,21 +35,21 @@ export default function AdminShell({ children }: PropsWithChildren) {
     );
   }
 
-  if (session?.user?.role !== 'admin') {
-    return (
-      <Modal
-        opened={true}
-        onClose={() => {
-          router.push('/');
-        }}
-        title='Access Denied'
-      >
-        <Box>
-          <Text>You are not authorized to access this page</Text>
-        </Box>
-      </Modal>
-    );
-  }
+  // if (session?.user?.role !== 'admin') {
+  //   return (
+  //     <Modal
+  //       opened={true}
+  //       onClose={() => {
+  //         router.push('/');
+  //       }}
+  //       title='Access Denied'
+  //     >
+  //       <Box>
+  //         <Text>You are not authorized to access this page</Text>
+  //       </Box>
+  //     </Modal>
+  //   );
+  // }
 
   return (
     <AppShell
@@ -67,7 +70,9 @@ export default function AdminShell({ children }: PropsWithChildren) {
               hiddenFrom='md'
               size='sm'
             />
-            <Logo />
+            <Link href='/'>
+              <Image component={NextImage} src={logo} alt='logo' h={45} />
+            </Link>
           </Group>
         </Group>
       </AppShell.Header>
