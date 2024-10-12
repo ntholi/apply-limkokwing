@@ -5,6 +5,7 @@ import NextImage from 'next/image';
 import Link from 'next/link';
 import logo from '/public/logo.png';
 import { usePathname } from 'next/navigation';
+import LoginButton from '../login/LoginButton';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -13,7 +14,7 @@ export default function Navigation() {
 
   return (
     <>
-      <Flex px={'md'} py={'xs'} justify={'space-between'}>
+      <Flex px={'md'} py={'xs'} justify={'space-between'} align={'center'}>
         <Group>
           <Link href='/'>
             <Image component={NextImage} src={logo} alt='logo' h={45} />
@@ -24,18 +25,13 @@ export default function Navigation() {
         </Group>
         <Group visibleFrom='sm'>
           <Button variant='subtle' color='gray'>
-            Home
-          </Button>
-          <Button variant='subtle' color='gray'>
             Courses
           </Button>
           <Button variant='subtle' color='gray'>
             Apply
           </Button>
         </Group>
-        <Group>
-          <Button>Login</Button>
-        </Group>
+        <LoginButton />
       </Flex>
       <Divider />
     </>
