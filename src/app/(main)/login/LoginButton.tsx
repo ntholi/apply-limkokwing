@@ -6,13 +6,9 @@ import { useSession } from 'next-auth/react';
 export default function LoginButton() {
   const { data: session } = useSession();
 
-  if (!session) {
-    return null;
-  }
-
   return (
     <Flex justify={'end'} miw={100}>
-      {session ? (
+      {session?.user ? (
         <Menu>
           <Menu.Target>
             <Avatar

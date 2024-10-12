@@ -27,7 +27,7 @@ export default function Navigation() {
           <Button variant='subtle' color='gray'>
             Courses
           </Button>
-          <Button variant='subtle' color='gray'>
+          <Button variant='subtle' color='gray' component={Link} href='/apply'>
             Apply
           </Button>
         </Group>
