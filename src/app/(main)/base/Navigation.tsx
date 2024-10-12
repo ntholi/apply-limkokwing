@@ -4,8 +4,13 @@ import { Button, Divider, Flex, Group, Image } from '@mantine/core';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import logo from '/public/logo.png';
+import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
+  const pathname = usePathname();
+
+  if (pathname === '/login') return null;
+
   return (
     <>
       <Flex px={'md'} py={'xs'} justify={'space-between'}>
