@@ -16,6 +16,11 @@ export const users = pgTable('users', {
   email: varchar({ length: 100 }).notNull().unique(),
 });
 
+export const students = pgTable('students', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: integer().references(() => users.id, { onDelete: 'no action' }),
+});
+
 export const certificates = pgTable('certificates', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   level: certificateLevel().notNull(),
@@ -42,11 +47,9 @@ export const certificateGrades = pgTable(
 export const subjects = pgTable('subjects', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 100 }),
-});
-
-export const students = pgTable('students', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: integer().references(() => users.id, { onDelete: 'no action' }),
+  certificateId: integer().references(() => certificates.id, {
+    onDelete: 'set null',
+  }),
 });
 
 export const studentCertificates = pgTable(
@@ -71,7 +74,7 @@ export const studentGrades = pgTable('student_grades', {
   certificateGradeId: integer().references(() => certificateGrades.id),
 });
 
-export const courses = pgTable('courses', {
+export const programs = pgTable('programs', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 100 }),
   description: text(),
