@@ -24,10 +24,10 @@ export default function Navigation() {
     <AppShell.Navbar p='xs'>
       <AppShell.Section grow component={ScrollArea}>
         <NavLink
-          label='Users'
+          label='Courses'
           component={Link}
-          active={pathname.startsWith('/admin/users')}
-          href={'/admin/users'}
+          active={pathname.startsWith('/admin/courses')}
+          href={'/admin/courses'}
           leftSection={<Users size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />

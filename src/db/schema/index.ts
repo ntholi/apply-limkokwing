@@ -3,6 +3,7 @@ import {
   pgTable,
   primaryKey,
   text,
+  uniqueIndex,
   varchar,
 } from 'drizzle-orm/pg-core';
 import { certificateLevel, facultyEnum, userRole } from './enums';
@@ -23,14 +24,18 @@ export const certificates = pgTable('certificates', {
 export const certificateGrades = pgTable(
   'certificate_grades',
   {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
     score: integer().notNull(),
     name: varchar({ length: 100 }).notNull(),
-    certificate_id: integer()
+    certificateId: integer()
       .references(() => certificates.id, { onDelete: 'cascade' })
       .notNull(),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.certificate_id, table.name] }),
+    unique: uniqueIndex('unique_certificate_grade').on(
+      table.certificateId,
+      table.name
+    ),
   })
 );
 
@@ -44,10 +49,26 @@ export const students = pgTable('students', {
   userId: integer().references(() => users.id, { onDelete: 'no action' }),
 });
 
-export const grades = pgTable('grades', {
-  student_id: integer()
+export const studentCertificates = pgTable(
+  'student_certificates',
+  {
+    studentId: integer()
+      .references(() => students.id, { onDelete: 'cascade' })
+      .notNull(),
+    certificateId: integer().references(() => certificates.id, {
+      onDelete: 'no action',
+    }),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.certificateId, table.studentId] }),
+  })
+);
+
+export const studentGrades = pgTable('student_grades', {
+  studentId: integer()
     .references(() => students.id, { onDelete: 'cascade' })
     .notNull(),
+  certificateGradeId: integer().references(() => certificateGrades.id),
 });
 
 export const courses = pgTable('courses', {
