@@ -12,7 +12,7 @@ import {
   Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { ChevronRight, LogOutIcon, Users } from 'lucide-react';
+import { ChevronRight, LogOutIcon, FileText } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -24,11 +24,11 @@ export default function Navigation() {
     <AppShell.Navbar p='xs'>
       <AppShell.Section grow component={ScrollArea}>
         <NavLink
-          label='Courses'
+          label='Programs'
           component={Link}
-          active={pathname.startsWith('/admin/courses')}
-          href={'/admin/courses'}
-          leftSection={<Users size='1.1rem' />}
+          active={pathname.startsWith('/admin/programs')}
+          href={'/admin/programs'}
+          leftSection={<FileText size='1.1rem' />}
           rightSection={<ChevronRight size='0.8rem' strokeWidth={1.5} />}
         />
       </AppShell.Section>
