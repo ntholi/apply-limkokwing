@@ -1,6 +1,5 @@
+import { Box, BoxProps, Divider, Text } from '@mantine/core';
 import React from 'react';
-import { Box, BoxProps, Divider, Text, TextProps } from '@mantine/core';
-import { dateTime } from '@/lib/format';
 
 type Props = {
   label: string;
@@ -29,13 +28,4 @@ export default function FieldView({ label, children, ...props }: Props) {
       <Divider />
     </Box>
   );
-}
-
-function formatValue(value: any) {
-  if (!value) return '(None)';
-
-  if (value instanceof Date) {
-    return dateTime(value);
-  }
-  return value;
 }
